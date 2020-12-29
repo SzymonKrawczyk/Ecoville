@@ -52,10 +52,19 @@ public class MainActivity extends AppCompatActivity {
         bGoToRecycler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Intent intent = new Intent(getApplicationContext(), Home_missions_activity.class);
+                //Intent intent = new Intent(getApplicationContext(), Home_talk_activity.class);
+                Intent intent = new Intent(getApplicationContext(), Home_tips_activity.class);
+                startActivity(intent);
+            }
+        });/*
+        bGoToRecycler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), RecycleActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
