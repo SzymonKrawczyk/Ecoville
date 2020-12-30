@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="128dp"
+    tools:context=".Home_missions_activity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/CLHomeButtonNavContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/BTHomeMissions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Missions"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:includeFontPadding="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/lightGreen"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/BTHomeTalk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Talk"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:includeFontPadding="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/BTHomeMissions"
+            app:layout_constraintTop_toTopOf="@+id/BTHomeMissions" />
+
+        <Button
+            android:id="@+id/BTHomeTips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Tips"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:includeFontPadding="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/BTHomeTalk"
+            app:layout_constraintTop_toTopOf="@+id/BTHomeTalk" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CLHomeButtonNavContainer">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:minHeight="96dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/CLMissionContainer1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:minHeight="96dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/CLMissionParticipation1"
+                        android:layout_width="8dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/round_corners_left_green_bg"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/TVMissionNew1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="New"
+                        android:textColor="#F57F17"
+                        android:textSize="12sp"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toEndOf="@+id/CLMissionParticipation1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/TVMissionPointsName1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Points"
+                        android:textColor="@color/lightGreen"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/TVMissionNew1" />
+
+                    <TextView
+                        android:id="@+id/TVMissionPointsValue1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="135"
+                        android:textColor="@color/lightGreen"
+                        app:layout_constraintBottom_toBottomOf="@+id/TVMissionPointsName1"
+                        app:layout_constraintEnd_toStartOf="@+id/TVMissionPointsName1"
+                        app:layout_constraintTop_toTopOf="@+id/TVMissionPointsName1" />
+
+                    <TextView
+                        android:id="@+id/TVMissionName1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/archivo_black"
+                        android:text="USE PUBLIC TRANSPORTATION"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/CLMissionParticipation1"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:minHeight="96dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/CLMissionContainer2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="96dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/CLMissionParticipation2"
+                        android:layout_width="8dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/round_corners_left_white_bg"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/TVMissionNew2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="New"
+                        android:textColor="#F57F17"
+                        android:textSize="12sp"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toEndOf="@+id/CLMissionParticipation2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/TVMissionPointsName2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Points"
+                        android:textColor="@color/lightGreen"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/TVMissionNew2" />
+
+                    <TextView
+                        android:id="@+id/TVMissionPointsValue2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="75"
+                        android:textColor="@color/lightGreen"
+                        app:layout_constraintBottom_toBottomOf="@+id/TVMissionPointsName2"
+                        app:layout_constraintEnd_toStartOf="@+id/TVMissionPointsName2"
+                        app:layout_constraintTop_toTopOf="@+id/TVMissionPointsName2" />
+
+                    <TextView
+                        android:id="@+id/TVMissionName2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/archivo_black"
+                        android:text="SORTING GARBAGE"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/CLMissionParticipation2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:minHeight="96dp"
+                app:cardBackgroundColor="@color/lightGray"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/CLMissionContainer3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="96dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/CLMissionParticipation3"
+                        android:layout_width="8dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/round_corners_left_darkgray_bg"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/TVMissionNew3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="New"
+                        android:textColor="#F57F17"
+                        android:textSize="12sp"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toEndOf="@+id/CLMissionParticipation3"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/TVMissionPointsName3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Points"
+                        android:textColor="@color/darkGray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/TVMissionNew3" />
+
+                    <TextView
+                        android:id="@+id/TVMissionPointsValue3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="50"
+                        android:textColor="@color/darkGray"
+                        app:layout_constraintBottom_toBottomOf="@+id/TVMissionPointsName3"
+                        app:layout_constraintEnd_toStartOf="@+id/TVMissionPointsName3"
+                        app:layout_constraintTop_toTopOf="@+id/TVMissionPointsName3" />
+
+                    <TextView
+                        android:id="@+id/TVMissionName3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/archivo_black"
+                        android:text="PLANT FLOWERS"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="@color/darkGray"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/CLMissionParticipation3"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:minHeight="96dp"
+                app:cardBackgroundColor="@color/lightGray"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/CLMissionContainer4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="96dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/CLMissionParticipation4"
+                        android:layout_width="8dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/round_corners_left_darkgray_bg"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/TVMissionNew4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="New"
+                        android:textColor="#F57F17"
+                        android:textSize="12sp"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toEndOf="@+id/CLMissionParticipation4"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/TVMissionPointsName4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Points"
+                        android:textColor="@color/darkGray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/TVMissionNew4" />
+
+                    <TextView
+                        android:id="@+id/TVMissionPointsValue4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="65"
+                        android:textColor="@color/darkGray"
+                        app:layout_constraintBottom_toBottomOf="@+id/TVMissionPointsName4"
+                        app:layout_constraintEnd_toStartOf="@+id/TVMissionPointsName4"
+                        app:layout_constraintTop_toTopOf="@+id/TVMissionPointsName4" />
+
+                    <TextView
+                        android:id="@+id/TVMissionName4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/archivo_black"
+                        android:text="DONATE OLD EQUIPMENT"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="@color/darkGray"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/CLMissionParticipation4"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
