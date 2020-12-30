@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Intent intent = new Intent(getApplicationContext(), Home_missions_activity.class);
                 //Intent intent = new Intent(getApplicationContext(), Home_talk_activity.class);
-                Intent intent = new Intent(getApplicationContext(), Home_tips_activity.class);
+                Intent intent = new Intent(getApplicationContext(), Connection_error_activity.class);
                 startActivity(intent);
             }
         });/*

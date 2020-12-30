@@ -9,7 +9,7 @@
     tools:context=".Home_tips_activity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/CLGomeButtonNavContainer"
+        android:id="@+id/CLHomeButtonNavContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
@@ -85,7 +85,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CLGomeButtonNavContainer">
+        app:layout_constraintTop_toBottomOf="@+id/CLHomeButtonNavContainer">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -144,7 +144,7 @@
                         android:fontFamily="@font/montserrat"
                         android:text="This is a short description. Read the full article please, ok?"
                         android:textColor="@color/black"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="@+id/TVTipsTitle1"
                         app:layout_constraintStart_toStartOf="@+id/TVTipsDate1"
                         app:layout_constraintTop_toBottomOf="@+id/TVTipsDate1" />
@@ -223,7 +223,7 @@
                         android:fontFamily="@font/montserrat"
                         android:text="Well, this is a short description. Read the full article..\nBut in short - the future doesn't look very bright.. \n:c"
                         android:textColor="@color/black"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/TVTipsDate2"
                         app:layout_constraintTop_toBottomOf="@+id/TVTipsDate2" />
