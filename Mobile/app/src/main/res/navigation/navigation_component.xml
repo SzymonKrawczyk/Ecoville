@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_component"
+    app:startDestination="@id/fragment_1">
+
+    <fragment
+        android:id="@+id/fragment_1"
+        android:name="com.example.ecoville_app_S.fragment_home_missions"
+        android:label="fragment_1"
+        tools:layout="@layout/fragment_home_missions" />
+    <fragment
+        android:id="@+id/fragment_2"
+        android:name="com.example.ecoville_app_S.fragment_rank"
+        android:label="fragment_2"
+        tools:layout="@layout/fragment_rank" />
+    <fragment
+        android:id="@+id/fragment_3"
+        android:name="com.example.ecoville_app_S.fragment_3"
+        android:label="fragment_3"
+        tools:layout="@layout/fragment_3" />
+    <fragment
+        android:id="@+id/fragment_4"
+        android:name="com.example.ecoville_app_S.fragment_4"
+        android:label="fragment_4"
+        tools:layout="@layout/fragment_4" />
+</navigation>
