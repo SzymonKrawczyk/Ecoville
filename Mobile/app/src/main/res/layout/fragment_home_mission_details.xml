@@ -55,7 +55,6 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:fontFamily="@font/archivo_black"
-                android:text="SORT GARBAGE"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="28sp"
@@ -70,7 +69,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/montserrat"
-                android:text="October, 26"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/TVMissionDetailsTitle"
@@ -96,353 +94,373 @@
             android:padding="16dp">
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="8dp" >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp">
 
-                    <TextView
-                        android:id="@+id/TVMissionDetailsTopHeader"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:text="Details"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/TVMissionDetailsTopHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Details"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <HorizontalScrollView
-                        android:id="@+id/horizontalScrollView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/TVMissionDetailsTopHeader"
-                        app:layout_constraintTop_toBottomOf="@+id/TVMissionDetailsTopHeader">
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/TVMissionDetailsTopHeader"
+                    app:layout_constraintTop_toBottomOf="@+id/TVMissionDetailsTopHeader">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="8dp">
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/CVDate"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="8dp"
-                                    app:cardCornerRadius="8dp"
-                                    app:cardElevation="4dp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent">
-
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:padding="8dp">
-
-                                        <TextView
-                                            android:id="@+id/TVDay"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/montserrat"
-                                            android:text="26"
-                                            android:textColor="@color/black"
-                                            android:textSize="30sp"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent" />
-
-                                        <TextView
-                                            android:id="@+id/TVMonth"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/montserrat"
-                                            android:text="October"
-                                            android:textColor="@color/black"
-                                            android:textSize="12sp"
-                                            app:layout_constraintEnd_toEndOf="@+id/TVDay"
-                                            app:layout_constraintStart_toStartOf="@+id/TVDay"
-                                            app:layout_constraintTop_toBottomOf="@+id/TVDay" />
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </androidx.cardview.widget.CardView>
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/CVTime"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="16dp"
-                                    app:cardCornerRadius="8dp"
-                                    app:cardElevation="4dp"
-                                    app:layout_constraintStart_toEndOf="@+id/CVDate"
-                                    app:layout_constraintTop_toTopOf="@+id/CVDate">
-
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:padding="8dp">
-
-                                        <TextView
-                                            android:id="@+id/TVTime"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/montserrat"
-                                            android:text="10:24"
-                                            android:textColor="@color/black"
-                                            android:textSize="30sp"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent" />
-
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </androidx.cardview.widget.CardView>
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/CVDuration"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="16dp"
-                                    app:cardCornerRadius="8dp"
-                                    app:cardElevation="4dp"
-                                    app:layout_constraintStart_toEndOf="@+id/CVTime"
-                                    app:layout_constraintTop_toTopOf="@+id/CVTime">
-
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:padding="8dp">
-
-                                        <TextView
-                                            android:id="@+id/TVDuration"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/montserrat"
-                                            android:text="120"
-                                            android:textColor="@color/black"
-                                            android:textSize="30sp"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent" />
-
-                                        <TextView
-                                            android:id="@+id/TVDurationLabel"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/montserrat"
-                                            android:text="Minutes"
-                                            android:textColor="@color/black"
-                                            android:textSize="12sp"
-                                            app:layout_constraintEnd_toEndOf="@+id/TVDuration"
-                                            app:layout_constraintStart_toStartOf="@+id/TVDuration"
-                                            app:layout_constraintTop_toBottomOf="@+id/TVDuration" />
-
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </androidx.cardview.widget.CardView>
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/CVParticipants"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="16dp"
-                                    app:cardCornerRadius="8dp"
-                                    app:cardElevation="4dp"
-                                    app:layout_constraintStart_toEndOf="@+id/CVDuration"
-                                    app:layout_constraintTop_toTopOf="@+id/CVDuration">
-
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:padding="8dp">
-
-                                        <TextView
-                                            android:id="@+id/TVParticipants"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/montserrat"
-                                            android:text="2 / 15"
-                                            android:textColor="@color/black"
-                                            android:textSize="30sp"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent" />
-
-                                        <TextView
-                                            android:id="@+id/TVParticipantsLabel"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/montserrat"
-                                            android:text="Participants"
-                                            android:textColor="@color/black"
-                                            android:textSize="12sp"
-                                            app:layout_constraintEnd_toEndOf="@+id/TVParticipants"
-                                            app:layout_constraintStart_toStartOf="@+id/TVParticipants"
-                                            app:layout_constraintTop_toBottomOf="@+id/TVParticipants" />
-
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </androidx.cardview.widget.CardView>
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/CVLocation"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="16dp"
-                                    android:layout_marginEnd="8dp"
-                                    app:cardCornerRadius="8dp"
-                                    app:cardElevation="4dp"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toEndOf="@+id/CVParticipants"
-                                    app:layout_constraintTop_toTopOf="@+id/CVParticipants">
-
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:padding="8dp">
-
-                                        <TextView
-                                            android:id="@+id/TVLocation"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/montserrat"
-                                            android:text="C"
-                                            android:textColor="@color/black"
-                                            android:textSize="30sp"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent" />
-
-                                        <TextView
-                                            android:id="@+id/TVLocationLabel"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/montserrat"
-                                            android:text="Building"
-                                            android:textColor="@color/black"
-                                            android:textSize="12sp"
-                                            app:layout_constraintEnd_toEndOf="@+id/TVLocation"
-                                            app:layout_constraintStart_toStartOf="@+id/TVLocation"
-                                            app:layout_constraintTop_toBottomOf="@+id/TVLocation" />
-
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </androidx.cardview.widget.CardView>
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        </LinearLayout>
-                    </HorizontalScrollView>
-
-                    <TextView
-                        android:id="@+id/TVMissionDetailsMiddleHeader"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:text="Description"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="@+id/horizontalScrollView"
-                        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
-
-                    <TextView
-                        android:id="@+id/TVMissionDetailsDescription"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/montserrat"
-                        android:gravity="right|fill|fill_horizontal|left"
-                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:justificationMode="inter_word"
-                        app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView"
-                        app:layout_constraintStart_toStartOf="@+id/TVMissionDetailsMiddleHeader"
-                        app:layout_constraintTop_toBottomOf="@+id/TVMissionDetailsMiddleHeader" />
-
-                    <TextView
-                        android:id="@+id/TVMissionDetailsBottomHeader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:text="Award"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="@+id/TVMissionDetailsDescription"
-                        app:layout_constraintTop_toBottomOf="@+id/TVMissionDetailsDescription" />
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardView2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="4dp"
-                        app:layout_constraintStart_toStartOf="@+id/TVMissionDetailsBottomHeader"
-                        app:layout_constraintTop_toBottomOf="@+id/TVMissionDetailsBottomHeader">
+                        android:orientation="vertical">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:padding="8dp">
+                            android:layout_margin="8dp">
 
-                            <TextView
-                                android:id="@+id/TVPointsValue"
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/CVDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/montserrat_bold"
-                                android:text="120"
-                                android:textColor="@color/lightGreen"
-                                android:textSize="30sp"
+                                android:layout_margin="8dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="4dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent">
 
-                            <TextView
-                                android:id="@+id/TVPointsValueLabel"
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="8dp">
+
+                                    <TextView
+                                        android:id="@+id/TVDay"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="26"
+                                        android:textColor="@color/black"
+                                        android:textSize="30sp"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <TextView
+                                        android:id="@+id/TVMonth"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="October"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        app:layout_constraintEnd_toEndOf="@+id/TVDay"
+                                        app:layout_constraintStart_toStartOf="@+id/TVDay"
+                                        app:layout_constraintTop_toBottomOf="@+id/TVDay" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/CVTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:fontFamily="@font/montserrat"
-                                android:text="Points"
-                                android:textColor="@color/lightGreen"
-                                android:textSize="18sp"
-                                app:layout_constraintBottom_toBottomOf="@+id/TVPointsValue"
-                                app:layout_constraintStart_toEndOf="@+id/TVPointsValue"
-                                app:layout_constraintTop_toTopOf="@+id/TVPointsValue" />
+                                android:layout_marginStart="16dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="4dp"
+                                app:layout_constraintStart_toEndOf="@+id/CVDate"
+                                app:layout_constraintTop_toTopOf="@+id/CVDate">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="8dp">
+
+                                    <TextView
+                                        android:id="@+id/TVTime"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="10:24"
+                                        android:textColor="@color/black"
+                                        android:textSize="30sp"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/CVDuration"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="4dp"
+                                app:layout_constraintStart_toEndOf="@+id/CVTime"
+                                app:layout_constraintTop_toTopOf="@+id/CVTime">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="8dp">
+
+                                    <TextView
+                                        android:id="@+id/TVDuration"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="120"
+                                        android:textColor="@color/black"
+                                        android:textSize="30sp"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <TextView
+                                        android:id="@+id/TVDurationLabel"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="Minutes"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        app:layout_constraintEnd_toEndOf="@+id/TVDuration"
+                                        app:layout_constraintStart_toStartOf="@+id/TVDuration"
+                                        app:layout_constraintTop_toBottomOf="@+id/TVDuration" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/CVParticipants"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="4dp"
+                                app:layout_constraintStart_toEndOf="@+id/CVDuration"
+                                app:layout_constraintTop_toTopOf="@+id/CVDuration">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="8dp">
+
+                                    <TextView
+                                        android:id="@+id/TVParticipants"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="2 / 15"
+                                        android:textColor="@color/black"
+                                        android:textSize="30sp"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <TextView
+                                        android:id="@+id/TVParticipantsLabel"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="Participants"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        app:layout_constraintEnd_toEndOf="@+id/TVParticipants"
+                                        app:layout_constraintStart_toStartOf="@+id/TVParticipants"
+                                        app:layout_constraintTop_toBottomOf="@+id/TVParticipants" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/CVLocation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="8dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="4dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/CVParticipants"
+                                app:layout_constraintTop_toTopOf="@+id/CVParticipants">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="8dp">
+
+                                    <TextView
+                                        android:id="@+id/TVLocation"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="C"
+                                        android:textColor="@color/black"
+                                        android:textSize="30sp"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <TextView
+                                        android:id="@+id/TVLocationLabel"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="Building"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        app:layout_constraintEnd_toEndOf="@+id/TVLocation"
+                                        app:layout_constraintStart_toStartOf="@+id/TVLocation"
+                                        app:layout_constraintTop_toBottomOf="@+id/TVLocation" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.cardview.widget.CardView>
+
                         </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.cardview.widget.CardView>
 
-                    <Button
-                        android:id="@+id/BTMissionDetailsSubmit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@color/lightGreen"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:includeFontPadding="false"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-                        android:minWidth="0dp"
-                        android:minHeight="0dp"
-                        android:text="PARTICIPATE"
-                        android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/TVMissionDetailsDescription"
-                        app:layout_constraintStart_toStartOf="@+id/TVMissionDetailsDescription"
-                        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+                    </LinearLayout>
+                </HorizontalScrollView>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/TVMissionDetailsMiddleHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Description"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@+id/horizontalScrollView"
+                    app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+
+                <TextView
+                    android:id="@+id/TVMissionDetailsDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/montserrat"
+                    android:gravity="right|fill|fill_horizontal|left"
+                    android:justificationMode="inter_word"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView"
+                    app:layout_constraintStart_toStartOf="@+id/TVMissionDetailsMiddleHeader"
+                    app:layout_constraintTop_toBottomOf="@+id/TVMissionDetailsMiddleHeader" />
+
+                <TextView
+                    android:id="@+id/TVMissionDetailsBottomHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Award"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@+id/TVMissionDetailsDescription"
+                    app:layout_constraintTop_toBottomOf="@+id/TVMissionDetailsDescription" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:layout_constraintStart_toStartOf="@+id/TVMissionDetailsBottomHeader"
+                    app:layout_constraintTop_toBottomOf="@+id/TVMissionDetailsBottomHeader">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/TVPointsValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="120"
+                            android:textColor="@color/lightGreen"
+                            android:textSize="30sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/TVPointsValueLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:fontFamily="@font/montserrat"
+                            android:text="Points"
+                            android:textColor="@color/lightGreen"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/TVPointsValue"
+                            app:layout_constraintStart_toEndOf="@+id/TVPointsValue"
+                            app:layout_constraintTop_toTopOf="@+id/TVPointsValue" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="8dp"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView2"
+                    app:layout_constraintStart_toStartOf="@+id/cardView2"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+                <Button
+                    android:id="@+id/BTMissionDetailsSubmit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/lightGreen"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:includeFontPadding="false"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:text="PARTICIPATE"
+                    android:textSize="24sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/TVMissionDetailsDescription"
+                    app:layout_constraintStart_toStartOf="@+id/TVMissionDetailsDescription"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </LinearLayout>
     </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/CLHide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
