@@ -107,13 +107,11 @@ public class fragment_home_missions extends Fragment {
 
                 holder.TVMissionName.setText(model.getName().toUpperCase());
 
-                if (model.isAvailable()) {
+                if (model._isAvailable()) {
 
+                    if (model._isNew()) holder.TVMissionNew.setVisibility(View.VISIBLE);
 
-                    if (model.isNew()) holder.TVMissionNew.setVisibility(View.VISIBLE);
-
-                    boolean userIsParticipating = true;
-                    if (userIsParticipating) holder.CLMissionParticipation.setBackgroundResource(R.drawable.round_corners_left_green_bg);
+                    if (model._hasUser(MainActivity.userDocRef)) holder.CLMissionParticipation.setBackgroundResource(R.drawable.round_corners_left_green_bg);
 
                 } else {
 
@@ -122,8 +120,9 @@ public class fragment_home_missions extends Fragment {
                     holder.TVMissionPointsValue.setTextColor(getResources().getColor(R.color.darkGray));
                     holder.TVMissionPointsValueLabel.setTextColor(getResources().getColor(R.color.darkGray));
 
-                    boolean userIsParticipating = true;
-                    if (userIsParticipating) holder.CLMissionParticipation.setBackgroundResource(R.drawable.round_corners_left_darkgray_bg);
+
+                    if (model._hasUser(MainActivity.userDocRef)) holder.CLMissionParticipation.setBackgroundResource(R.drawable.round_corners_left_darkgray_bg);
+                    else holder.CLMissionParticipation.setVisibility(View.INVISIBLE);
                 }
 
                 holder.TVMissionName.setText(model.getName().toUpperCase());

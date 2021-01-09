@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_rank" />
     <fragment
         android:id="@+id/fragment_3"
-        android:name="com.example.ecoville_app_S.fragment_3"
+        android:name="com.example.ecoville_app_S.fragment_shop"
         android:label="fragment_3"
         tools:layout="@layout/fragment_3" />
     <fragment

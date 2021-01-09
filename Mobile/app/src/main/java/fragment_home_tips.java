@@ -99,7 +99,7 @@ public class fragment_home_tips extends Fragment {
             protected void onBindViewHolder(@NonNull TipViewHolder holder, int position, @NonNull Tip model) {
 
                 holder.TVTipsTitle.setText(model.getTitle().toUpperCase());
-                holder.TVTipsDate.setText(model.getDate());
+                holder.TVTipsDate.setText(model._getDate());
                 holder.TVTipsShort.setText(model.getShortDescription());
 
                 holder.BTTipsReadFull.setOnClickListener(new View.OnClickListener() {

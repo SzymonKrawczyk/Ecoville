@@ -151,7 +151,6 @@
                     android:id="@+id/IVPost"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:background="#C57414"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:srcCompat="@tools:sample/backgrounds/scenic" />

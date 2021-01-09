@@ -28,7 +28,6 @@
                 android:id="@+id/IVPostAvatar"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:background="#C57414"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
@@ -40,27 +39,36 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="Goddess Aqua"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/IVPostAvatar"
                 app:layout_constraintTop_toTopOf="@+id/IVPostAvatar" />
 
             <TextView
+                android:id="@+id/TVPostDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/montserrat"
+                android:textColor="@color/darkGray"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/TVPostContent"
+                app:layout_constraintTop_toBottomOf="@+id/TVPostAuthor" />
+
+            <TextView
                 android:id="@+id/TVPostContent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/montserrat"
                 android:justificationMode="inter_word"
-                android:text="No plastic today! yay UwU"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/TVPostAuthor"
-                app:layout_constraintTop_toBottomOf="@+id/TVPostAuthor" />
+                app:layout_constraintTop_toBottomOf="@+id/TVPostDate" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

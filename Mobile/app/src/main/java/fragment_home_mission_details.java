@@ -81,23 +81,41 @@ public class fragment_home_mission_details extends Fragment {
                 if (mission != null){
 
                     CLHide.setVisibility(View.GONE);
-                    TVMissionDetailsTitleDate.setText(mission.getMonth() + ", " + mission.getDay());
-                    TVDay.setText(mission.getDay());
-                    TVMonth.setText(mission.getMonth());
-                    TVTime.setText(mission.getTime());
+                    TVMissionDetailsTitleDate.setText(mission._getMonth() + ", " + mission._getDay());
+                    TVDay.setText(mission._getDay());
+                    TVMonth.setText(mission._getMonth());
+                    TVTime.setText(mission._getTime());
                     TVDuration.setText(String.valueOf(mission.getDurationMinutes()));
-                    TVParticipants.setText(mission.getCurrentParticipants() + " / " + mission.getRequiredParticipants());
+                    TVParticipants.setText(mission.getCurrentParticipants().size() + " / " + mission.getRequiredParticipants());
                     TVLocation.setText(mission.getLocation());
                     TVMissionDetailsDescription.setText(mission.getDescription());
                     TVPointsValue.setText(String.valueOf(mission.getPoints()));
 
-                    if (mission.isAvailable()) {
+                    if (mission._isAvailable()) {
 
                         TVMissionDetailsTitle.setText(mission.getName().toUpperCase());
                         BTMissionDetailsSubmit.setVisibility(View.VISIBLE);
 
-                        boolean userIsParticipating = true;
-                        if (userIsParticipating) BTMissionDetailsSubmit.setText("REMOVE ME");
+                        if (mission._hasUser(MainActivity.userDocRef)) {
+                            BTMissionDetailsSubmit.setText("REMOVE ME");
+                            BTMissionDetailsSubmit.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mission._removeUser(MainActivity.userDocRef, db);
+                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_mission_details()).addToBackStack(null).commit();
+                                }
+                            });
+
+                        } else {
+
+                            BTMissionDetailsSubmit.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mission._addUser(MainActivity.userDocRef, db);
+                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_mission_details()).addToBackStack(null).commit();
+                                }
+                            });
+                        }
 
                     } else {
                         TVMissionDetailsTitle.setText(mission.getName().toUpperCase() + " [ARCHIVE]");

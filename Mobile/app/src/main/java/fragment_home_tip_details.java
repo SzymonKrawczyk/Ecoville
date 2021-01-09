@@ -60,9 +60,31 @@ public class fragment_home_tip_details extends Fragment {
                 Tip tip = documentSnapshot.toObject(Tip.class);
                 if (tip != null){
                     TVTipsDetailsTitle.setText(tip.getTitle().toUpperCase());
-                    TVTipsDetailsDate.setText(tip.getDate());
+                    TVTipsDetailsDate.setText(tip._getDate());
                     TVTipContent.setText(tip.getContent());
                     BTTipsDtailsLike.setVisibility(View.VISIBLE);
+
+                    if (tip._isLikedByUser(MainActivity.userDocRef)) {
+                        BTTipsDtailsLike.setText("Not my cup of tea");
+                        BTTipsDtailsLike.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                tip._removeLike(MainActivity.userDocRef, db);
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_tip_details()).addToBackStack(null).commit();
+                            }
+                        });
+
+                    } else {
+
+                        BTTipsDtailsLike.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                tip._addLike(MainActivity.userDocRef, db);
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_tip_details()).addToBackStack(null).commit();
+                            }
+                        });
+                    }
+
                 } else {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
                 }

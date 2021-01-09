@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Ecoville</string>
+	
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sing_up_link"><u>Sing up</u></string>
+    <string name="log_in_link"><u>Log in</u></string>
+    <string name="password_link"><u>Forget your password?</u></string>
 </resources>

@@ -39,7 +39,7 @@ public class Post {
         return timestamp;
     }
 
-    public String getDate () {
+    public String _getDate () {
         SimpleDateFormat sfd = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return sfd.format(timestamp.toDate());
     }

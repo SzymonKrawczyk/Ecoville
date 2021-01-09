@@ -1,9 +1,12 @@
 package com.example.ecoville_app_S.model;
 
+import com.example.ecoville_app_S.fragment_home_missions;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Mission {
@@ -12,14 +15,14 @@ public class Mission {
     private Timestamp when;
     private String description;
     private DocumentReference id_category;
-    private int currentParticipants;
+    private ArrayList<DocumentReference> currentParticipants;
     private int requiredParticipants;
     private String location;
     private int points;
     private int durationMinutes;
 
     public Mission() { }
-    public Mission(String name, Timestamp added, Timestamp when, String description, DocumentReference id_category, int currentParticipants, int requiredParticipants, String location, int points, int durationMinutes) {
+    public Mission(String name, Timestamp added, Timestamp when, String description, DocumentReference id_category, ArrayList<DocumentReference> currentParticipants, int requiredParticipants, String location, int points, int durationMinutes) {
         this.name = name;
         this.added = added;
         this.when = when;
@@ -32,33 +35,61 @@ public class Mission {
         this.durationMinutes = durationMinutes;
     }
 
-    public String getMonth() {
+    public String _getMonth() {
         SimpleDateFormat sfd = new SimpleDateFormat("MMMM");
         return sfd.format(when.toDate());
     }
 
-    public String getDay() {
+    public String _getDay() {
         SimpleDateFormat sfd = new SimpleDateFormat("dd");
         return sfd.format(when.toDate());
     }
 
-    public String getTime() {
+    public String _getTime() {
         SimpleDateFormat sfd = new SimpleDateFormat("HH:mm");
         return sfd.format(when.toDate());
     }
 
-    public boolean isNew() {
+    public boolean _isNew() {
 
         Date date = new Date();
         long time = date.getTime();
         return (time/1000 - added.getSeconds()) < 60*60*24*7;
     }
 
-    public boolean isAvailable() {
+    public boolean _isAvailable() {
 
         Date date = new Date();
         long time = date.getTime();
         return time/1000 < when.getSeconds();
+    }
+
+    public boolean _hasUser(DocumentReference userDocRef) {
+
+        return currentParticipants != null && !currentParticipants.isEmpty() && currentParticipants.contains(userDocRef);
+    }
+
+    public void _addUser(DocumentReference userDocRef, FirebaseFirestore db) {
+        if (currentParticipants == null) currentParticipants = new ArrayList<>();
+
+        if (!currentParticipants.contains(userDocRef)){
+            currentParticipants.add(userDocRef);
+            _save(db);
+        }
+    }
+
+    public void _removeUser(DocumentReference userDocRef, FirebaseFirestore db) {
+        if (currentParticipants == null) return;
+
+        if (currentParticipants.contains(userDocRef)){
+            currentParticipants.remove(userDocRef);
+            _save(db);
+        }
+    }
+
+    public void _save(FirebaseFirestore db) {
+
+        db.collection("mission").document(fragment_home_missions.missionDocID).set(this);
     }
 
     public String getName() {
@@ -101,11 +132,14 @@ public class Mission {
         this.id_category = id_category;
     }
 
-    public int getCurrentParticipants() {
+    public ArrayList<DocumentReference> getCurrentParticipants() {
+
+        if (currentParticipants == null) currentParticipants = new ArrayList<>();
+
         return currentParticipants;
     }
 
-    public void setCurrentParticipants(int currentParticipants) {
+    public void setCurrentParticipants(ArrayList<DocumentReference> currentParticipants) {
         this.currentParticipants = currentParticipants;
     }
 
@@ -140,4 +174,6 @@ public class Mission {
     public void setDurationMinutes(int durationMinutes) {
         this.durationMinutes = durationMinutes;
     }
+
+
 }
