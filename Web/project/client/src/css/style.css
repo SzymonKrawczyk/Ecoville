@@ -1,0 +1,195 @@
+body {
+	margin: 0;
+	padding: 0;
+	background-color: whitesmoke;
+	
+	font-family: 'Montserrat', sans-serif;
+}
+
+a {
+	color: #5eb772;
+	text-decoration: none;
+}
+	a:hover {
+		color: #7fbd2e;
+		text-decoration: underline;
+	}
+	
+	a:visied {
+		color: #5eb772;
+	}
+
+.body_content {
+	width: 1000px;
+	padding: 20px;
+	margin: auto;
+}
+
+.card_standard {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 10px;
+	border-radius: 10px;
+	background-color: white;
+}
+
+.card_login {
+	margin-top: 200px;
+	width: 50%;
+	position: relative;
+	left: 250px;
+}
+
+.card_title_container {
+	width: 100%;
+	margin-bottom: 25px;
+}
+	.card_title {
+		color: white;
+		background-color: #7fbd2e;
+		font-weight: bold;
+		text-align: center;
+		margin: auto;
+	}
+
+.button {
+    box-sizing: border-box;
+    padding: 10px;
+    background-color: #5eb772;
+    color: whitesmoke;
+    border: none;
+    border-radius: 5px;
+	font-size: 1.1em;
+	text-align: center;
+}
+    .button:hover {
+        background-color: #7fbd2e;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+.table {
+	box-sizing: border-box;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 16px 8px;
+}
+
+.table thead td {
+	font-weight: bold;
+	color: #7fbd2e;
+}
+
+.input {
+	box-sizing: border-box;
+	padding: 5px;
+	width: 100%;
+}
+
+.textarea {
+	min-height: 100px;
+	resize: vertical;
+	text-align: justify;
+}
+
+.error_msg {
+	color: crimson;
+}
+
+
+.table_login tr td:nth-child(1) {
+	width: 50%;
+	text-align: right;
+}
+
+.table_login tr td:nth-child(2) {
+	width: 50%;
+}
+
+
+
+.table_create_edit tr td:nth-child(1) {
+	width: 15%;
+	text-align: right;
+}
+
+.table_create_edit tr td:nth-child(2) {
+	width: 50%;
+}
+
+.table_create_edit tr td:nth-child(3) {
+	width: 35%;
+}
+
+
+
+
+.table_missions tr td:nth-child(1) {
+	width: 30%;
+}
+
+.table_missions tr td:nth-child(2) {
+	width: 15%;
+}
+
+.table_missions tr td:nth-child(3) {
+	width: 10%;
+}
+
+.table_missions tr td:nth-child(4) {
+	width: 10%;
+}
+
+.table_missions tr td:nth-child(5) {
+	width: 25%;
+}
+
+.table_missions tr td:nth-child(6) {
+	width: 5%;
+}
+
+.table_missions tr td:nth-child(7) {
+	width: 5%;
+}
+
+
+
+
+.table_msg tr td:nth-child(1) {
+	width: 30%;
+}
+.table_msg tr td:nth-child(2) {
+	width: 20%;
+}
+.table_msg tr td:nth-child(3) {
+	width: 50%;
+}
+.table_msg tr td:nth-child(5) {
+	width: 10%;
+}
+
+
+
+.table_user_spec tr td:nth-child(1) {
+	width: 50%;
+	text-align: right;
+}
+.table_user_spec tr td:nth-child(2) {
+	width: 50%;
+}
+
+
+
+.panel_button_container {
+	width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.panel_button {
+	float: left;
+	width: 380px;
+	font-size: 1.4em;
+	margin: 10px;
+}
