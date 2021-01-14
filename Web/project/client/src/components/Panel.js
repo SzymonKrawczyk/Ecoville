@@ -1,9 +1,8 @@
 import React, {Component} from "react"
-import {Link} from "react-router-dom"
+import {Redirect, Link} from "react-router-dom"
 
 import axios from "axios"
 
-import CarTable from "./CarTable"
 import Logout from "./Logout"
 
 import {ACCESS_LEVEL_GUEST, ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
@@ -21,36 +20,13 @@ export default class DisplayAllCars extends Component
     }
     
     
-    componentDidMount() 
-    {
-        axios.defaults.withCredentials = true // needed for sessions to work
-        axios.get(`${SERVER_HOST}/cars/`)
-        .then(res => 
-        {
-            if(res.data)
-            {
-                if (res.data.errorMessage)
-                {
-                    console.log(res.data.errorMessage)    
-                }
-                else
-                {           
-                    console.log("Records read")   
-                    this.setState({cars: res.data}) 
-                }   
-            }
-            else
-            {
-                console.log("Record not found")
-            }
-        })
-    }
-
   
     render() 
     {   
+		document.title = 'Ecoville | Panel'	
         return (           
 		<div className="body_content">
+		
 			<div className="card_standard">
 	
 				<div className="card_title_container">
@@ -60,28 +36,20 @@ export default class DisplayAllCars extends Component
 				</div>
 		
 				<div className="panel_button_container">
-					<div className="button panel_button">Administrators</div>
-					<div className="button panel_button"><Logout/></div>
-					<div className="button panel_button">Users</div>
-					<div className="button panel_button">Messages</div>
-					<div className="button panel_button">Missions</div>
-					<div className="button panel_button">Articles (Tips)</div>
-					<div className="button panel_button">Trophies</div>
-					<div className="button panel_button">Categories</div>
+
+					<Link className="button panel_button" to={"/AdministratorsList"}>Administrators</Link>
+					<Logout/>
+					<Link className="button panel_button" to={"/UsersList"}>Users</Link>
+					<Link className="button panel_button" to={"/MessagesList"}>Messages</Link>
+					<Link className="button panel_button" to={"/MissionsList"}>Missions</Link>
+					<Link className="button panel_button" to={"/ArticlesList"}>Articles (Tips)</Link>
+					<Link className="button panel_button" to={"/TrophiesList"}>Trophies</Link>
+					<Link className="button panel_button" to={"/CategoriesList"}>Categories</Link>
 						
 					<div style={{clear: "both"}}></div>
 					<div></div>
 				</div>
 			</div>
-                <div className="table-container">
-                    <CarTable cars={this.state.cars} /> 
-                        
-                    {sessionStorage.accessLevel >= ACCESS_LEVEL_ADMIN ?
-                        sessionStorage.username
-                    :
-                        null
-                    }
-                </div>
 		</div>
         )
     }

@@ -2,7 +2,7 @@ import React, {Component} from "react"
 import {Redirect} from "react-router-dom"
 import axios from "axios"
 
-import LinkInClass from "../components/LinkInClass"
+import LinkInClassButton from "../components/LinkInClassButton"
 import {ACCESS_LEVEL_GUEST, SERVER_HOST} from "../config/global_constants"
 
 
@@ -37,7 +37,7 @@ export default class Logout extends Component
                     console.log("User logged out")
                     sessionStorage.clear() 
 
-                    sessionStorage.name = "GUEST"
+                    sessionStorage.username = "GUEST"
                     sessionStorage.accessLevel = ACCESS_LEVEL_GUEST
                     this.setState({isLoggedIn:false}) 
                 }
@@ -57,7 +57,7 @@ export default class Logout extends Component
         
                 {!this.state.isLoggedIn ? <Redirect to="/Login"/> : null} 
                   
-                <LinkInClass value="Log out" className="red-button" onClick={this.handleSubmit}/> 
+                <LinkInClassButton value="Log out" className="button panel_button" onClick={this.handleSubmit}/> 
             </div>
         )
     }

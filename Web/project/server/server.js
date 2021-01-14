@@ -21,8 +21,7 @@ app.use(require(`cors`)({credentials: true, origin: process.env.LOCAL_HOST}))
 
 
 // Routers
-app.use(require(`../server/routes/users`))
-app.use(require(`../server/routes/cars`))
+app.use(require(`../server/routes/administrators`))
 
 
 // Port

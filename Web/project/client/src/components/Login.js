@@ -5,6 +5,7 @@ import axios from "axios"
 import LinkInClass from "../components/LinkInClass"
 import {SERVER_HOST} from "../config/global_constants"
 
+import {ACCESS_LEVEL_ADMIN} from "../config/global_constants"
 
 export default class Login extends Component
 {
@@ -39,6 +40,7 @@ export default class Login extends Component
     handleSubmit = (e) => 
     {
 		
+        e.preventDefault()
 		if (this.validate()){
 		
 			axios.defaults.withCredentials = true // needed for sessions to work
@@ -75,12 +77,13 @@ export default class Login extends Component
 
     render()
     {       
-		document.title = 'Ecoville | Login'	
+		document.title = 'Ecoville | Login';
+		console.log(`login: acces level: ${sessionStorage.accessLevel}, isLoggedIn: ${this.state.isLoggedIn}`)
         return (
 		
 			<div className="body_content">
 				
-				{this.state.isLoggedIn ? <Redirect to="/Panel"/> : null} 
+				{sessionStorage.accessLevel >= ACCESS_LEVEL_ADMIN && this.state.isLoggedIn ? <Redirect to="/Panel"/> : null }
 		 
 				<div className="card_standard card_login">
 		
@@ -90,7 +93,6 @@ export default class Login extends Component
 						</div>
 					</div>
 		
-					<form>
 						<table className="table table_login">
 						<tbody>
 							<tr>
@@ -137,7 +139,6 @@ export default class Login extends Component
 							</tr>
 							</tbody>
 						</table>
-					</form>
 				</div>
 			</div>            
         )

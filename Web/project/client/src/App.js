@@ -6,6 +6,10 @@ import "./css/style.css"
 import Login from "./components/Login"
 import Logout from "./components/Logout"
 import Panel from "./components/Panel"
+import AdministratorsList from "./components/AdministratorsList"
+import AdministratorDelete from "./components/AdministratorDelete"
+import AdministratorAdd from "./components/AdministratorAdd"
+import AdministratorEdit from "./components/AdministratorEdit"
 import PrivateRoute from "./components/PrivateRoute"
 
 
@@ -28,7 +32,11 @@ export default class App extends Component
                     <Route exact path="/Login" component={Login} />
                     <PrivateRoute exact path="/Logout" component={Logout} />
                     <PrivateRoute exact path="/Panel" component={Panel}/> 
-                    <Route path="*" component={Login}/>                               
+                    <PrivateRoute exact path="/AdministratorsList" component={AdministratorsList}/> 
+                    <PrivateRoute exact path="/AdministratorDelete/:id" component={AdministratorDelete} />
+                    <PrivateRoute exact path="/AdministratorAdd" component={AdministratorAdd} />
+                    <PrivateRoute exact path="/AdministratorEdit/:id" component={AdministratorEdit} />
+                    <Route path="*" component={Login}/>
                 </Switch>
             </BrowserRouter>
         )

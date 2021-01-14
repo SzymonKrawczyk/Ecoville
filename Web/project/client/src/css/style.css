@@ -13,9 +13,24 @@ a {
 	a:hover {
 		color: #7fbd2e;
 		text-decoration: underline;
+		cursor: pointer;
 	}
 	
 	a:visied {
+		color: #5eb772;
+	}
+	
+.linkInClass {
+	color: #5eb772;
+	text-decoration: none;
+}
+	.linkInClass:hover {
+		color: #7fbd2e;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+	
+	.linkInClass:visied {
 		color: #5eb772;
 	}
 
@@ -67,6 +82,7 @@ a {
         color: white;
         border: none;
         cursor: pointer;
+		text-decoration: none;
     }
 
 .table {

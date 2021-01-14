@@ -11,9 +11,9 @@ export default class LinkInClass extends Component
     render()
     {
         return (
-            <span className={this.props.className} onClick={(event) => {this.props.onClick(event)}}>     
+            <div className={this.props.className} onClick={(event) => {this.props.onClick(event)}}>     
                 {this.props.value}
-            </span>
+            </div>
         )
     }
 }
