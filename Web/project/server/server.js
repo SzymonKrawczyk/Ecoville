@@ -12,7 +12,7 @@ const app = express()
 app.use(require(`express-session`)({
     secret: process.env.SESSION_PRIVATE_KEY,
     resave: false,
-    cookie: {secure: false, maxAge: 60000}, 
+    cookie: {secure: false, maxAge: 600000000}, 
     saveUninitialized: true
 }))
 

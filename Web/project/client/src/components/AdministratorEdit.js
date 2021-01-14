@@ -66,46 +66,59 @@ export default class AdministratorEdit extends Component  {
 		
         this.setState({[e.target.name]: e.target.value})
     }
+	
+	validate = () => {
+		
+		let usernameValidation = this.state.username.length >= 5;
+		
+		this.setState({errorMessage: {
+			  usernameError: usernameValidation ? null : 'username has to be at least 5 characters long'
+		}}) 
+		return usernameValidation;
+	}
 
 
     handleSubmit = (e) =>  {
 		
         e.preventDefault();
-
-        const adminObject = {
-            username: this.state.username
-        };
-
-        axios.defaults.withCredentials = true // needed for sessions to work
-        axios.put(`${SERVER_HOST}/administrator/${this.props.match.params.id}`, adminObject)
-        .then(res =>  {    
 		
-            if(res.data) {
-				
-				if (res.data.isLogged == false || res.data.isAdmin == false) {
+		if (this.validate()){
+
+			const adminObject = {
+				username: this.state.username
+			};
+
+			axios.defaults.withCredentials = true // needed for sessions to work
+			axios.put(`${SERVER_HOST}/administrator/${this.props.match.params.id}`, adminObject)
+			.then(res =>  {    
+			
+				if(res.data) {
 					
-					this.setState({logout: true});
+					if (res.data.isLogged == false || res.data.isAdmin == false) {
+						
+						this.setState({logout: true});
+						
+						sessionStorage.clear() 
+						sessionStorage.username = "GUEST"
+						sessionStorage.accessLevel = ACCESS_LEVEL_GUEST
+					}
+					if (res.data.errorMessage) {
+						
+						console.log(res.data.errorMessage);
+						this.setState({
+							errorMessage: res.data.errorMessage
+						});
+						
+					} else {  
 					
-					sessionStorage.clear() 
-                    sessionStorage.username = "GUEST"
-                    sessionStorage.accessLevel = ACCESS_LEVEL_GUEST
+						console.log(`Record updated`)
+						this.setState({redirectToAdministratorsList:true})
+					}
+				} else {
+					console.log(`Record not updated`)
 				}
-                if (res.data.errorMessage) {
-					
-					console.log(res.data.errorMessage);
-                    this.setState({
-                        errorMessage: res.data.errorMessage
-                    });
-					
-                } else {  
-				
-                    console.log(`Record updated`)
-                    this.setState({redirectToAdministratorsList:true})
-                }
-            } else {
-                console.log(`Record not updated`)
-            }
-        })
+			})
+		}
     }
 
 

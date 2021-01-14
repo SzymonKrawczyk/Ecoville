@@ -22,6 +22,7 @@ const isAdmin = (req, res, next) =>
 		req.session.destroy();
         return res.json({errorMessage:`User is not admin`, isAdmin: false});
 		
+		
     } else {
 		
 		console.log("Middleware isAdmin: true");
