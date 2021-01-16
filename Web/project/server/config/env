@@ -1,0 +1,25 @@
+# This file holds global constants that are visible on the Server-side
+
+
+# Access Levels
+ACCESS_LEVEL_GUEST = 0
+ACCESS_LEVEL_NORMAL_USER = 1
+ACCESS_LEVEL_ADMIN = 2
+
+
+# Keys
+SESSION_PRIVATE_KEY = myRandomWaifuString
+
+
+# Salt length of encryption of user passwords
+# The salt length should be 16 or higher for commercially released code
+# It has been set to 3 here, so that the password will be generated faster
+PASSWORD_HASH_SALT = 3
+
+
+# Port
+SERVER_PORT = 4000
+
+
+# Local Host
+LOCAL_HOST = http://localhost:3000

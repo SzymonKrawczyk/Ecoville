@@ -14,10 +14,10 @@ export default class Login extends Component
         super(props)
         
         this.state = {
-            username:"",
-            password:"",
-            isLoggedIn:false,
-            errorMessage:""
+              username:""
+            , password:""
+            , isLoggedIn: sessionStorage.accessLevel >= ACCESS_LEVEL_ADMIN
+            , errorMessage:""
         }
     }
     
@@ -78,7 +78,7 @@ export default class Login extends Component
     render()
     {       
 		document.title = 'Ecoville | Login';
-		console.log(`login: acces level: ${sessionStorage.accessLevel}, isLoggedIn: ${this.state.isLoggedIn}`)
+		console.log(`login: access level: ${sessionStorage.accessLevel}, isLoggedIn: ${this.state.isLoggedIn}`)
         return (
 		
 			<div className="body_content">

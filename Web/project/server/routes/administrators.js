@@ -23,6 +23,7 @@ router.post(`/login/:username/:password`, async (req,res) =>  {
 	}
 	
 	const queryRef = adminRef.where('username', '==', username).where('password', '==', password);
+	
 	const snapshot = await queryRef.get();
 	
 	if (snapshot.empty) {
@@ -106,7 +107,7 @@ router.post(`/administrator/`, middleware.isLogged, middleware.isAdmin, async (r
 		res.json({errorMessage});
 		return;
 	}
-		
+		// validacja czy nie ma już o tej nazwie
     
     const doc = await adminRef.add(req.body);
 

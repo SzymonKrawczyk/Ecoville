@@ -11,8 +11,8 @@ const express = require(`express`)
 const app = express()
 app.use(require(`express-session`)({
     secret: process.env.SESSION_PRIVATE_KEY,
-    resave: false,
-    cookie: {secure: false, maxAge: 600000000}, 
+    resave: true,
+    cookie: {secure: false, maxAge: 1000*60*60}, // an hour
     saveUninitialized: true
 }))
 
@@ -22,6 +22,9 @@ app.use(require(`cors`)({credentials: true, origin: process.env.LOCAL_HOST}))
 
 // Routers
 app.use(require(`../server/routes/administrators`))
+app.use(require(`../server/routes/messages`))
+app.use(require(`../server/routes/categories`))
+app.use(require(`../server/routes/missions`))
 
 
 // Port

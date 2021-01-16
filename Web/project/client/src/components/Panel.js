@@ -27,6 +27,8 @@ export default class DisplayAllCars extends Component
         return (           
 		<div className="body_content">
 		
+		{sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN ? <Redirect to="/Login"/> : null }
+		
 			<div className="card_standard">
 	
 				<div className="card_title_container">

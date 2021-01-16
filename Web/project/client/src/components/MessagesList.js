@@ -3,19 +3,19 @@ import {Redirect, Link} from "react-router-dom"
 
 import axios from "axios"
 
-import AdministratorTable from "./AdministratorTable"
+import MessageTable from "./MessageTable"
 
 import {ACCESS_LEVEL_GUEST, ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
 
 
-export default class AdministratorList extends Component {
+export default class MessagesList extends Component {
 	
     constructor(props)  {
 		
         super(props)
         
         this.state = { 
-			  adminTable:[]
+			  messageTable:[]
 			, logout: false
 		}
     }
@@ -24,20 +24,18 @@ export default class AdministratorList extends Component {
     componentDidMount() {
 		
         axios.defaults.withCredentials = true // needed for sessions to work
-        axios.post(`${SERVER_HOST}/administratorsList/`)
+        axios.post(`${SERVER_HOST}/messagesList/`)
         .then(res =>  {
 			
             if(res.data) {
 				if (res.data.isLogged == false || res.data.isAdmin == false) {
 					
+					this.setState({logout: true});
 					
 					sessionStorage.clear() ;
                     sessionStorage.username = "GUEST";
                     sessionStorage.accessLevel = ACCESS_LEVEL_GUEST;
                     console.log('logout, server restart');
-					
-					
-					this.setState({logout: true});
 				}
                 if (res.data.errorMessage) {
 					
@@ -46,7 +44,8 @@ export default class AdministratorList extends Component {
                 } else {  
 				
 					console.log("Records read")
-                    this.setState({adminTable: res.data}) 
+					console.log(res.data)
+                    this.setState({messageTable: res.data}) 
                 }   
             } else {
 				
@@ -58,7 +57,7 @@ export default class AdministratorList extends Component {
   
     render() {   
 	
-		document.title = 'Ecoville | Administrators'	
+		document.title = 'Ecoville | Messages'	
         return (           
 			<div className="body_content">
 			{this.state.logout ? <Redirect to="/Login"/> : null} 
@@ -66,10 +65,10 @@ export default class AdministratorList extends Component {
 			
 					<div className="card_title_container">
 						<div className="card_standard card_title">
-							<h2>Administrators</h2>
+							<h2>Messages</h2>
 						</div>
 					</div>			
-					<AdministratorTable adminTable={this.state.adminTable} /> 
+					<MessageTable messageTable={this.state.messageTable} /> 
 				</div>
 			</div>
         )
