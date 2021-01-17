@@ -25,7 +25,9 @@ app.use(require(`../server/routes/administrators`))
 app.use(require(`../server/routes/messages`))
 app.use(require(`../server/routes/categories`))
 app.use(require(`../server/routes/missions`))
-
+app.use(require(`../server/routes/articles`))
+app.use(require(`../server/routes/trophies`))
+app.use(require(`../server/routes/users`))
 
 // Port
 app.listen(process.env.SERVER_PORT, () => 
