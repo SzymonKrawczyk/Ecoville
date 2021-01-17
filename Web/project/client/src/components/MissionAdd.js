@@ -201,7 +201,7 @@ export default class MissionAdd extends Component {
 					} else {   
 					
 						console.log("Record added")
-						this.setState({redirectToAdministratorsList:true})
+						this.setState({redirectToMissionsList:true})
 					} 
 				} else {
 					

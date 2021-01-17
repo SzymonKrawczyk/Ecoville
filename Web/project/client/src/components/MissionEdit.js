@@ -158,9 +158,7 @@ export default class MissionEdit extends Component  {
 			else date.setSeconds(found[6]);
 			
 			
-			let oneWeekAgo = new Date();	// when confirming users, in order to not have errors
-			oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-			if (date <= oneWeekAgo) dateValidation = false;
+			if (date <= new Date()) dateValidation = false;
 			else this.state.when = Date.parse(date);
 			
 			//console.log(date)
