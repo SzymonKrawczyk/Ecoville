@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Mission {
     private String name;
@@ -15,14 +16,15 @@ public class Mission {
     private Timestamp when;
     private String description;
     private DocumentReference id_category;
-    private ArrayList<DocumentReference> currentParticipants;
+    private ArrayList<HashMap<String, Object>> currentParticipants;
     private int requiredParticipants;
     private String location;
     private int points;
     private int durationMinutes;
 
     public Mission() { }
-    public Mission(String name, Timestamp added, Timestamp when, String description, DocumentReference id_category, ArrayList<DocumentReference> currentParticipants, int requiredParticipants, String location, int points, int durationMinutes) {
+
+    public Mission(String name, Timestamp added, Timestamp when, String description, DocumentReference id_category, ArrayList<HashMap<String, Object>> currentParticipants, int requiredParticipants, String location, int points, int durationMinutes) {
         this.name = name;
         this.added = added;
         this.when = when;
@@ -66,14 +68,37 @@ public class Mission {
 
     public boolean _hasUser(DocumentReference userDocRef) {
 
-        return currentParticipants != null && !currentParticipants.isEmpty() && currentParticipants.contains(userDocRef);
+        if (currentParticipants != null && !currentParticipants.isEmpty()) {
+
+            //System.out.println(userDocRef);
+            //System.out.println(currentParticipants);
+            for(HashMap<String, Object> currentUser : getCurrentParticipants()) {
+
+                //System.out.println(currentUser);
+                //System.out.println((DocumentReference)currentUser.get("id_user"));
+                if (currentUser.get("id_user").equals(userDocRef)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void _addUser(DocumentReference userDocRef, FirebaseFirestore db) {
-        if (currentParticipants == null) currentParticipants = new ArrayList<>();
 
-        if (!currentParticipants.contains(userDocRef)){
-            currentParticipants.add(userDocRef);
+        boolean userAlreadyIn = false;
+        for(HashMap<String, Object> currentUser : getCurrentParticipants()) {
+
+            if (currentUser.get("id_user").equals(userDocRef)) {
+                userAlreadyIn = true;
+                break;
+            }
+        }
+        if (!userAlreadyIn) {
+            HashMap<String, Object> tempMap = new HashMap<>();
+            tempMap.put("id_user", userDocRef);
+            tempMap.put("confirmed", false);
+            currentParticipants.add(tempMap);
             _save(db);
         }
     }
@@ -81,9 +106,19 @@ public class Mission {
     public void _removeUser(DocumentReference userDocRef, FirebaseFirestore db) {
         if (currentParticipants == null) return;
 
-        if (currentParticipants.contains(userDocRef)){
-            currentParticipants.remove(userDocRef);
-            _save(db);
+        for(HashMap<String, Object> currentUser : getCurrentParticipants()) {
+
+
+            if (currentUser.get("id_user").equals(userDocRef)) {
+                if (currentUser.get("confirmed") != null) {
+                    if(!((Boolean)currentUser.get("confirmed"))){
+
+                        currentParticipants.remove(currentUser);
+                        _save(db);
+                    }
+                }
+                break;
+            }
         }
     }
 
@@ -124,22 +159,22 @@ public class Mission {
         this.description = description;
     }
 
-    public DocumentReference getId_category() {
-        return id_category;
+     public DocumentReference getId_category() {
+         return id_category;
     }
 
-    public void setCategory_id(DocumentReference id_category) {
+    public void setId_category(DocumentReference id_category) {
         this.id_category = id_category;
     }
 
-    public ArrayList<DocumentReference> getCurrentParticipants() {
+    public ArrayList<HashMap<String, Object>> getCurrentParticipants() {
 
-        if (currentParticipants == null) currentParticipants = new ArrayList<>();
+        if (currentParticipants == null) currentParticipants = new ArrayList<HashMap<String, Object>>();
 
         return currentParticipants;
     }
 
-    public void setCurrentParticipants(ArrayList<DocumentReference> currentParticipants) {
+    public void setCurrentParticipants(ArrayList<HashMap<String, Object>> currentParticipants) {
         this.currentParticipants = currentParticipants;
     }
 
