@@ -388,7 +388,7 @@ router.post(`/missionConfirmUser/:idM/:idU`, middleware.isLogged, middleware.isA
 			//console.log(docM.data().currentParticipants);
 			if (docM.data().currentParticipants != null) {
 				
-				console.log(docM.data().currentParticipants);
+				//console.log(docM.data().currentParticipants);
 				
 				for (let i = 0; i < docM.data().currentParticipants.length; ++i) {
 					
@@ -401,7 +401,32 @@ router.post(`/missionConfirmUser/:idM/:idU`, middleware.isLogged, middleware.isA
 						const docEM = await missionRef.doc(id_mission).set(tempObjectMission, { merge: true });
 						
 						
-						let tempObjectUser = {confirmedMissions: parseInt(parseInt(docU.data().confirmedMissions) + 1)};
+						pointArray = docU.data().totalPoints != null ? docU.data().totalPoints : [];
+						let addedPoints = false;
+						console.log(docM.data().id_category._path.segments)
+						console.log(pointArray[0].id_category._path.segments)
+						for (let p = 0; p < pointArray.length; ++p) {
+							
+							if (pointArray[i].id_category._path.segments[1] == docM.data().id_category._path.segments[1]) {
+								
+								pointArray[i].points = pointArray[i].points + docM.data().points;
+								addedPoints = true;
+								break;
+							}
+						}
+						if (!addedPoints) {
+							pointArray.push({
+								  id_category: docM.data().id_category
+								, points: docM.data().points
+								})
+						}
+						
+						let tempObjectUser = {
+							  confirmedMissions: parseInt(parseInt(docU.data().confirmedMissions) + 1)
+							, totalPoints: pointArray
+							, currentPoints: parseInt(parseInt(docU.data().currentPoints) + parseInt(docM.data().points))
+							, totalPointsSum: parseInt(parseInt(docU.data().totalPointsSum) + parseInt(docM.data().points))
+							};
 						const docEU = await userRef.doc(id_user).set(tempObjectUser, { merge: true });
 						break;
 					}
