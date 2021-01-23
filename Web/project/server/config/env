@@ -12,9 +12,7 @@ SESSION_PRIVATE_KEY = myRandomWaifuString
 
 
 # Salt length of encryption of user passwords
-# The salt length should be 16 or higher for commercially released code
-# It has been set to 3 here, so that the password will be generated faster
-PASSWORD_HASH_SALT = 3
+PASSWORD_HASH_SALT = 16
 
 
 # Port

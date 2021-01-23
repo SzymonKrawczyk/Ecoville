@@ -115,7 +115,7 @@ export default class MissionTable extends Component
     render() 
     {
         return (
-			<table className="table table_missions">
+			<table className="table table_missions table_data">
 				<thead>
 					<tr>
 						<td> <LinkInClass className="linkInClass" value="Name" onClick={this.sortMissions}/> </td>

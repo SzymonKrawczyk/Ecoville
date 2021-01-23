@@ -22,24 +22,42 @@ router.post(`/login/:username/:password`, async (req,res) =>  {
 		return;
 	}
 	
-	const queryRef = adminRef.where('username', '==', username).where('password', '==', password);
-	
-	const snapshot = await queryRef.get();
-	
+	const snapshot = await adminRef.where('username', '==', username).get();
+				
 	if (snapshot.empty) {
-		
-	  console.log('Bad login.');
-	  res.json({errorMessage:'Login and password do not match'});
-	  
+					
+	  console.log('No user with this login.');
+	  res.json({errorMessage:'No user with this login'});
+				  
 	}  else {
+					
 		
-		let _id = null;
-		_id = snapshot.docs[0].id;
-		
-		req.session.user = {id: _id, username: username, accessLevel:parseInt(process.env.ACCESS_LEVEL_ADMIN)};
-		console.log("Logged: " + _id);
-        res.json({username: username, accessLevel:parseInt(process.env.ACCESS_LEVEL_ADMIN)});
-		
+		passHash = snapshot.docs[0].data().password;
+	
+		bcrypt.compare(password, passHash, async (err, pass) =>  
+				{
+					if(err){
+						console.log("bad");
+						res.json({errorMessage: "error"});
+						return;
+					}
+					
+					console.log(pass);
+					if (pass == true) {
+						
+						let _id = null;
+						_id = snapshot.docs[0].id;
+						
+						req.session.user = {id: _id, username: username, accessLevel:parseInt(process.env.ACCESS_LEVEL_ADMIN)};
+						console.log("Logged: " + _id);
+						res.json({username: username, accessLevel:parseInt(process.env.ACCESS_LEVEL_ADMIN)});
+						
+					} else {
+						console.log('Bad login.');
+					  res.json({errorMessage:'Login and password do not match'});
+					}
+		})
+			
 	}
     
 })
@@ -107,12 +125,35 @@ router.post(`/administrator/`, middleware.isLogged, middleware.isAdmin, async (r
 		res.json({errorMessage});
 		return;
 	}
-		// validacja czy nie ma już o tej nazwie
-    
-    const doc = await adminRef.add(req.body);
+	
+	
+	const queryRef = adminRef.where('username', '==', req.body.username);
+	
+	const snapshot = await queryRef.get();
+	
+	if (!snapshot.empty) {
+		
+	  console.log('Bad username');
+	  res.json({errorMessage: {usernameError: 'Login in use'}});
+	  return;
+	}
+	
+	let userAdd = req.body;
+	
+	bcrypt.hash(userAdd.password, parseInt(process.env.PASSWORD_HASH_SALT), async (err, hash) =>  
+            {
+                if(err){
+					console.log("bad");
+					res.json({errorMessage: "error"});
+				}
+                userAdd.password = hash;
+				const doc = await adminRef.add(userAdd);
 
-	console.log(`Added admin with ID: ${doc.id}`);
-    res.json({});   
+				console.log(`Added admin with ID: ${doc.id}`);
+				res.json({});  
+            })
+    
+	 
 })
 
 // Read one record

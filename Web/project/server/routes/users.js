@@ -63,9 +63,12 @@ router.get(`/user/:id`,  middleware.isLogged, middleware.isAdmin, async (req, re
         //totalPoints
         totalPointsArr = doc.data().totalPoints != null ? doc.data().totalPoints : [];
 		totalPointsProcessedArr = [];
+		//console.log(totalPointsArr);
 		
 		for (let i = 0; i < totalPointsArr.length; ++i) {
 			const currentCategory = totalPointsArr[i].id_category;
+			//console.log(totalPointsArr[i]);
+			//console.log(currentCategory);
 			const categoryGet = await currentCategory.get();	
 			
 			if (categoryGet.exists) {		

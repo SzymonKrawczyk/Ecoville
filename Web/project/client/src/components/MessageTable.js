@@ -95,7 +95,7 @@ export default class MessageTable extends Component
     render() 
     {
         return (
-			<table className="table table_msg">
+			<table className="table table_msg table_data">
 				<thead>
 					<tr>
 						<td> <LinkInClass className="linkInClass" value="Author" onClick={this.sortMessages}/> </td>

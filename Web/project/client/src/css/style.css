@@ -92,6 +92,21 @@ a {
     border-spacing: 16px 8px;
 }
 
+.table_data {
+	border-collapse: collapse;
+    border-spacing: 16px 8px;
+}
+
+.table_data tbody tr:nth-child(odd) {
+    background-color: #F5F5F5;
+}
+.table_data tbody tr:nth-last-child(2) {
+    background-color: white;
+}
+.table_data tbody tr:nth-last-child(1) {
+    background-color: white;
+}
+
 .table thead td {
 	font-weight: bold;
 	color: #7fbd2e;

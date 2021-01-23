@@ -105,7 +105,7 @@ export default class UserTable extends Component
     render() 
     {
         return (
-			<table className="table">
+			<table className="table table_data">
 				<thead>
 					<tr>
 						<td> <LinkInClass className="linkInClass" value="Name" name="name" onClick={this.sortUsers}/> </td>

@@ -254,21 +254,23 @@ export default class UserEdit extends Component {
 						</td>
 						<td>
 							<table className="table table_user_spec">
-								<tr>
-									<td>
-										<table className="table table_user_spec">
-											<tbody>
-												{this.state.totalPoints.map((category) => 
-								
-													<tr key={category._id}>
-													<td>{category.name}</td>
-													<td>{category.points}</td>
-													</tr>)
-												}
-											</tbody>
-										</table>
-									</td>
-								</tr>
+								<tbody>
+									<tr>
+										<td>
+											<table className="table table_user_spec">
+												<tbody>
+													{this.state.totalPoints.map((category) => 
+									
+														<tr key={category._id}>
+														<td>{category.name}</td>
+														<td>{category.points}</td>
+														</tr>)
+													}
+												</tbody>
+											</table>
+										</td>
+									</tr>
+								</tbody>
 							</table>
 						</td>
 
@@ -280,21 +282,23 @@ export default class UserEdit extends Component {
 						</td>
 						<td>
 							<table className="table table_user_spec">
-								<tr>
-									<td>
-										<table className="table table_user_spec">
-											<tbody>
-												{this.state.trophies.map((trophy) => 
-								
-													<tr key={trophy._id}>
-													<td>{trophy.name}</td>
-													<td><Link to={"/UserDeleteTrophy/" + this.state._id + "/" + trophy._id}>Delete</Link></td>
-													</tr>)
-												}
-											</tbody>
-										</table>
-									</td>
-								</tr>
+								<tbody>
+									<tr>
+										<td>
+											<table className="table table_user_spec">
+												<tbody>
+													{this.state.trophies.map((trophy) => 
+									
+														<tr key={trophy._id}>
+														<td>{trophy.name}</td>
+														<td><Link to={"/UserDeleteTrophy/" + this.state._id + "/" + trophy._id}>Delete</Link></td>
+														</tr>)
+													}
+												</tbody>
+											</table>
+										</td>
+									</tr>
+								</tbody>
 							</table>
 						</td>
 						<td></td>

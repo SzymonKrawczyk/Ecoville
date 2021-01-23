@@ -78,7 +78,7 @@ export default class AdministratorTable extends Component
     render() 
     {
         return (
-			<table className="table">
+			<table className="table table_data">
 				<thead>
 					<tr>
 						<td> <LinkInClass className="linkInClass" value="Username" onClick={this.sortAdministrators}/> </td>
