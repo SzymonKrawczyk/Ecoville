@@ -108,7 +108,7 @@ export default class TrophyTable extends Component
 					{this.state._trophyTable.map((trophy) => <TrophyTableRow key={trophy._id} trophy={trophy}/>)}
 					
 					
-					<tr>
+					<tr className="force_white">
 						<td>
 							&nbsp;
 						</td>

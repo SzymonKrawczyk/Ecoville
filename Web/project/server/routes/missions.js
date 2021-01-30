@@ -64,25 +64,13 @@ router.post(`/missionsList/`, middleware.isLogged, middleware.isAdmin, async (re
 
 
 // Add new record
-router.post(`/mission/`, middleware.isLogged, middleware.isAdmin, middleware.validateMissionObject, async (req, res) => {    
+router.post(`/mission/`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, middleware.validateMissionObject, async (req, res) => {    
 		
 	const id = req.params.id;
 		
 	let missionObject = req.body;
 	console.log(req.body);
 	
-	let errorMessage = {};
-	
-	
-	const snapshotT = await missionRef.where('name', '==', missionObject.name).get();	
-	//console.log(snapshotT);
-	if (!(snapshotT.empty)) { 
-		errorMessage.nameError = 'Name is being used'; 
-		res.json({errorMessage});
-		return;
-	}
-		
-		
     missionObject.added = firestore.admin.firestore.Timestamp.fromDate(new Date(Date.now()));
 	missionObject.currentParticipants = [];
 	
@@ -166,7 +154,7 @@ router.get(`/mission/:id`,  middleware.isLogged, middleware.isAdmin, async (req,
 })
 
 // Update one record
-router.put(`/mission/:id`, middleware.isLogged, middleware.isAdmin, middleware.validateMissionObject, async (req, res) => {
+router.put(`/mission/:id`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, middleware.validateMissionObject, async (req, res) => {
 		
 		
 	const id = req.params.id;
@@ -175,15 +163,6 @@ router.put(`/mission/:id`, middleware.isLogged, middleware.isAdmin, middleware.v
 	console.log(req.body);
 	
 	let errorMessage = {};
-	
-	const snapshotT = await missionRef.where('name', '==', missionObject.name).get();	
-	
-	if (!(snapshotT.empty) && snapshotT.docs[0].id != id) { 
-	
-		errorMessage.nameError = 'Name is being used'; 
-		res.json({errorMessage});
-		return;
-	}
 			
 		
 	const doc = await missionRef.doc(id).get();
@@ -260,8 +239,8 @@ router.post(`/missionConfirmUser/:idM/:idU`, middleware.isLogged, middleware.isA
 						
 						pointArray = docU.data().totalPoints != null ? docU.data().totalPoints : [];
 						let addedPoints = false;
-						console.log(docM.data().id_category._path.segments)
-						console.log(pointArray[0].id_category._path.segments)
+						//console.log(docM.data().id_category._path.segments)
+						//console.log(pointArray[0].id_category._path.segments)
 						for (let p = 0; p < pointArray.length; ++p) {
 							
 							if (pointArray[i].id_category._path.segments[1] == docM.data().id_category._path.segments[1]) {

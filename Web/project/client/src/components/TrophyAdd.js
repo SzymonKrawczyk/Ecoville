@@ -40,6 +40,12 @@ export default class TrophyAdd extends Component {
 	
 	validate = () => {
 		
+		for (var key in this.state) {
+			if (typeof(this.state[key]) == 'string'){
+				this.state[key] = this.state[key].trim();
+			}
+		}
+		
         let nameValidation = this.state.name.length >= 5;
         let descriptionValidation = this.state.description.length >= 16;
         let costValidation = this.state.cost >= 0;

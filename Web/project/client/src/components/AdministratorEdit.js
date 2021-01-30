@@ -69,6 +69,12 @@ export default class AdministratorEdit extends Component  {
 	
 	validate = () => {
 		
+		for (var key in this.state) {
+			if (typeof(this.state[key]) == 'string'){
+				this.state[key] = this.state[key].trim();
+			}
+		}
+		
 		let usernameValidation = this.state.username.length >= 5;
 		
 		this.setState({errorMessage: {

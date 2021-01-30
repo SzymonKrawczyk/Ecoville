@@ -84,6 +84,12 @@ export default class MissionAdd extends Component {
 	
 	validate = () => {
 		
+		for (var key in this.state) {
+			if (typeof(this.state[key]) == 'string'){
+				this.state[key] = this.state[key].trim();
+			}
+		}
+		
 		let nameValidation = this.state.name.length >= 5;
 		
 		let categoryValidation = false;

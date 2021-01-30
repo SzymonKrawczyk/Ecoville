@@ -87,7 +87,7 @@ export default class CategoryTable extends Component
 					{this.state._categoryTable.map((category) => <CategoryTableRow key={category._id} category={category}/>)}
 					
 					
-					<tr>
+					<tr className="force_white">
 						<td>
 							&nbsp;
 						</td>

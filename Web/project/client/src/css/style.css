@@ -97,14 +97,11 @@ a {
     border-spacing: 16px 8px;
 }
 
-.table_data tbody tr:nth-child(odd) {
+.table_data tbody tr:nth-child(even) {
     background-color: #F5F5F5;
 }
-.table_data tbody tr:nth-last-child(2) {
-    background-color: white;
-}
-.table_data tbody tr:nth-last-child(1) {
-    background-color: white;
+.table_data tbody tr:nth-last-child(2), .table_data tbody tr:nth-last-child(1), .table_data tbody .force_white {
+    background-color: white !important;
 }
 
 .table thead td {

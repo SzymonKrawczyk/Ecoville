@@ -42,22 +42,10 @@ router.post(`/articlesList/`, middleware.isLogged, middleware.isAdmin, async (re
 
 
 // Add new record
-router.post(`/article/`, middleware.isLogged, middleware.isAdmin, async (req, res) => {    
+router.post(`/article/`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, middleware.validateArticleObject, async (req, res) => {    
 		
-    let titleValidation = req.body.title.length >= 5;
-    let shortDescriptionValidation = req.body.shortDescription.length >= 16;
-    let contentValidation = req.body.content.length >= 64;
-		
-	let errorMessage = {
-          titleError: titleValidation ? null : 'articles has to be at least 5 characters long',
-          shortDescriptionError: shortDescriptionValidation ? null : 'short description has to be at least 16 characters long',
-          contentError: contentValidation ? null : 'content has to be at least 64 characters long'
-	};
-		
-	if (!(titleValidation && shortDescriptionValidation && contentValidation)) {
-		res.json({errorMessage});
-		return;
-	}
+	const id = req.params.id;
+	console.log(req.body);
         
     let temp = {
         title:  req.body.title,
@@ -104,30 +92,11 @@ router.get(`/article/:id`,  middleware.isLogged, middleware.isAdmin, async (req,
 })
 
 // Update one record
-router.put(`/article/:id`, middleware.isLogged, middleware.isAdmin, async (req, res) => {
+router.put(`/article/:id`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, middleware.validateArticleObject, async (req, res) => {
 	
 	const id = req.params.id;
-	let articleObject = req.body;
     console.log(req.body);
     
-
-    let titleValidation = req.body.title.length >=5;
-    let shortDescriptionValidation = req.body.shortDescription.length >= 16;
-    let contentValidation = req.body.content.length >= 64;
-    
-    
-
-    let errorMessage = {
-        titleError: titleValidation ? null : 'title has to be at least 5 characters long',
-        shortDescriptionError: shortDescriptionValidation ? null : 'short description has to be at least 16 characters long',
-        contentError: contentValidation ? null : 'content has to be at least 64 characters long',
-	};
-
-	if (!(titleValidation && shortDescriptionValidation && contentValidation)) {
-		res.json({errorMessage});
-		return;
-	}
-		
 	const doc = await articleRef.doc(id).get();
 	
 	if (!doc.exists) {
@@ -142,7 +111,6 @@ router.put(`/article/:id`, middleware.isLogged, middleware.isAdmin, async (req, 
 		
 	console.log(`Updated article with ID: ${id}`);
 	res.json({});
-		
 })
 
 

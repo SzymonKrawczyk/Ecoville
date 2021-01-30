@@ -97,6 +97,12 @@ export default class UserEdit extends Component {
     }
 	
 	validate = () => {
+		
+		for (var key in this.state) {
+			if (typeof(this.state[key]) == 'string'){
+				this.state[key] = this.state[key].trim();
+			}
+		}
         
         let firstNameValidation = this.state.firstName.length >=3;
         let lasstNameValidation = this.state.lastName.length >= 3;
@@ -238,14 +244,34 @@ export default class UserEdit extends Component {
 							Add points
 						</td>
 						<td>
-							<input 
-							className="input" 
-							type="number" 
-							name="addPoints" 
-							value={this.state.addPoints}
-							onChange={this.handleChange}/>
+							<table className="table table_user_spec">
+								<tbody>
+									<tr>
+										<td>
+											<table className="table table_user_spec">
+												<tbody>
+													<tr>
+														<td>
+															<input 
+															className="input" 
+															type="number" 
+															name="addPoints" 
+															value={this.state.addPoints}
+															onChange={this.handleChange}/>
+														</td>
+														<td>
+															<Link to={"/UserAddPoints/" + this.state._id + "/" + this.state.addPoints}>Confirm</Link>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							
 						</td>
-						<td><Link to={"/UserAddPoints/" + this.state._id + "/" + this.state.addPoints}>Confirm</Link></td>
+						<td></td>
 					</tr>
 
 					<tr>

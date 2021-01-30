@@ -13,7 +13,7 @@ const trophyRef = firestore.db.collection('trophy');
  
 
 // List all records
-router.post(`/usersList/`, middleware.isLogged, middleware.isAdmin, async (req,res) =>  {	
+router.post(`/usersList/`, middleware.isLogged, middleware.isAdmin,  async (req,res) =>  {	
 
 	const queryRef = userRef.orderBy('created', 'desc');
 	const snapshot = await queryRef.get();
@@ -118,24 +118,10 @@ router.get(`/user/:id`,  middleware.isLogged, middleware.isAdmin, async (req, re
 })
 
 // Update one record
-router.put(`/user/:id`, middleware.isLogged, middleware.isAdmin, async (req, res) => {
+router.put(`/user/:id`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, middleware.validateUserObject, async (req, res) => {
 	
 	const id = req.params.id;
     console.log(req.body);
-    
-    let firstNameValidation =  req.body.firstName.length >= 3;
-    let lastNameValidation =  req.body.lastName.length >= 3;
-    
-
-    let errorMessage = {
-        firstNameError: firstNameValidation ? null : 'first name has to be at least 3 characters long',
-        lastNamenError: lastNameValidation ? null : 'last name has to be at least 3 characters long',
-    };
-		
-	if (!(firstNameValidation && lastNameValidation)) {
-		res.json({errorMessage});
-		return;
-	}
 		
 	const doc = await userRef.doc(id).get();
 	

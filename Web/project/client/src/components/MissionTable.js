@@ -131,7 +131,7 @@ export default class MissionTable extends Component
 					{this.state._missionTable.map((mission) => <MissionTableRow key={mission._id} mission={mission}/>)}
 					
 					
-					<tr>
+					<tr className="force_white">
 						<td> &nbsp; </td>
 						<td> &nbsp; </td>
 						<td> &nbsp; </td>

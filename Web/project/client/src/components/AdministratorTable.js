@@ -90,7 +90,7 @@ export default class AdministratorTable extends Component
 					{this.state._administratorTable.map((admin) => <AdministratorTableRow key={admin._id} admin={admin}/>)}
 					
 					
-					<tr>
+					<tr className="force_white">
 						<td>
 							&nbsp;
 						</td>

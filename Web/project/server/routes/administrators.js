@@ -111,7 +111,7 @@ router.post(`/administratorsList/`, middleware.isLogged, middleware.isAdmin, asy
 
 
 // Add new record
-router.post(`/administrator/`, middleware.isLogged, middleware.isAdmin, async (req, res) => {    
+router.post(`/administrator/`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, middleware.validateAdministratorObject, async (req, res) => {    
 		
 	let usernameValidation = req.body.username.length >= 5;
 	let passwordValidation = req.body.password.length >= 8;
@@ -177,7 +177,7 @@ router.get(`/administrator/:id`,  middleware.isLogged, middleware.isAdmin, async
 })
 
 // Update one record
-router.put(`/administrator/:id`, middleware.isLogged, middleware.isAdmin, async (req, res) => {
+router.put(`/administrator/:id`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, middleware.validateAdministratorObject, async (req, res) => {
 	
 	const id = req.params.id;
 	

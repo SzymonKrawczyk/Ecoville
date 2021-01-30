@@ -38,6 +38,12 @@ export default class AdministratorAdd extends Component {
 	
 	validate = () => {
 		
+		for (var key in this.state) {
+			if (typeof(this.state[key]) == 'string'){
+				this.state[key] = this.state[key].trim();
+			}
+		}
+		
 		let usernameValidation = this.state.username.length >= 5;
 		let passwordValidation = this.state.password.length >= 8;
 		

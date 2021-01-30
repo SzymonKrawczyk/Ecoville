@@ -37,20 +37,11 @@ router.post(`/CategoriesList/`, middleware.isLogged, middleware.isAdmin, async (
 
 
 // Add new record
-router.post(`/category/`, middleware.isLogged, middleware.isAdmin, async (req, res) => {    
+router.post(`/category/`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, middleware.validateCategoryObject, async (req, res) => {    
 		
-	let nameValidation = req.body.name.length >= 3;
-		
-	let errorMessage = {
-		  nameError: nameValidation ? null : 'category name has to be at least 3 characters long'
-	};
-		
-	if (!(nameValidation)) {
-		res.json({errorMessage});
-		return;
-	}
-		
-    
+	const id = req.params.id;
+	console.log(req.body);
+	    
     const doc = await categoryRef.add(req.body);
 
 	console.log(`Added category with ID: ${doc.id}`);
@@ -78,21 +69,11 @@ router.get(`/category/:id`,  middleware.isLogged, middleware.isAdmin, async (req
 })
 
 // Update one record
-router.put(`/category/:id`, middleware.isLogged, middleware.isAdmin, async (req, res) => {
+router.put(`/category/:id`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, middleware.validateCategoryObject, async (req, res) => {
 	
 	const id = req.params.id;
+	console.log(req.body);
 	
-	let nameValidation = req.body.name.length >= 3;
-			
-	let errorMessage = {
-		  nameError: nameValidation ? null : 'category name has to be at least 3 characters long'
-	};
-			
-	if (!(nameValidation)) {
-		res.json({errorMessage});
-		return;
-	}
-		
 	const doc = await categoryRef.doc(id).get();
 	
 	if (!doc.exists) {

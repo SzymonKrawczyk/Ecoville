@@ -69,6 +69,12 @@ export default class CategoryEdit extends Component  {
 	
 	validate = () => {
 		
+		for (var key in this.state) {
+			if (typeof(this.state[key]) == 'string'){
+				this.state[key] = this.state[key].trim();
+			}
+		}
+		
 		let nameValidation = this.state.name.length >= 3;
 		
 		this.setState({errorMessage: {

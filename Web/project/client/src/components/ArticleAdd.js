@@ -37,6 +37,12 @@ export default class ArticleAdd extends Component {
     }
 	
 	validate = () => {
+		
+		for (var key in this.state) {
+			if (typeof(this.state[key]) == 'string'){
+				this.state[key] = this.state[key].trim();
+			}
+		}
         
         let titleValidation = this.state.title.length >=5;
         let shortDescriptionValidation = this.state.shortDescription.length >= 16;

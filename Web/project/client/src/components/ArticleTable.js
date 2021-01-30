@@ -107,7 +107,7 @@ export default class ArticleTable extends Component
 					{this.state._articleTable.map((article) => <ArticleTableRow key={article._id} article={article}/>)}
 					
 					
-					<tr>
+					<tr className="force_white">
 						<td>
 							&nbsp;
 						</td>

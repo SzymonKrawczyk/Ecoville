@@ -40,26 +40,11 @@ router.post(`/trophiesList/`, middleware.isLogged, middleware.isAdmin, async (re
 
 
 // Add new record
-router.post(`/trophy/`, middleware.isLogged, middleware.isAdmin, async (req, res) => {    
-		
-	let nameValidation = req.body.name.length >= 5;
-    let descriptionValidation = req.body.description.length >= 16;
-    let costValidation = req.body.cost >= 0;
-    let imageValidation = req.body.image.length > 0;
-		    
-	let errorMessage = {
-		nameError: nameValidation ? null : 'name has to be at least 5 characters long',
-		descriptionError: descriptionValidation ? null : 'description has to be at least 16 characters long',
-		costError: costValidation ? null : 'cost has to be non-negative number',
-		imageError: imageValidation ? null : 'Media Path is required',              
-	};
-		
-	if (!(nameValidation && descriptionValidation && costValidation && imageValidation)) {
-		res.json({errorMessage});
-		return;
-	}
-		
-    
+router.post(`/trophy/`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, middleware.validateTrophyObject, async (req, res) => {    
+	
+	const id = req.params.id;
+    console.log(req.body);
+
     const doc = await trophyRef.add(req.body);
 
 	console.log(`Added trophy with ID: ${doc.id}`);
@@ -96,26 +81,10 @@ router.get(`/trophy/:id`,  middleware.isLogged, middleware.isAdmin, async (req, 
 })
 
 // Update one record
-router.put(`/trophy/:id`, middleware.isLogged, middleware.isAdmin, async (req, res) => {
+router.put(`/trophy/:id`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, middleware.validateTrophyObject, async (req, res) => {
 	
 	const id = req.params.id;
-	
-	let nameValidation = req.body.name.length >= 5;
-    let descriptionValidation = req.body.description.length >= 16;
-    let costValidation = req.body.cost >= 0;
-    let imageValidation = req.body.image.length > 0;
-		    
-	let errorMessage = {
-		nameError: nameValidation ? null : 'name has to be at least 5 characters long',
-		descriptionError: descriptionValidation ? null : 'description has to be at least 16 characters long',
-		costError: costValidation ? null : 'cost has to be non-negative number',
-		imageError: imageValidation ? null : 'Media Path is required',              
-	};
-		
-	if (!(nameValidation && descriptionValidation && costValidation && imageValidation)) {
-		res.json({errorMessage});
-		return;
-	}
+	console.log(req.body);
 		
 	const doc = await trophyRef.doc(id).get();
 	
