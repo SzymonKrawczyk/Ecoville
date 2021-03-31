@@ -18,11 +18,15 @@ import com.example.ecoville_app_S.model.Tip;
 import com.example.ecoville_app_S.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class fragment_rank extends Fragment {
 
@@ -41,7 +45,7 @@ public class fragment_rank extends Fragment {
     RecyclerView rv;
     FirebaseFirestore db;
     FirestoreRecyclerAdapter adapter;
-
+    boolean userFound = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,17 +85,49 @@ public class fragment_rank extends Fragment {
                 if (position + 1 > 3)  {
                     holder.CLMissionParticipation.setBackgroundResource(R.drawable.round_corners_left_white_bg);
                     holder.TVRankPosition.setTextColor(getResources().getColor(R.color.lightGreen));
+                } else {
+                    holder.CLMissionParticipation.setBackgroundResource(R.drawable.round_corners_left_green_bg);
+                    holder.TVRankPosition.setTextColor(getResources().getColor(R.color.white));
                 }
 
-                System.out.println(MainActivity.userDocRef.getId());
-                System.out.println(options.getSnapshots().getSnapshot(position).getId());
+                System.out.println(model.getFirstName() + " " + position);
+                //System.out.println(options.getSnapshots().getSnapshot(position).getId());
+                //System.out.println(options.getSnapshots().getSnapshot(position).getId());
 
                 if (MainActivity.userDocRef.getId().equals(options.getSnapshots().getSnapshot(position).getId())) {
+                    userFound = true;
                     holder.CLMissionParticipation.setBackgroundResource(R.drawable.round_corners_left_darkgray_bg);
                     holder.TVRankPosition.setTextColor(getResources().getColor(R.color.white));
                 }
 
-                model._showMap();
+                if (position + 1 == 10 && !userFound) {
+                    holder.CLMissionParticipation.setBackgroundResource(R.drawable.round_corners_left_darkgray_bg);
+                    holder.TVRankPosition.setTextColor(getResources().getColor(R.color.white));
+                    holder.TVRankName.setText(MainActivity.appUser.getFirstName() + " " + MainActivity.appUser.getLastName());
+                    holder.TVRankPointsValue.setText(String.valueOf(model.getTotalPointsSum()));
+                    holder.TVRankPosition.setText("?");
+
+
+                    db.collection("user")
+                            .orderBy("totalPointsSum", Query.Direction.DESCENDING)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        int i = 1;
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            if (document == null) break;
+                                            if (MainActivity.userDocRef.getId().equals(document.getId())) break;
+                                            ++i;
+                                        }
+                                        holder.TVRankPosition.setText(String.valueOf(i));
+                                }}});
+
+
+                }
+
+                //model._showMap();
             }
         };
 
