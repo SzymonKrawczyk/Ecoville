@@ -104,7 +104,7 @@ public class fragment_rank extends Fragment {
                     holder.CLMissionParticipation.setBackgroundResource(R.drawable.round_corners_left_darkgray_bg);
                     holder.TVRankPosition.setTextColor(getResources().getColor(R.color.white));
                     holder.TVRankName.setText(MainActivity.appUser.getFirstName() + " " + MainActivity.appUser.getLastName());
-                    holder.TVRankPointsValue.setText(String.valueOf(model.getTotalPointsSum()));
+                    holder.TVRankPointsValue.setText(String.valueOf(MainActivity.appUser.getTotalPointsSum()));
                     holder.TVRankPosition.setText("?");
 
 
