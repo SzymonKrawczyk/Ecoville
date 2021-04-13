@@ -82,36 +82,40 @@ public class SingUpActivity extends AppCompatActivity {
         String LName = _LastName.getText().toString().trim();
         String Email = _Email.getText().toString().trim();
         String Password = _Password.getText().toString().trim();
-        String CPassword = _ConfirmPassword.getText().toString().trim();
 
+        if(validation()) {
+            mAuth.createUserWithEmailAndPassword(Email, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(SingUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
 
-        mAuth.createUserWithEmailAndPassword(Email, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(SingUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
+                        userId = mAuth.getCurrentUser().getUid();
+                        DocumentReference docRef = FStore.collection("user").document(userId);
 
-                    userId = mAuth.getCurrentUser().getUid();
-                    DocumentReference docRef = FStore.collection("user").document(userId);
-
+                        User user = new User( Email, FName, LName);
+                    /*
                     Map<String, Object>user = new HashMap<>();
                     user.put("firstName", FName);
                     user.put("lastName", LName);
                     user.put("email", Email);
                     user.put("password", Password);
+                    */
 
-                    docRef.set(user).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(SingUpActivity.this, "Something went wrong :c \n " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    startActivity(new Intent(getApplicationContext(), LogIn.class));
-                }else {
-                    Toast.makeText(SingUpActivity.this, "Something went wrong :c \n " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
+                        docRef.set(user).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(SingUpActivity.this, "Something went wrong :c \n " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        startActivity(new Intent(getApplicationContext(), LogIn.class));
+                    } else {
+                        Toast.makeText(SingUpActivity.this, "Something went wrong :c \n " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public boolean validation(){

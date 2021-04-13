@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView BNV = findViewById(R.id.bottomNavigationView);
         BNV.setOnNavigationItemSelectedListener(bnvListener);
 
-        setUser();
+        //setUser();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener bnvListener=
@@ -67,13 +67,20 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new fragment_shop();
                             break;
                         case R.id.fragment_4:
-                            selectedFragment = new fragment_rank();
+                            selectedFragment = new fragment_profile();
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment, selectedFragment).commit();
                     return true;
                 }
     };
+
+    public static void logout(){
+        appUser = null;
+        userDocRef = null;
+        FirebaseAuth mAuth;
+        FirebaseAuth.getInstance().signOut();
+    }
 
 
     public void setUser() {
@@ -97,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
             }
-        });;
-
+        });
     }
+
+
 }

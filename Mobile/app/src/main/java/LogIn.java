@@ -13,9 +13,12 @@ package com.example.ecoville_app_S;
 
         import com.example.ecoville_app_S.model.User;
         import com.google.android.gms.tasks.OnCompleteListener;
+        import com.google.android.gms.tasks.OnFailureListener;
+        import com.google.android.gms.tasks.OnSuccessListener;
         import com.google.android.gms.tasks.Task;
         import com.google.firebase.auth.AuthResult;
         import com.google.firebase.auth.FirebaseAuth;
+        import com.google.firebase.firestore.DocumentSnapshot;
         import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LogIn extends AppCompatActivity {
@@ -86,9 +89,7 @@ public class LogIn extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(LogIn.this, "You successfully log in :)", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
+                            setUser();
                         }else {
                             Toast.makeText(LogIn.this, "Something went wrong :c \n " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -97,68 +98,36 @@ public class LogIn extends AppCompatActivity {
             }
         });
     }
-}
-    /*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+    public void setUser() {
+        FirebaseAuth mAuth;
+        FirebaseFirestore FStore;
+        String UserId;
 
-        bEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String docID = ETdocID.getText().toString().trim();
-                User temp = returnUserById("users", docID);
-            }
-        });
-    }
+        FStore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
-    public User returnUserById(String collectionID, String docID) {
-        DocumentReference docRef = db.collection(collectionID).document(docID);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        UserId = mAuth.getCurrentUser().getUid();
+        MainActivity.userDocRef = FStore.collection("user").document(UserId);
+        MainActivity.userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                User user = documentSnapshot.toObject(User.class);
-                if (user != null){
-                    firstName.setText(user.getFirstName());
-                    lastName.setText(user.getLastName());
-                    email.setText(user.getEmail());
-                    dob.setText(String.valueOf(user.getDob()));
-                    gender.setChecked(user.isGender());
-                } else {
-                    showToast("No data");
-                }
+                MainActivity.appUser = documentSnapshot.toObject(User.class);
+
+                Toast.makeText(LogIn.this, "You successfully log in :)", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                showToast("Failed to fetch data");
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
             }
         });
-        return null;
     }
+}
 
-    bSave.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String TfirstName = firstName.getText().toString().trim();
-            String TlastName = lastName.getText().toString().trim();
-            String Temail = email.getText().toString().trim();
-            int Tdob = Integer.parseInt(dob.getText().toString().trim());
-            boolean Tgender = gender.isChecked();
-
-            User user = new User(TfirstName, TlastName, Temail, Tdob, Tgender);
-            String docId = ETdocID.getText().toString().trim();
-
-            db.collection("users").document(docId).set(user);
-        }
-    });
-
-    public void showToast(String msg) {
-        Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
-        toast.show();
-    }*/
 
 
 

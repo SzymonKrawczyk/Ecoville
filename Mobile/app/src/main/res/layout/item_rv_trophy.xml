@@ -51,8 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     android:fontFamily="@font/montserrat_bold"
-                    android:text="135"
-                    android:textColor="@color/lightGreen" />
+                    android:textColor="@color/orange" />
 
                 <TextView
                     android:id="@+id/TVTrophyPointsValueLabel"
@@ -60,23 +59,46 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
                     android:text="Points"
-                    android:textColor="@color/lightGreen" />
+                    android:textColor="@color/orange" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/BTThropyInteraction"
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/CVButtonBackground"
                 android:layout_width="60dp"
                 android:layout_height="20dp"
-                android:background="@drawable/round_corners_button_green"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                android:text="BUY"
-                android:textSize="10sp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/CLTrophyBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/round_corners_button_green">
+
+                    <Button
+                        android:id="@+id/BTTrophyInteraction"
+                        android:layout_width="60dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/round_corner_transparent"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:text="BUY"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

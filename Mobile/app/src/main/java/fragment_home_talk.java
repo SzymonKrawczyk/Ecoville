@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.ecoville_app_S.model.Mission;
 import com.example.ecoville_app_S.model.Post;
 import com.example.ecoville_app_S.model.Tip;
@@ -29,6 +30,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -185,10 +188,27 @@ public class fragment_home_talk extends Fragment {
                         User user = documentSnapshot.toObject(User.class);
                         if (user != null){
                             author = user.getFirstName() + " " + user.getLastName();
-                            holder.TVPostAuthor.setText(author);
+
+                            if (user.getProfilePic() != null) {
+                                FirebaseStorage storage = FirebaseStorage.getInstance();
+                                // Create a storage reference from our app
+                                StorageReference storageRef = storage.getReference();
+
+                                // Create a reference with an initial file path and name
+                                StorageReference pathReference = storageRef.child("users/" + user.getProfilePic());
+
+
+                                Glide.with(fragment_home_talk.this /* context */)
+                                        .load(pathReference)
+                                        .into(holder.IVPostAvatar);
+                            }
+
+
+
                         } else {
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
+                            author = "[deleted]";
                         }
+                        holder.TVPostAuthor.setText(author);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -201,6 +221,9 @@ public class fragment_home_talk extends Fragment {
                 holder.TVPostDate.setText(model._getDate());
 
                 holder.IVPostAvatar.setImageResource(R.drawable.ic_person_green);
+
+
+
 
             }
         };

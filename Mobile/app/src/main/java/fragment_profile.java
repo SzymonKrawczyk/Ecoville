@@ -1,10 +1,11 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
+
+import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,12 +21,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.bottomnavigationview.model.Trophy;
-import com.example.bottomnavigationview.model.User;
-import com.example.bottomnavigationview.model.fragment_profile_adapter;
-import com.example.bottomnavigationview.model.fragment_profile_all_trophies_adapter;
-//import com.example.bottomnavigationview.model.fragment_profile_slide_adapter;
-import com.firebase.ui.auth.AuthUI;
+//import com.bumptech.glide.Glide;
+
+
+import com.bumptech.glide.Glide;
+import com.example.ecoville_app_S.model.Trophy;
+import com.example.ecoville_app_S.model.User;
+import com.example.ecoville_app_S.model.fragment_profile_adapter;
+import com.example.ecoville_app_S.model.fragment_profile_all_trophies_adapter;
+//import com.example.ecoville_app_S.model.fragment_profile_slide_adapter;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -45,6 +54,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -110,6 +121,25 @@ public class fragment_profile extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         db = FirebaseFirestore.getInstance();
         rv = (RecyclerView) view.findViewById(R.id.RVProfileTotalPoints);
+
+
+
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReference();
+
+        // Create a reference with an initial file path and name
+        StorageReference pathReference = storageRef.child("users/test.jpg");
+
+        ImageView IVProfile = view.findViewById(R.id.IVProfile);
+
+        Glide.with(fragment_profile.this /* context */)
+                .load(pathReference)
+                .into(IVProfile);
+
+
+
 
         MainActivity.userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -221,11 +251,11 @@ public class fragment_profile extends Fragment {
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-            System.out.println(e);
-        }
-    });
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println(e);
+            }
+        });
     }
 
     private void setRecycleViewContent(){
@@ -247,7 +277,7 @@ public class fragment_profile extends Fragment {
                 docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        categoryName.add( (String) documentSnapshot.get("name") );
+                        categoryName.add( (String) documentSnapshot.get("name"));
                         if( numberOfItems == categoryName.size() ){
                             setRecycleView();
                             setUpPieChart();
@@ -296,7 +326,8 @@ public class fragment_profile extends Fragment {
     {
         ArrayList<PieEntry> entries = new ArrayList<>();
         for(int i=0; i < categoryName.size(); i++){
-            entries.add(new PieEntry(categoryPoints.get(i), categoryName.get(i)));
+            String temp = String.format("%.1f",  ( (categoryPoints.get(i)*100.0) / (double)MainActivity.appUser.getTotalPointsSum()) ) + "%";
+            entries.add(new PieEntry(categoryPoints.get(i), categoryName.get(i) + " " + temp));
         }
 
         /*
@@ -328,15 +359,29 @@ public class fragment_profile extends Fragment {
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(colors);
 
+        /*ArrayList<Integer> colors2 = new ArrayList<>();
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors2.add(c);
+        dataSet.setColors(colors2);*/
+
+        dataSet.setSliceSpace(2f);
+
         PieData pieData = new PieData(dataSet);
-        pieData.setDrawValues(true);
-        pieData.setValueFormatter(new PercentFormatter(PieChartProfile));
-        pieData.setValueTextSize(12f);
-        pieData.setValueTextColor(Color.BLACK);
+        pieData.setDrawValues(false);
+        //pieData.setValueFormatter(new PercentFormatter(PieChartProfile));
+        //pieData.setValueTextSize(12f);
+        //pieData.setValueTextColor(Color.BLACK);
+
+
 
         PieChartProfile.setData(pieData);
         PieChartProfile.invalidate();
 
+        PieChartProfile.setDrawEntryLabels(false);
+
         PieChartProfile.animateY(1400, Easing.EaseInOutQuad);
+
+
+        PieChartProfile.getDescription().setEnabled(false);
     }
 }

@@ -67,6 +67,7 @@
                 android:text="@string/password_link"
                 android:textColor="@color/black"
                 android:textSize="10sp"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ETPassword" />
 
@@ -113,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Don't have account?"
+                android:text="Don't have an account?"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/BForgetPassword" />
 
@@ -183,6 +184,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

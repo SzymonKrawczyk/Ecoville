@@ -77,6 +77,8 @@ public class fragment_home_mission_details extends Fragment {
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                System.out.println(documentSnapshot);
+                System.out.println(documentSnapshot.toObject(Mission.class));
                 Mission mission = documentSnapshot.toObject(Mission.class);
                 if (mission != null){
 

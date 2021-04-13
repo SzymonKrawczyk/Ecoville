@@ -56,7 +56,7 @@ public class Mission {
 
         Date date = new Date();
         long time = date.getTime();
-        return (time/1000 - added.getSeconds()) < 60*60*24*7;
+        return _isAvailable() && (time/1000 - added.getSeconds()) < 60*60*24*7;
     }
 
     public boolean _isAvailable() {
@@ -76,7 +76,7 @@ public class Mission {
 
                 //System.out.println(currentUser);
                 //System.out.println((DocumentReference)currentUser.get("id_user"));
-                if (currentUser.get("id_user").equals(userDocRef)) {
+                if (currentUser.get("id_user") != null && currentUser.get("id_user").equals(userDocRef)) {
                     return true;
                 }
             }
@@ -89,7 +89,7 @@ public class Mission {
         boolean userAlreadyIn = false;
         for(HashMap<String, Object> currentUser : getCurrentParticipants()) {
 
-            if (currentUser.get("id_user").equals(userDocRef)) {
+            if (currentUser.get("id_user") != null && currentUser.get("id_user").equals(userDocRef)) {
                 userAlreadyIn = true;
                 break;
             }
@@ -109,7 +109,7 @@ public class Mission {
         for(HashMap<String, Object> currentUser : getCurrentParticipants()) {
 
 
-            if (currentUser.get("id_user").equals(userDocRef)) {
+            if (currentUser.get("id_user") != null && currentUser.get("id_user").equals(userDocRef)) {
                 if (currentUser.get("confirmed") != null) {
                     if(!((Boolean)currentUser.get("confirmed"))){
 

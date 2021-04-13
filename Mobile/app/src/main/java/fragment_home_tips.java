@@ -102,11 +102,14 @@ public class fragment_home_tips extends Fragment {
                 holder.TVTipsDate.setText(model._getDate());
                 holder.TVTipsShort.setText(model.getShortDescription());
 
+                DocumentSnapshot snapshot = options.getSnapshots().getSnapshot(position);
+                String tipDocIDTEMP = snapshot.getId();
+
                 holder.BTTipsReadFull.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        DocumentSnapshot snapshot = options.getSnapshots().getSnapshot(position);
-                        tipDocID = snapshot.getId();
+                        //DocumentSnapshot snapshot = options.getSnapshots().getSnapshot(position);
+                        tipDocID = tipDocIDTEMP;
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_tip_details()).addToBackStack(null).commit();
                     }
                 });
