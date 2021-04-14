@@ -125,18 +125,23 @@ public class fragment_profile extends Fragment {
 
 
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        // Create a storage reference from our app
-        StorageReference storageRef = storage.getReference();
 
-        // Create a reference with an initial file path and name
-        StorageReference pathReference = storageRef.child("users/test.jpg");
 
         ImageView IVProfile = view.findViewById(R.id.IVProfile);
 
-        Glide.with(fragment_profile.this /* context */)
-                .load(pathReference)
-                .into(IVProfile);
+        if (MainActivity.appUser.getProfilePic() != null) {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            // Create a storage reference from our app
+            StorageReference storageRef = storage.getReference();
+
+            // Create a reference with an initial file path and name
+            StorageReference pathReference = storageRef.child("users/" + MainActivity.appUser.getProfilePic());
+
+
+            Glide.with(fragment_profile.this /* context */)
+                    .load(pathReference)
+                    .into(IVProfile);
+        }
 
 
 

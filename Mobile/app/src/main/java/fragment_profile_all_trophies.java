@@ -11,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.ecoville_app_S.model.Trophy;
 import com.example.ecoville_app_S.model.User;
 import com.example.ecoville_app_S.model.fragment_profile_all_trophies_adapter;
@@ -25,6 +27,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -88,6 +92,31 @@ public class fragment_profile_all_trophies extends Fragment {
         BTProfileAll = (Button) view.findViewById(R.id.BTProfileAll);
         BTProfileNewTrophy = (Button) view.findViewById(R.id.BTProfileNewTrophy);
         BTProfileCollection = (Button) view.findViewById(R.id.BTProfileCollection);
+
+
+
+
+        ImageView IVProfile = view.findViewById(R.id.IVProfile);
+
+        if (MainActivity.appUser.getProfilePic() != null) {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            // Create a storage reference from our app
+            StorageReference storageRef = storage.getReference();
+
+            // Create a reference with an initial file path and name
+            StorageReference pathReference = storageRef.child("users/" + MainActivity.appUser.getProfilePic());
+
+
+            Glide.with(fragment_profile_all_trophies.this /* context */)
+                    .load(pathReference)
+                    .into(IVProfile);
+        }
+
+
+
+
+
+
 
         db = FirebaseFirestore.getInstance();
         rv = (RecyclerView) view.findViewById(R.id.RVProfileAll);

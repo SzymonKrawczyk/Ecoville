@@ -108,6 +108,20 @@ public class fragment_home_talk extends Fragment {
         TVPostName.setText(MainActivity.appUser.getFirstName() + " " + MainActivity.appUser.getLastName());
 
 
+        if (MainActivity.appUser.getProfilePic() != null) {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            // Create a storage reference from our app
+            StorageReference storageRef = storage.getReference();
+
+            // Create a reference with an initial file path and name
+            StorageReference pathReference = storageRef.child("users/" + MainActivity.appUser.getProfilePic());
+
+
+            Glide.with(fragment_home_talk.this /* context */)
+                    .load(pathReference)
+                    .into(IVPost);
+        }
+
         BTPostSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
