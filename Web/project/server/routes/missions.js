@@ -3,6 +3,7 @@ const router = require(`express`).Router()
 
 const firestore = require(`../config/db`);
 const middleware = require(`../middleware/middleware`);
+const timers = require(`../timers/missionTimers`);
 
 const missionRef = firestore.db.collection('mission');
 const categoryRef = firestore.db.collection('category');
@@ -73,8 +74,11 @@ router.post(`/mission/`, middleware.isLogged, middleware.isAdmin, middleware.tri
 	
     missionObject.added = firestore.admin.firestore.Timestamp.fromDate(new Date(Date.now()));
 	missionObject.currentParticipants = [];
+	missionObject.completed = false;
 	
     const doc = await missionRef.add(req.body);
+
+	timers.missionTimers();
 
 	console.log(`Added mission with ID: ${doc.id}`);
     res.json({});   
@@ -160,6 +164,7 @@ router.put(`/mission/:id`, middleware.isLogged, middleware.isAdmin, middleware.t
 	const id = req.params.id;
 	
 	let missionObject = req.body;
+	missionObject.completed = false;
 	console.log(req.body);
 	
 	let errorMessage = {};
@@ -177,7 +182,7 @@ router.put(`/mission/:id`, middleware.isLogged, middleware.isAdmin, middleware.t
 		const docE = await missionRef.doc(id).set(missionObject, { merge: true });
 	}
 		
-
+	timers.missionTimers();
 	console.log(`Updated mission with ID: ${id}`);
 	res.json({});
 })
@@ -194,7 +199,7 @@ router.delete(`/mission/:id`, middleware.isLogged, middleware.isAdmin, async (re
 	res.json({});
 })
 
-
+/*
 // Confirm user on mission
 router.post(`/missionConfirmUser/:idM/:idU`, middleware.isLogged, middleware.isAdmin, async (req,res) =>  {	
 
@@ -243,9 +248,9 @@ router.post(`/missionConfirmUser/:idM/:idU`, middleware.isLogged, middleware.isA
 						//console.log(pointArray[0].id_category._path.segments)
 						for (let p = 0; p < pointArray.length; ++p) {
 							
-							if (pointArray[i].id_category._path.segments[1] == docM.data().id_category._path.segments[1]) {
+							if (pointArray[p].id_category._path.segments[1] == docM.data().id_category._path.segments[1]) {
 								
-								pointArray[i].points = pointArray[i].points + docM.data().points;
+								pointArray[p].points = pointArray[p].points + docM.data().points;
 								addedPoints = true;
 								break;
 							}
@@ -275,6 +280,90 @@ router.post(`/missionConfirmUser/:idM/:idU`, middleware.isLogged, middleware.isA
 	
     
 })
+*/
+
+
+// Confirm user on mission
+router.post(`/missionConfirmUser/:idM/:idU`, middleware.isLogged, middleware.isAdmin, async (req,res) =>  {	
+
+	const id_mission = req.params.idM;
+	const id_user = req.params.idU;
+	console.log(`confirm: mission ${id_mission}, user ${id_user}`);
+	
+	//validate
+	const docU = await userRef.doc(id_user).get();
+	
+	if (!docU.exists) {
+			
+		console.log('No user');
+		res.json({errorMessage: `No user: ${id_user}`});
+			
+	} else {
+			
+		const docM = await missionRef.doc(id_mission).get();
+	
+		if (!docM.exists) {
+				
+			console.log('No mission');
+			res.json({errorMessage: `No mission: ${id_mission}`});
+				
+		} else {
+			//console.log(docM.data());
+			//console.log(docM.data().currentParticipants);
+			if (docM.data().currentParticipants != null) {
+				
+				//console.log(docM.data().currentParticipants);
+				
+				for (let i = 0; i < docM.data().currentParticipants.length; ++i) {
+					
+					if (id_user == docM.data().currentParticipants[i].id_user.id) {
+						
+						let tempObjectMission = {currentParticipants: docM.data().currentParticipants};
+						tempObjectMission.currentParticipants[i].confirmed = false;
+						//console.log(tempObjectMission);
+						//console.log(docM.data());
+						const docEM = await missionRef.doc(id_mission).set(tempObjectMission, { merge: true });
+						
+						
+						pointArray = docU.data().totalPoints != null ? docU.data().totalPoints : [];
+						let addedPoints = false;
+						//console.log(docM.data().id_category._path.segments)
+						//console.log(pointArray[0].id_category._path.segments)
+						for (let p = 0; p < pointArray.length; ++p) {
+							
+							if (pointArray[p].id_category._path.segments[1] == docM.data().id_category._path.segments[1]) {
+								
+								pointArray[p].points = pointArray[p].points - docM.data().points;
+								addedPoints = true;
+								break;
+							}
+						}
+						if (!addedPoints) {
+							pointArray.push({
+								  id_category: docM.data().id_category
+								, points: -1 * docM.data().points
+								})
+						}
+						
+						let tempObjectUser = {
+							  confirmedMissions: parseInt(parseInt(docU.data().confirmedMissions) - 1)
+							, totalPoints: pointArray
+							, currentPoints: parseInt(parseInt(docU.data().currentPoints) - parseInt(docM.data().points))
+							, totalPointsSum: parseInt(parseInt(docU.data().totalPointsSum) - parseInt(docM.data().points))
+							};
+						const docEU = await userRef.doc(id_user).set(tempObjectUser, { merge: true });
+						break;
+					}
+				}				
+			}
+			res.json({});
+		}
+	}
+	
+	
+    
+})
+
 
 
 

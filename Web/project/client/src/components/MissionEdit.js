@@ -27,6 +27,7 @@ export default class MissionEdit extends Component  {
             , redirectToMissionsList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, errorMessage: {}
 			, logout: false
+			, canSubmit: true
         }
     }
 
@@ -201,7 +202,9 @@ export default class MissionEdit extends Component  {
 		
         e.preventDefault();
 		
-		if (this.validate()){
+		if (this.validate() && this.state.canSubmit){
+
+			this.state.canSubmit = false;
 
 			const missionObject = {
 				  name: this.state.name
@@ -218,6 +221,8 @@ export default class MissionEdit extends Component  {
 			axios.put(`${SERVER_HOST}/mission/${this.props.match.params.id}`, missionObject)
 			.then(res =>  {    
 			
+				this.state.canSubmit = true;
+
 				if(res.data) {
 					
 					if (res.data.isLogged == false || res.data.isAdmin == false) {
@@ -428,7 +433,7 @@ export default class MissionEdit extends Component  {
 									<tr key={participant._id}>
 										<td>{participant.firstName} {participant.lastName}</td>
 										
-										{!participant.confirmed ? <td><Link to={"/MissionConfirmUser/" + this.state._id + "/" + participant._id}>Confirm</Link></td> : <td></td>}
+										{participant.confirmed ? <td><Link to={"/MissionConfirmUser/" + this.state._id + "/" + participant._id}>Remove</Link></td> : <td></td>}
 										
 									</tr>)
 								}

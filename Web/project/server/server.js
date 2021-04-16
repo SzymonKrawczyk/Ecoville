@@ -29,10 +29,18 @@ app.use(require(`../server/routes/articles`))
 app.use(require(`../server/routes/trophies`))
 app.use(require(`../server/routes/users`))
 
+
+//timers
+const timers = require(`./timers/missionTimers`)
+
+
+
+
 // Port
 app.listen(process.env.SERVER_PORT, () => 
 {
     console.log(`Connected to port ` + process.env.SERVER_PORT)
+	timers.missionTimers();
 })
 
 
