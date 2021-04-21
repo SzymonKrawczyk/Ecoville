@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S.model;
+package com.example.bottomnavigationview.model;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,9 +13,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ecoville_app_S.MainActivity;
-import com.example.ecoville_app_S.R;
-import com.example.ecoville_app_S.fragment_shop;
+import com.example.bottomnavigationview.MainActivity;
+import com.example.bottomnavigationview.R;
+import com.example.bottomnavigationview.fragment_profile;
+import com.example.bottomnavigationview.fragment_shop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,6 +30,7 @@ public class fragment_profile_adapter extends RecyclerView.Adapter<fragment_prof
 
     private ArrayList<String>categoryName;
     private ArrayList<Long>categoryPoints;
+    private ArrayList<Integer> colors = fragment_profile.colors;
     Context context;
 
     public fragment_profile_adapter(Context context,   ArrayList<String>categoryName,  ArrayList<Long>categoryPoints){
@@ -52,8 +54,8 @@ public class fragment_profile_adapter extends RecyclerView.Adapter<fragment_prof
             holder.TVCategoryName.setText( categoryName.get(position) + " :" );
             holder.TVCategoryPoints.setText( String.valueOf(categoryPoints.get(position)));
             if( MainActivity.appUser.getTotalPointsSum() != 0 ){
-                System.out.println( categoryName.get(position) + " " + categoryPoints.get(position) + "###" + MainActivity.appUser.getTotalPointsSum() );
                 holder.TVPointsPercent.setText(String.format("%.1f",  ( (categoryPoints.get(position)*100.0) / (double)MainActivity.appUser.getTotalPointsSum()) ) + "%" );
+                holder.TVPointsPercent.setTextColor(colors.get(position));
             }else holder.TVPointsPercent.setText("0.0%");
         }
     }

@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S.model;
+package com.example.bottomnavigationview.model;
 
 public class Trophy {
 
@@ -8,6 +8,13 @@ public class Trophy {
     private String description;
 
     public Trophy(){}
+
+    public Trophy(Trophy t){
+        this.cost = t.getCost();
+        this.name = t.getName();
+        this.description = t.getDescription();
+        this.image = t.getImage();
+    }
 
     public Trophy(int cost, String image, String name, String description){
         this.cost = cost;
