@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,24 +14,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 //import com.bumptech.glide.Glide;
 
 
 import com.bumptech.glide.Glide;
-import com.example.ecoville_app_S.model.Trophy;
-import com.example.ecoville_app_S.model.User;
-import com.example.ecoville_app_S.model.fragment_profile_adapter;
-import com.example.ecoville_app_S.model.fragment_profile_all_trophies_adapter;
-//import com.example.ecoville_app_S.model.fragment_profile_slide_adapter;
+import com.example.bottomnavigationview.model.Trophy;
+import com.example.bottomnavigationview.model.User;
+import com.example.bottomnavigationview.model.fragment_profile_adapter;
+import com.example.bottomnavigationview.model.fragment_profile_all_trophies_adapter;
+//import com.example.bottomnavigationview.model.fragment_profile_slide_adapter;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.LegendEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -65,15 +71,17 @@ import java.util.HashMap;
 
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
-public class fragment_profile extends Fragment {
-
-    private ViewPager2 VP2Profile;
-    //private fragment_profile_slide_adapter adapter;
+public class fragment_profile extends Fragment implements OnChartValueSelectedListener {
 
     private ArrayList<String>categoryName;
     private ArrayList<Long>categoryPoints;
     private Integer numberOfItems;
 
+    public static ArrayList<Integer> colors = new ArrayList<>();
+    private ArrayList<Integer> colorsGrey = new ArrayList<>();
+    private ArrayList<Integer> colorsGreen = new ArrayList<>();
+
+    private PieDataSet dataSet;
 
     TextView TVFullName;
     TextView TVFullNameWithNoSpacesInBetween;
@@ -89,7 +97,6 @@ public class fragment_profile extends Fragment {
 
     ImageView IVTrophyInProfile;
     Button BProfileGoToCollection;
-
     Button BTProfileLogOut;
 
     PieChart PieChartProfile;
@@ -122,10 +129,24 @@ public class fragment_profile extends Fragment {
         db = FirebaseFirestore.getInstance();
         rv = (RecyclerView) view.findViewById(R.id.RVProfileTotalPoints);
 
+        colorsGreen.add(Color.parseColor("#2FB454"));
+        colorsGreen.add(Color.parseColor("#7FBD2E"));
+        colorsGreen.add(Color.parseColor("#76BB6B"));
+        colorsGreen.add(Color.parseColor("#0f8a17"));
 
+        colorsGreen.add(Color.parseColor("#60bd66"));
+        colorsGreen.add(Color.parseColor("#2c916c"));
+        colorsGreen.add(Color.parseColor("#166b4c"));
+        colorsGreen.add(Color.parseColor("#127075"));
 
+        colorsGreen.add(Color.parseColor("#0399a1"));
+        colorsGreen.add(Color.parseColor("#1a73a3"));
+        colorsGreen.add(Color.parseColor("#1a4ca3"));
+        colorsGreen.add(Color.parseColor("#6133a6"));
 
+        colorsGrey.add(Color.parseColor("#D3D3D3"));
 
+        colors = new ArrayList<>(colorsGreen);
 
         ImageView IVProfile = view.findViewById(R.id.IVProfile);
 
@@ -204,8 +225,6 @@ public class fragment_profile extends Fragment {
                 //setUpPieChart();
                 //populatePieChart();
 
-                VP2Profile = (ViewPager2) view.findViewById(R.id.VP2Profile);
-
                 setRecycleViewContent();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -214,27 +233,6 @@ public class fragment_profile extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
             }
         });
-
-
-
-
-
-
-        /*
-        viewPager2 = (ViewPager2) view.findViewById(R.id.VPProfile);
-        adapter = new fragment_profile_slide_adapter(this.getContext());
-        viewPager2.setAdapter(adapter);
-        */
-
-        /*
-        adapter = new fragment_profile_slide_adapter(categoryName,categoryPoints);
-        viewPager2.setAdapter(adapter);
-        viewPager2.setClipToPadding(false);
-        viewPager2.setClipToPadding(false);
-        viewPager2.setOffscreenPageLimit(3);
-        viewPager2.getChildAt(0).setOverScrollMode(View.OVER_SCROLL_NEVER);
-        */
-
 
         return view;
     }
@@ -314,6 +312,8 @@ public class fragment_profile extends Fragment {
         //PieChartProfile.setCenterText("XD");
         //PieChartProfile.setCenterTextSize(24);
         PieChartProfile.getDescription().setEnabled(false);
+        PieChartProfile.setOnChartValueSelectedListener(this);
+
 
 
 
@@ -323,14 +323,16 @@ public class fragment_profile extends Fragment {
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setTextSize(14);
         legend.setDrawInside(false);
-        legend.setEnabled(true);
-
+        //legend.setEnabled(true);
+        legend.setEnabled(false);
     }
 
     private void populatePieChart()
     {
         ArrayList<PieEntry> entries = new ArrayList<>();
         for(int i=0; i < categoryName.size(); i++){
+            colors.add(colorsGreen.get(i));
+
             String temp = String.format("%.1f",  ( (categoryPoints.get(i)*100.0) / (double)MainActivity.appUser.getTotalPointsSum()) ) + "%";
             entries.add(new PieEntry(categoryPoints.get(i), categoryName.get(i) + " " + temp));
         }
@@ -344,24 +346,7 @@ public class fragment_profile extends Fragment {
         }
         */
 
-        int [] colors = new int[] {
-                Color.parseColor("#2FB454"),
-                Color.parseColor("#7FBD2E"),
-                Color.parseColor("#5EB772"),
-                Color.parseColor("#76BB6B"),
-                Color.parseColor("#0f8a17"),
-                Color.parseColor("#60bd66"),
-                Color.parseColor("#2c916c"),
-                Color.parseColor("#166b4c"),
-                Color.parseColor("#127075"),
-                Color.parseColor("#0399a1"),
-                Color.parseColor("#1a73a3"),
-                Color.parseColor("#1a4ca3"),
-                Color.parseColor("#6133a6"),
-        };
-
-
-        PieDataSet dataSet = new PieDataSet(entries, "");
+        dataSet = new PieDataSet(entries, "");
         dataSet.setColors(colors);
 
         /*ArrayList<Integer> colors2 = new ArrayList<>();
@@ -377,16 +362,53 @@ public class fragment_profile extends Fragment {
         //pieData.setValueTextSize(12f);
         //pieData.setValueTextColor(Color.BLACK);
 
-
-
         PieChartProfile.setData(pieData);
         PieChartProfile.invalidate();
 
         PieChartProfile.setDrawEntryLabels(false);
-
         PieChartProfile.animateY(1400, Easing.EaseInOutQuad);
 
-
         PieChartProfile.getDescription().setEnabled(false);
+    }
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+
+        if (e == null)
+            return;
+        Log.i("VAL SELECTED",
+                "Value: " + e.getY() + ", index: " + h.getX()
+                        + ", DataSet index: " + h.getDataSetIndex());
+
+        colors = new ArrayList<>();
+        for(int i=0; i<numberOfItems; i++)
+        {
+            colors.add(colorsGrey.get(0));
+        }
+        colors.set((int)h.getX(), colorsGreen.get((int)h.getX()));
+
+        dataSet.setColors(colors);
+
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+        PieChartProfile.setData(data);
+
+        setRecycleView();
+    }
+
+    @Override
+    public void onNothingSelected() {
+        colors = new ArrayList<>(colorsGreen);
+        dataSet.setColors(colors);
+
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+        PieChartProfile.setData(data);
+
+        setRecycleView();
     }
 }
