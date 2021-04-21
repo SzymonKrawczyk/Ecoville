@@ -1,5 +1,7 @@
-package com.example.ecoville_app_S.model;
+package com.example.bottomnavigationview.model;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +17,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ecoville_app_S.LogIn;
-import com.example.ecoville_app_S.MainActivity;
-import com.example.ecoville_app_S.R;
-import com.example.ecoville_app_S.fragment_connection_error;
-import com.example.ecoville_app_S.fragment_home_tips;
-import com.example.ecoville_app_S.fragment_shop;
+import com.example.bottomnavigationview.LogIn;
+import com.example.bottomnavigationview.MainActivity;
+import com.example.bottomnavigationview.R;
+import com.example.bottomnavigationview.fragment_connection_error;
+import com.example.bottomnavigationview.fragment_home_tips;
+import com.example.bottomnavigationview.fragment_shop;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -68,18 +70,36 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
 
                 final int costFinal = trophy.getCost();
 
+                Trophy t = new Trophy(trophy);
+
+                holder.BTTrophyInteraction.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //MainActivity.appUser.setCurrentPoints( MainActivity.appUser.getCurrentPoints() - costFinal );
+
+                        showPopUp(t, docRefArray.get(position).getId());
+
+//                            docRefArray.get(position).getId();
+//                            buyATrophy( docRefArray.get(position).getId(), costFinal);
+//                            fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
+                    }
+                });
+
                 if( MainActivity.appUser.getCurrentPoints() < trophy.getCost()  ){
                     holder.CLTrophyBackground.setBackgroundResource(R.drawable.round_corners_button_darkgray);
                 }else {
-                    holder.BTTrophyInteraction.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //MainActivity.appUser.setCurrentPoints( MainActivity.appUser.getCurrentPoints() - costFinal );
-                            docRefArray.get(position).getId();
-                            buyATrophy( docRefArray.get(position).getId(), costFinal);
-                            fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
-                        }
-                    });
+//                    holder.BTTrophyInteraction.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            //MainActivity.appUser.setCurrentPoints( MainActivity.appUser.getCurrentPoints() - costFinal );
+//
+//                            showPopUp(t);
+//
+////                            docRefArray.get(position).getId();
+////                            buyATrophy( docRefArray.get(position).getId(), costFinal);
+////                            fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
+//                        }
+//                    });
                 }
             }
         });
@@ -107,6 +127,72 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
             CLTrophyBackground = (ConstraintLayout) itemView.findViewById(R.id.CLTrophyBackground);
         }
     }
+
+    public void  showPopUp(Trophy t, String Id){
+
+        //Dialog dialog = new Dialog(context);
+        //dialog.setContentView(R.layout.shop_popup);
+
+        System.out.println(t.getName() + " : " + Id);
+
+        AlertDialog.Builder dialogBuilder;
+        AlertDialog dialog;
+
+        dialogBuilder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View contactPopupView = inflater.inflate(R.layout.shop_popup, null, false);
+
+        TextView TVTrophyMinimalistic;
+        TextView TVTrophyTitle;
+        TextView TVTrophyDescription;
+        TextView TVTrophyPointsValue;
+
+        ImageView IVTrophyMinimalistic;
+
+        Button BTShopBuy;
+        Button BTShopNotBuy;
+
+        TVTrophyTitle = (TextView) contactPopupView.findViewById(R.id.TVTrophyTitle);
+        TVTrophyDescription = (TextView) contactPopupView.findViewById(R.id.TVTrophyDescription);
+        TVTrophyPointsValue = (TextView) contactPopupView.findViewById(R.id.TVTrophyPointsValue);
+        IVTrophyMinimalistic = (ImageView) contactPopupView.findViewById(R.id.IVTrophyMinimalistic);
+        BTShopBuy = (Button) contactPopupView.findViewById(R.id.BTShopBuy);
+        BTShopNotBuy = (Button) contactPopupView.findViewById(R.id.BTShopNotBuy);
+
+
+        TVTrophyTitle.setText(t.getName());
+        TVTrophyDescription.setText(t.getDescription());
+        TVTrophyPointsValue.setText(String.valueOf(t.getCost()));
+        String imageName = t.getImage();
+        IVTrophyMinimalistic.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
+
+        dialogBuilder.setView(contactPopupView);
+        dialog = dialogBuilder.create();
+
+        if( MainActivity.appUser.getCurrentPoints() < t.getCost()  ){
+            contactPopupView.findViewById(R.id.CLShopPopUpBuy).setBackgroundResource(R.drawable.round_corners_button_darkgray);
+        }else {
+
+            BTShopBuy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    buyATrophy( Id, t.getCost());
+                    fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
+                    dialog.dismiss();
+                }
+            });
+        }
+
+        BTShopNotBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
 
     public void buyATrophy(String trophyId, int cost){
         FirebaseFirestore db;
