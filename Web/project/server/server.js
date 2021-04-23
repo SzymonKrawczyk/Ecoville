@@ -19,6 +19,9 @@ app.use(require(`express-session`)({
 app.use(require(`body-parser`).json())
 app.use(require(`cors`)({credentials: true, origin: process.env.LOCAL_HOST}))
 
+// Static files for clients
+app.use(express.static('./public'));
+
 
 // Routers
 app.use(require(`../server/routes/administrators`))
@@ -32,8 +35,6 @@ app.use(require(`../server/routes/users`))
 
 //timers
 const timers = require(`./timers/missionTimers`)
-
-
 
 
 // Port

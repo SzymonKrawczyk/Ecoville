@@ -24,9 +24,6 @@ export default class UserTableRow extends Component
                 <td>
                     <Link to={"/UserEdit/" + this.props.user._id}>Details/Edit</Link>                  
                 </td>
-                <td>
-                    <Link to={"/UserDelete/" + this.props.user._id}>Delete</Link>    
-                </td>
             </tr>
         )
     }

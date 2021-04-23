@@ -4,7 +4,8 @@ var serviceAccount = require("C:/nodejs_projects/ecoville/server/config/key.json
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(serviceAccount)
+  , storageBucket: "ecoville-59eda.appspot.com/"
 });
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules

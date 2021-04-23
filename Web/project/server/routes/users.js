@@ -10,7 +10,7 @@ const trophyRef = firestore.db.collection('trophy');
 
 
 
- 
+  
 
 // List all records
 router.post(`/usersList/`, middleware.isLogged, middleware.isAdmin,  async (req,res) =>  {	
@@ -59,6 +59,30 @@ router.get(`/user/:id`,  middleware.isLogged, middleware.isAdmin, async (req, re
 		
 	} else {
         console.log('user ' + doc.data().firstName + " " + doc.data().lastName);
+		
+		
+		
+		// img
+		const profilePic = doc.data().profilePic;
+		
+		console.log(`Profile pic: ${profilePic}`);
+		
+		if (profilePic != null && typeof(profilePic) != 'undefined'){
+		
+			console.log(`Get user image ${profilePic}`);
+			
+			let bucket = firestore.admin.storage().bucket();
+			//console.log(bucket);
+			try {
+				await bucket.file("users/" + profilePic).download({destination: "./public/userImg/" + profilePic}); 
+			} catch (error) {
+				console.log("no pic");
+			}
+		}
+		
+		
+		
+		
         
         //totalPoints
         totalPointsArr = doc.data().totalPoints != null ? doc.data().totalPoints : [];
@@ -109,10 +133,11 @@ router.get(`/user/:id`,  middleware.isLogged, middleware.isAdmin, async (req, re
             confirmedMissions: doc.data().confirmedMissions,
             totalPoints: totalPointsProcessedArr,
             trophies: trophiesProcessedArr,
-
             _id: doc.id
         }
-
+		
+		if (profilePic != null && typeof(profilePic) != 'undefined') userObject.profilePic = doc.data().profilePic;
+		//console.log(userObject);
 		res.json(userObject);
 	}
 })
@@ -147,10 +172,20 @@ router.delete(`/user/:id`, middleware.isLogged, middleware.isAdmin, async (req, 
 	const id = req.params.id;
 
 	console.log(`Delete user ${req.params.id}`);
-	const del = await userRef.doc(id).delete();
-			
-	res.json({});     
-	   
+	
+	firestore.admin
+	  .auth()
+	  .deleteUser(id)
+	  .then(async () => {
+		const del = await userRef.doc(id).delete();
+		console.log('Successfully deleted user' + id);
+		res.json({}); 
+	  })
+	  .catch((error) => {
+		console.log('Error deleting user:', error);
+		res.json('Error deleting user:' + error); 
+	  });
+			  
 })
 
 // Add points to user
@@ -166,12 +201,12 @@ router.post(`/userAddPoints/:id/:points`, middleware.isLogged, middleware.isAdmi
 		
 	} else {
         console.log('adding points to user:  ${id}' + doc.data().firstName + " " + doc.data().lastName);
-        console.log('before: ' + doc.data().totalPointsSum + ', ' + doc.data().currentPoints );
+        console.log('before: '+ doc.data().currentPoints );
 
+		var pointsValidation = parseInt(doc.data().currentPoints) + parseInt(req.params.points);
+		
         userObject = {
-            currentPoints: parseInt(doc.data().currentPoints) + parseInt(req.params.points),
-            totalPointsSum: parseInt(doc.data().totalPointsSum) + parseInt(req.params.points),
-            _id: doc.id
+            currentPoints: pointsValidation > 0 ? pointsValidation : 0
         }
 
         const docE = await userRef.doc(id).set(userObject, { merge: true });
@@ -231,4 +266,59 @@ router.post(`/userDeleteTrophy/:id/:trophy_id`, middleware.isLogged, middleware.
 })
 
 
+// remove user's profile picture
+router.post(`/userDeletePic/:id`, middleware.isLogged, middleware.isAdmin, async (req, res) => {	
+	
+    const id = req.params.id;
+
+
+    const docU = await userRef.doc(id).get();
+
+    if (!docU.exists) {
+		
+        console.log('No user');
+        res.json({errorMessage: `No user: ${id}`});
+		
+    }else{
+
+		// img
+		const profilePic = docU.data().profilePic;
+		
+		console.log(`Profile pic: ${profilePic}`);
+		
+		if (profilePic != null && typeof(profilePic) != 'undefined'){
+		
+			
+			// delete from storage
+			try {
+				let bucket = firestore.admin.storage().bucket();
+			//console.log(bucket);
+				await bucket.file("users/" + profilePic).delete(); 
+			} catch (error) {
+				console.log("no pic");
+			}
+			
+			// delete from user
+			try {
+				await userRef.doc(id).update({
+				  profilePic: null
+				});
+			} catch (error) {
+				console.log("no pic field");
+			}
+			
+			// delete local
+			try { 
+				var fs = require('fs');
+				var filePath = './public/userImg/' + profilePic;
+				fs.unlinkSync(filePath);
+			} catch (error) {
+				console.log("no local pic");
+			}
+		}
+		console.log(`Deleted user image`);
+
+        res.json({});    
+    }
+})
 module.exports = router

@@ -208,6 +208,10 @@ a {
 }
 
 
+.userProfilePic {
+	height: 300px;
+	width: 300px;
+}
 
 .panel_button_container {
 	width: 800px;

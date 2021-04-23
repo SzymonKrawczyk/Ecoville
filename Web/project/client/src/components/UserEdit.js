@@ -23,10 +23,12 @@ export default class UserEdit extends Component {
 			, createdString: ""
             , totalPoints: []
 			, trophies: []
+			, profilePic: "default.jpg"
             , redirectToUsersList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, errorMessage: {}
 			, logout: false
 			, addPoints: 0
+			, canSubmit: true
         }
     }
 
@@ -80,6 +82,11 @@ export default class UserEdit extends Component {
 						trophies: res.data.trophies,
 						_id: res.data._id
                     });
+					
+					let tempPic = res.data.profilePic;
+					//console.log(tempPic);
+					if (tempPic != null && typeof(tempPic) != 'undefined') {this.setState({ profilePic: res.data.profilePic});}
+					console.log(`pic: ${SERVER_HOST}/userImg/${this.state.profilePic}`)
                 }
 				
             } else {
@@ -92,10 +99,29 @@ export default class UserEdit extends Component {
  
  
     handleChange = (e) =>  {
-		
         this.setState({[e.target.name]: e.target.value})
     }
 	
+	handlePointsChange = (e) =>  {
+
+		console.log(this.state.currentPoints)
+		console.log(parseInt(e.target.value) + parseInt(this.state.currentPoints))
+
+		if( parseInt(e.target.value) + parseInt(this.state.currentPoints) < 0 ){
+			this.setState({[e.target.name]: -1 * parseInt(this.state.currentPoints)})
+			this.setState({errorMessage: {
+				pointsError: 'Result has to be greater than 0',
+		  }
+		}) 
+		}else{
+			this.setState({[e.target.name]: e.target.value})
+			this.setState({errorMessage: {
+				pointsError: '',
+		  }}) 
+		}
+    }
+	
+
 	validate = () => {
 		
 		for (var key in this.state) {
@@ -108,20 +134,28 @@ export default class UserEdit extends Component {
         let lasstNameValidation = this.state.lastName.length >= 3;
 		
 		this.setState({errorMessage: {
-              firstNameError: firstNameValidation ? null : 'first name has to be at least 3 characters long',
+              pointsError: firstNameValidation ? null : 'first name has to be at least 3 characters long',
               lastNamenError: lasstNameValidation ? null : 'last name has to be at least 3 characters long',
 		}}) 
         return firstNameValidation && lasstNameValidation;
+	}
+	
+	toggleDeleteVisibility = () => {
+		let div = document.getElementById("deleteVisibilityDiv");
+		div.style.display = div.style.display == "none" ? "block" : "none";
 	}
 
 
 
     handleSubmit = (e) =>  {
 		
+
+
 		e.preventDefault();		
 		
-		if (this.validate()){
+		if (this.validate() && this.state.canSubmit){
 
+			this.state.canSubmit = false;
 
 			const userObject = {
                     firstName: this.state.firstName
@@ -132,6 +166,8 @@ export default class UserEdit extends Component {
 			axios.put(`${SERVER_HOST}/user/${this.props.match.params.id}`, userObject)
 			.then(res =>  {   
 			
+				this.state.canSubmit = true;
+
 				if(res.data) {
 					
 					if (res.data.isLogged == false || res.data.isAdmin == false) {
@@ -241,7 +277,7 @@ export default class UserEdit extends Component {
 
 					<tr>
 						<td>
-							Add points
+							Modify current points
 						</td>
 						<td>
 							<table className="table table_user_spec">
@@ -257,7 +293,7 @@ export default class UserEdit extends Component {
 															type="number" 
 															name="addPoints" 
 															value={this.state.addPoints}
-															onChange={this.handleChange}/>
+															onChange={this.handlePointsChange}/>
 														</td>
 														<td>
 															<Link to={"/UserAddPoints/" + this.state._id + "/" + this.state.addPoints}>Confirm</Link>
@@ -271,7 +307,9 @@ export default class UserEdit extends Component {
 							</table>
 							
 						</td>
-						<td></td>
+						<td>
+							<span className="error_msg">{this.state.errorMessage.pointsError}</span>
+						</td>
 					</tr>
 
 					<tr>
@@ -337,6 +375,33 @@ export default class UserEdit extends Component {
 						<td>
 							{this.state.createdString}
 						</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>
+							Profile Picture
+						</td>
+						<td>
+							<img className="userProfilePic" src={SERVER_HOST + "/userImg/" + this.state.profilePic} alt="Profile Picture"/>
+						</td>
+						<td>
+							{ this.state.profilePic != "default.jpg" ? <Link to={"/UserDeletePic/" + this.state._id}>Delete</Link> : ""}						
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							Manage User
+						</td>
+						<td>
+							<LinkInClass className="linkInClass" value="Delete User" onClick={this.toggleDeleteVisibility}/><br/>
+							<div id="deleteVisibilityDiv" style={{display: 'none', marginLeft: '30px'}}>
+								Are you sure?<br/>
+								<Link to={"/UserDelete/" + this.state._id}>Yes</Link>&nbsp;&nbsp;&nbsp;&nbsp;<LinkInClass className="linkInClass" value="No" onClick={this.toggleDeleteVisibility}/>
+							</div>
+						</td>
+						
 						<td></td>
 					</tr>
 					
