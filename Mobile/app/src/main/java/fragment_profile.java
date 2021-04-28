@@ -1,13 +1,16 @@
 package com.example.bottomnavigationview;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.graphics.Color;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,8 +23,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //import com.bumptech.glide.Glide;
 
@@ -40,6 +45,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.Timestamp;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -61,8 +67,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -95,6 +105,7 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
     TextView TVNewTrophyUnlocked;
     TextView TVCheckYourCollection;
 
+    ImageView IVProfile;
     ImageView IVTrophyInProfile;
     Button BProfileGoToCollection;
     Button BTProfileLogOut;
@@ -106,6 +117,7 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
     FirebaseFirestore db;
 
     int userRank;
+    Uri imageURL;
 
     public fragment_profile() {
         // Required empty public constructor
@@ -148,7 +160,7 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
 
         colors = new ArrayList<>(colorsGreen);
 
-        ImageView IVProfile = view.findViewById(R.id.IVProfile);
+        IVProfile = view.findViewById(R.id.IVProfile);
 
         if (MainActivity.appUser.getProfilePic() != null) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -164,8 +176,12 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
                     .into(IVProfile);
         }
 
-
-
+        IVProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadProfilePicture();
+            }
+        });
 
         MainActivity.userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -235,6 +251,63 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
         });
 
         return view;
+    }
+
+    public void uploadProfilePicture(){
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1 && resultCode==getActivity().RESULT_OK && data != null && data.getData() != null){
+            imageURL = data.getData();
+            IVProfile.setImageURI(imageURL);
+            uploadToFirebaseStorage();
+        }
+    }
+
+    public void uploadToFirebaseStorage(){
+        ProgressDialog pd = new ProgressDialog(getContext());
+        pd.setTitle("Uploading new Profile picture");
+        pd.show();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+
+        StorageReference riversRef = storageRef.child("users/"+MainActivity.userDocRef.getId());
+        UploadTask uploadTask = riversRef.putFile(imageURL);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                pd.dismiss();
+                Toast.makeText(getContext(), "Failed to upload profile picture", Toast.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                pd.dismiss();
+                //Snackbar.make(getActivity().findViewById(R.id.content), "new profile image uploaded", Snackbar.LENGTH_LONG);
+                MainActivity.appUser.setProfilePic(MainActivity.userDocRef.getId());
+                MainActivity.appUser._save(db);
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                double progressPercent = 100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount();
+                pd.setMessage("Progress: " + (int)progressPercent + " %");
+            }
+        });
     }
 
     private void getRank()
