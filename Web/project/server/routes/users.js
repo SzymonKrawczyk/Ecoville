@@ -173,6 +173,66 @@ router.delete(`/user/:id`, middleware.isLogged, middleware.isAdmin, async (req, 
 
 	console.log(`Delete user ${req.params.id}`);
 	
+	
+	// delete files
+
+    const docU = await userRef.doc(id).get();
+
+    if (!docU.exists) {
+		
+        console.log('No user');
+		
+    }else{
+
+		// img
+		const profilePic = docU.data().profilePic;
+		
+		console.log(`Profile pic: ${profilePic}`);
+		
+		if (profilePic != null && typeof(profilePic) != 'undefined'){
+		
+			
+			// delete from storage
+			try {
+				let bucket = firestore.admin.storage().bucket();
+			//console.log(bucket);
+				await bucket.file("users/" + profilePic).delete(); 
+			} catch (error) {
+				console.log("no pic");
+			}
+			
+			// delete from user
+			try {
+				await userRef.doc(id).update({
+				  profilePic: null
+				});
+			} catch (error) {
+				console.log("no pic field");
+			}
+			
+			// delete local
+			try { 
+				var fs = require('fs');
+				var filePath = './public/userImg/' + profilePic;
+				fs.unlinkSync(filePath);
+			} catch (error) {
+				console.log("no local pic");
+			}
+		}
+		console.log(`Deleted user image`);
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	firestore.admin
 	  .auth()
 	  .deleteUser(id)
