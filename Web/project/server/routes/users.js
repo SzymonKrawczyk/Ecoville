@@ -7,6 +7,9 @@ const userRef = firestore.db.collection('user');
 const categoryRef = firestore.db.collection('category');
 const missionRef = firestore.db.collection('mission');
 const trophyRef = firestore.db.collection('trophy');
+const postRef = firestore.db.collection('post');
+
+const appDataRef = firestore.db.collection('_appData');
 
 
 
@@ -133,6 +136,9 @@ router.get(`/user/:id`,  middleware.isLogged, middleware.isAdmin, async (req, re
             confirmedMissions: doc.data().confirmedMissions,
             totalPoints: totalPointsProcessedArr,
             trophies: trophiesProcessedArr,
+			
+            ban: doc.data().ban,
+			
             _id: doc.id
         }
 		
@@ -183,6 +189,24 @@ router.delete(`/user/:id`, middleware.isLogged, middleware.isAdmin, async (req, 
         console.log('No user');
 		
     }else{
+		
+		//add to ban list
+		
+		const docApp = await appDataRef.doc('bannedUsers').get();
+		
+		if (docApp.exists) {
+			
+			let newObj = {
+				emails: docApp.data().emails
+			}
+			newObj.emails.push(docU.data().email);
+			
+			const docAU = await appDataRef.doc('bannedUsers').set(newObj, { merge: true });
+		}
+		
+		
+		
+		
 
 		// img
 		const profilePic = docU.data().profilePic;
@@ -247,6 +271,53 @@ router.delete(`/user/:id`, middleware.isLogged, middleware.isAdmin, async (req, 
 	  });
 			  
 })
+
+// tempBan
+//if (new Date(missionObject.when) <= new Date()) dateValidation = false;
+//		missionObject.when = firestore.admin.firestore.Timestamp.fromDate(new Date(missionObject.when));
+//
+router.put(`/userTempBan/:id`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, async (req, res) => {	
+	
+	const id = req.params.id;
+
+	console.log(`Temp ban user ${req.params.id}`);
+	
+
+    const doc = await userRef.doc(id).get();
+
+    if (!doc.exists) {
+		
+        console.log('No user');
+		
+		return res.json({});
+		
+    }else{
+
+		try {
+			
+			const firestoreBanDate = firestore.admin.firestore.Timestamp.fromDate(new Date(req.body.ban));
+			
+			let tempUser = {
+				ban: firestoreBanDate
+			};
+			const docU = await userRef.doc(id).set(tempUser, { merge: true });
+			
+			return res.json({});
+			
+		} catch (error) {
+			console.log("Bad date");
+			console.log(error);
+			
+			const errorMessage = {
+				banError: 'date in format dd/mm/yyyy hh:mm:ss is required'
+			}
+			
+			return res.json({errorMessage});
+		}
+    }
+				  
+})
+
 
 // Add points to user
 router.post(`/userAddPoints/:id/:points`, middleware.isLogged, middleware.isAdmin, async (req, res) => {	
@@ -322,6 +393,47 @@ router.post(`/userDeleteTrophy/:id/:trophy_id`, middleware.isLogged, middleware.
                 res.json({});     	   
             }
         }
+    }
+})
+
+// delete all posts
+router.post(`/userDeletePosts/:id`, middleware.isLogged, middleware.isAdmin, async (req, res) => {	
+	
+    const id = req.params.id;
+
+
+    const doc = await userRef.doc(id).get();
+
+    if (!doc.exists) {
+		
+        console.log('No user');
+        res.json({errorMessage: `No user: ${id}`});
+		
+    }else{
+
+		const userRefCurrent = userRef.doc(id);
+		const queryRef = await postRef.where('id_user', '==', userRefCurrent).get();
+		
+		if (queryRef.empty) {
+		  console.log('No matching posts.');
+		  res.json({});
+		  return;
+		}  
+
+		let tempPostArr = [];
+		queryRef.forEach(doca => {
+			
+			tempPostArr.push(doca.id);
+		});
+		
+		for (let i = 0; i < tempPostArr.length; ++i){
+			
+			const del = await postRef.doc(tempPostArr[i]).delete();
+		}
+
+		console.log(`deleted posts made by user: ${id}`);
+		
+        res.json({});    
     }
 })
 

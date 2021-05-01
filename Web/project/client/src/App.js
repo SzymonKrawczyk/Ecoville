@@ -43,6 +43,7 @@ import UserEdit from "./components/UserEdit"
 import UserAddPoints from "./components/UserAddPoints"
 import UserDeleteTrophy from "./components/UserDeleteTrophy"
 import UserDeletePic from "./components/UserDeletePic"
+import UserDeletePosts from "./components/UserDeletePosts"
 
 import PrivateRoute from "./components/PrivateRoute"
 
@@ -103,6 +104,7 @@ export default class App extends Component
                     <PrivateRoute exact path="/UserAddPoints/:idm/:idu" component={UserAddPoints} />
                     <PrivateRoute exact path="/UserDeleteTrophy/:idm/:idu" component={UserDeleteTrophy} />
                     <PrivateRoute exact path="/UserDeletePic/:id" component={UserDeletePic} />
+                    <PrivateRoute exact path="/UserDeletePosts/:id" component={UserDeletePosts} />
 					
                     <Route path="*" component={Login}/>
                 </Switch>

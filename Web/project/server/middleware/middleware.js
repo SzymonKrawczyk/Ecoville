@@ -84,7 +84,7 @@ const validateAdministratorObject = async (req, res, next) => {
 
 
 const validateMissionObject = async (req, res, next) => {
-	
+	const id = req.params.id;
     let missionObject = req.body;
 	console.log(`missionObject`);
 	console.log(missionObject);
@@ -169,7 +169,7 @@ const validateMissionObject = async (req, res, next) => {
 		, requiredParticipantsError: requiredParticipantsValidation ? null : 'value has to be greater than 0'
 	}
 	
-	if (!(nameValidation && categoryValidation && pointsValidation && dateValidation && durationValidation && locationValidation && descriptionValidation && requiredParticipantsValidation)) {
+	if (!(nameValidation && categoryValidation && pointsValidation && dateValidation && durationValidation && locationValidation && descriptionValidation && requiredParticipantsValidation && nameIsUsedValidation)) {
 		return res.json({errorMessage});
 	} else {
 		return next();
