@@ -1,8 +1,9 @@
-package com.example.ecoville_app_S.model;
+package com.example.bottomnavigationview.model;
 
-import com.example.ecoville_app_S.MainActivity;
-import com.example.ecoville_app_S.fragment_home_missions;
+import com.example.bottomnavigationview.MainActivity;
+import com.example.bottomnavigationview.fragment_home_missions;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -15,6 +16,7 @@ import java.util.Map;
 
 public class User {
 
+    private Timestamp ban;
     private Timestamp created;
     private int currentPoints;
     private String email;
@@ -30,17 +32,18 @@ public class User {
 
     public User(){}
 
-    public User(Timestamp created, int currentPoints, String email, String firstName, String lastName,
-                ArrayList<HashMap<String, Object>> totalPoints, Integer totalPointsSum,
+    public User(Timestamp ban, Timestamp created, int currentPoints, String email, String firstName,
+                String lastName, ArrayList<HashMap<String, Object>> totalPoints, Integer totalPointsSum,
                 ArrayList<HashMap<String, Object>> trophies, int confirmedMissions, String profilePic) {
+        this.ban = ban;
+        this.created = created;
+        this.currentPoints = currentPoints;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.totalPoints = totalPoints;
         this.totalPointsSum = totalPointsSum;
         this.trophies = trophies;
-        this.created = created;
-        this.currentPoints = currentPoints;
         this.confirmedMissions = confirmedMissions;
         this.profilePic = profilePic;
     }
@@ -105,10 +108,27 @@ public class User {
         }
     }
 
+    public boolean _isUserBanned(){
+        if(ban == null)
+            return false;
+        Date date = new Date();
+        long time = date.getTime();
+        return time/1000 < ban.getSeconds();
+    }
+
+    public String _getEndOfBanDate () {
+        SimpleDateFormat sfd = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return sfd.format(ban.toDate());
+    }
+
     public void _save(FirebaseFirestore db) {
         db.collection("user").document(MainActivity.userDocRef.getId()).set(this);
         //db.collection("user").document("123").set(this);
     }
+
+    public Timestamp getBan() { return ban; }
+
+    public void setBan(Timestamp ban) { this.ban = ban; }
 
     public int getTotalPointsSum() { return totalPointsSum != null ? totalPointsSum : 0; }
 

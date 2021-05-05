@@ -3,6 +3,7 @@ package com.example.bottomnavigationview.model;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bottomnavigationview.LogIn;
 import com.example.bottomnavigationview.MainActivity;
 import com.example.bottomnavigationview.R;
+import com.example.bottomnavigationview.UserBannedErrorActivity;
 import com.example.bottomnavigationview.fragment_connection_error;
 import com.example.bottomnavigationview.fragment_home_tips;
 import com.example.bottomnavigationview.fragment_shop;
@@ -176,9 +178,17 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
             BTShopBuy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    buyATrophy( Id, t.getCost());
-                    fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
-                    dialog.dismiss();
+
+                    if(MainActivity.appUser._isUserBanned()){
+                        dialog.dismiss();
+                        Intent intent = new Intent(context.getApplicationContext(), UserBannedErrorActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(intent);
+                    }else{
+                        buyATrophy( Id, t.getCost());
+                        fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
+                        dialog.dismiss();
+                    }
                 }
             });
         }
