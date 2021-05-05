@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
 import android.os.Bundle;
 
@@ -15,10 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.ecoville_app_S.model.Trophy;
-import com.example.ecoville_app_S.model.User;
-import com.example.ecoville_app_S.model.fragment_profile_all_trophies_adapter;
-import com.example.ecoville_app_S.model.fragment_shop_adapter;
+import com.example.bottomnavigationview.model.Trophy;
+import com.example.bottomnavigationview.model.User;
+import com.example.bottomnavigationview.model.fragment_profile_all_trophies_adapter;
+import com.example.bottomnavigationview.model.fragment_shop_adapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -94,8 +94,6 @@ public class fragment_profile_all_trophies extends Fragment {
         BTProfileCollection = (Button) view.findViewById(R.id.BTProfileCollection);
 
 
-
-
         ImageView IVProfile = view.findViewById(R.id.IVProfile);
 
         if (MainActivity.appUser.getProfilePic() != null) {
@@ -111,12 +109,6 @@ public class fragment_profile_all_trophies extends Fragment {
                     .load(pathReference)
                     .into(IVProfile);
         }
-
-
-
-
-
-
 
         db = FirebaseFirestore.getInstance();
         rv = (RecyclerView) view.findViewById(R.id.RVProfileAll);
@@ -193,9 +185,6 @@ public class fragment_profile_all_trophies extends Fragment {
             });
         }
     }
-
-
-
 
     private void setRecycleViewContent(){
         if(trophiesList.size() == numberOfTrophies){

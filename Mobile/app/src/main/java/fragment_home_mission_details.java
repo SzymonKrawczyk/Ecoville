@@ -1,5 +1,6 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.ecoville_app_S.model.Mission;
-import com.example.ecoville_app_S.model.Tip;
+import com.example.bottomnavigationview.model.Mission;
+import com.example.bottomnavigationview.model.Tip;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -103,8 +104,14 @@ public class fragment_home_mission_details extends Fragment {
                             BTMissionDetailsSubmit.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    mission._removeUser(MainActivity.userDocRef, db);
-                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_mission_details()).addToBackStack(null).commit();
+                                    if(MainActivity.appUser._isUserBanned()){
+                                        Intent intent = new Intent(getActivity(), UserBannedErrorActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                    }else{
+                                        mission._removeUser(MainActivity.userDocRef, db);
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_mission_details()).addToBackStack(null).commit();
+                                    }
                                 }
                             });
 
@@ -113,8 +120,14 @@ public class fragment_home_mission_details extends Fragment {
                             BTMissionDetailsSubmit.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    mission._addUser(MainActivity.userDocRef, db);
-                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_mission_details()).addToBackStack(null).commit();
+                                    if(MainActivity.appUser._isUserBanned()){
+                                        Intent intent = new Intent(getActivity(), UserBannedErrorActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                    }else{
+                                        mission._addUser(MainActivity.userDocRef, db);
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_mission_details()).addToBackStack(null).commit();
+                                    }
                                 }
                             });
                         }

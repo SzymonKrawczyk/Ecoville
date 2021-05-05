@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
 import android.os.Bundle;
 
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.ecoville_app_S.model.Mission;
+import com.example.bottomnavigationview.model.Mission;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -74,7 +74,6 @@ public class fragment_home_missions extends Fragment {
         /*CVMission1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_mission_details()).addToBackStack(null).commit();
             }
         });*/
@@ -107,7 +106,7 @@ public class fragment_home_missions extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NonNull MissionViewHolder holder, int position, @NonNull Mission model) {
-               // System.out.println("here 4");
+                // System.out.println("here 4");
 
                 holder.TVMissionName.setText(model.getName().toUpperCase());
 
@@ -160,7 +159,7 @@ public class fragment_home_missions extends Fragment {
                     }
                 });
 
-               // System.out.println("here 6");
+                // System.out.println("here 6");
             }
         };
 
@@ -185,7 +184,7 @@ public class fragment_home_missions extends Fragment {
         public MissionViewHolder(@NonNull View itemView) {
             super(itemView);
 
-           // System.out.println("here 5");
+            // System.out.println("here 5");
 
             TVMissionNew  = (TextView) itemView.findViewById(R.id.TVMissionNew);
             TVMissionName = (TextView) itemView.findViewById(R.id.TVMissionName);

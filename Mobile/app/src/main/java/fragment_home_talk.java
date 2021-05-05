@@ -1,5 +1,6 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,10 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.ecoville_app_S.model.Mission;
-import com.example.ecoville_app_S.model.Post;
-import com.example.ecoville_app_S.model.Tip;
-import com.example.ecoville_app_S.model.User;
+import com.example.bottomnavigationview.model.Mission;
+import com.example.bottomnavigationview.model.Post;
+import com.example.bottomnavigationview.model.Tip;
+import com.example.bottomnavigationview.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -125,31 +126,39 @@ public class fragment_home_talk extends Fragment {
         BTPostSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String content = ETMLPostContent.getText().toString().trim();
-                Timestamp time = new Timestamp(new Date());
 
-                if (content.length() <= 512) {
+                if(MainActivity.appUser._isUserBanned()){
+                    onStop();
+                    Intent intent = new Intent(getActivity(), UserBannedErrorActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }else{
+                    String content = ETMLPostContent.getText().toString().trim();
+                    Timestamp time = new Timestamp(new Date());
+
+                    if (content.length() <= 512) {
 
 
-                Post post = new Post(MainActivity.userDocRef, content, time);
+                        Post post = new Post(MainActivity.userDocRef, content, time);
 
-                db.collection("post").add(post)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_talk()).addToBackStack(null).commit();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
-                            }
-                        });
+                        db.collection("post").add(post)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_talk()).addToBackStack(null).commit();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
+                                    }
+                                });
 
-                } else {
-                    Toast toast = Toast.makeText(getContext(), "Message is too long", Toast.LENGTH_LONG);
-                    toast.show();
+                    } else {
+                        Toast toast = Toast.makeText(getContext(), "Message is too long", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
                 }
             }
         });

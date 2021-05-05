@@ -179,7 +179,13 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
         IVProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadProfilePicture();
+                if(MainActivity.appUser._isUserBanned()){
+                    Intent intent = new Intent(getActivity(), UserBannedErrorActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }else{
+                    uploadProfilePicture();
+                }
             }
         });
 
@@ -202,7 +208,7 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
                         MainActivity.logout();
                         Intent intent = new Intent(getActivity(), LogIn.class);
                         // Uwaga: wyczyszczenie flag zablokuje mozliwosc powrotu do poprzedniego ekranu, ale w zamian korzystajac z przycisku
-                        // powrotu wywali uzytkownika do ekranu (zminimalizuje apke) alternatywa: przekierowywac do ekranu z errorem.
+                        // powrotu wywali uzytkownika do ekranu (zminimalizuje apke)
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
@@ -238,6 +244,10 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
                 IVTrophyInProfile = (ImageView) view.findViewById(R.id.IVTrophyInProfile);
 
                 PieChartProfile = (PieChart) view.findViewById(R.id.PieChartProfile);
+                if(MainActivity.appUser.getTotalPointsSum()==0)
+                {
+                    PieChartProfile.setVisibility(View.INVISIBLE);
+                }
                 //setUpPieChart();
                 //populatePieChart();
 
@@ -254,12 +264,13 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
     }
 
     public void uploadProfilePicture(){
-
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 1);
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -267,7 +278,6 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==1 && resultCode==getActivity().RESULT_OK && data != null && data.getData() != null){
             imageURL = data.getData();
-            IVProfile.setImageURI(imageURL);
             uploadToFirebaseStorage();
         }
     }
@@ -298,6 +308,7 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
                 // ...
                 pd.dismiss();
                 //Snackbar.make(getActivity().findViewById(R.id.content), "new profile image uploaded", Snackbar.LENGTH_LONG);
+                IVProfile.setImageURI(imageURL);
                 MainActivity.appUser.setProfilePic(MainActivity.userDocRef.getId());
                 MainActivity.appUser._save(db);
             }
@@ -387,9 +398,6 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
         PieChartProfile.getDescription().setEnabled(false);
         PieChartProfile.setOnChartValueSelectedListener(this);
 
-
-
-
         Legend legend = PieChartProfile.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
@@ -467,6 +475,9 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.WHITE);
         PieChartProfile.setData(data);
+
+        PieChartProfile.setNoDataText("Get points to see the chat you lazy fuck");
+        PieChartProfile.setNoDataTextColor(Color.parseColor("#ffffff"));
 
         setRecycleView();
     }

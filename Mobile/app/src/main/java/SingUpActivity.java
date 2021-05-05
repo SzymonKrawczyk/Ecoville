@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,24 +11,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.ecoville_app_S.model.User;
+import com.example.bottomnavigationview.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SingUpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore FStore;
+    private FirebaseFirestore db;
     String userId;
 
     EditText _FirstName;
@@ -44,7 +50,7 @@ public class SingUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sing_up);
 
-        FStore = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
         _FirstName = (EditText) findViewById(R.id.ETFirstName);
@@ -70,7 +76,7 @@ public class SingUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(validation())
                 {
-                    createUser();
+                    bannedUsersValidation();
                 }
             }
         });
@@ -91,7 +97,7 @@ public class SingUpActivity extends AppCompatActivity {
                         Toast.makeText(SingUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
 
                         userId = mAuth.getCurrentUser().getUid();
-                        DocumentReference docRef = FStore.collection("user").document(userId);
+                        DocumentReference docRef = db.collection("user").document(userId);
 
                         User user = new User( Email, FName, LName);
                     /*
@@ -140,7 +146,7 @@ public class SingUpActivity extends AppCompatActivity {
         }
 
         if(Email.isEmpty()){
-            _Email.setError("Email adress is required!");
+            _Email.setError("Email address is required!");
             _Email.requestFocus();
             return false;
         }
@@ -157,8 +163,40 @@ public class SingUpActivity extends AppCompatActivity {
             return false;
         }
 
-        if(Password.length() < 6){
-            _Password.setError("Password can't have less than 6 characters!");
+        if(Password.length() < 8){
+            _Password.setError("Password can't have less than 8 characters!");
+            _Password.requestFocus();
+            return false;
+        }
+
+        Pattern letterLower = Pattern.compile("[a-z]");
+        Matcher hasLetterLower = letterLower.matcher(Password);
+        if(!hasLetterLower.find()){
+            _Password.setError("Password must contain at least one lowercase letter");
+            _Password.requestFocus();
+            return false;
+        }
+
+        Pattern letterUpper = Pattern.compile("[A-Z]");
+        Matcher hasLetterUpper = letterUpper.matcher(Password);
+        if(!hasLetterUpper.find()){
+            _Password.setError("Password must contain at least one uppercase letter");
+            _Password.requestFocus();
+            return false;
+        }
+
+        Pattern digit = Pattern.compile("[0-9]");
+        Matcher hasDigit = digit.matcher(Password);
+        if(!hasDigit.find()){
+            _Password.setError("Password must contain at least one digit");
+            _Password.requestFocus();
+            return false;
+        }
+
+        Pattern special = Pattern.compile("[^A-Za-z0-9]");
+        Matcher hasSpecial = special.matcher(Password);
+        if(!hasSpecial.find()){
+            _Password.setError("Password must contain at least one special character");
             _Password.requestFocus();
             return false;
         }
@@ -178,4 +216,21 @@ public class SingUpActivity extends AppCompatActivity {
         return true;
     }
 
+    public void bannedUsersValidation(){
+
+        String Email = _Email.getText().toString().trim();
+
+        CollectionReference emails = db.collection("_appData");
+        emails.whereArrayContains("emails", Email).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty()){
+                    _Email.setError("Given email address is on the naughty kids list");
+                    _Email.requestFocus();
+                }else {
+                    createUser();
+                }
+            }
+        });
+    }
 }

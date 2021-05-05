@@ -1,8 +1,9 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 
@@ -20,7 +21,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.ecoville_app_S.model.User;
+import com.example.bottomnavigationview.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,12 +43,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        BottomNavigationView BNV = findViewById(R.id.bottomNavigationView);
-        BNV.setOnNavigationItemSelectedListener(bnvListener);
-
-        //setUser();
+        if(appUser._isUserBanned()) {
+            Intent intent = new Intent(getApplicationContext(), UserBannedErrorActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }else{
+            setContentView(R.layout.activity_main);
+            BottomNavigationView BNV = findViewById(R.id.bottomNavigationView);
+            BNV.setOnNavigationItemSelectedListener(bnvListener);
+        }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener bnvListener=
@@ -106,6 +110,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
