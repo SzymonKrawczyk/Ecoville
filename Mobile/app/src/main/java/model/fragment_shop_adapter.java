@@ -219,11 +219,13 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
                         if( MainActivity.appUser.getCurrentPoints() >= cost  && documentSnapshotT.toObject(Trophy.class) != null){
                             MainActivity.appUser.setCurrentPoints( MainActivity.appUser.getCurrentPoints() - cost );
                             DocumentReference docRef = db.collection("trophy").document(trophyId);
-                            MainActivity.appUser._addTrophy(docRef, db);
-
-                            fragment_shop.TotalPoints.setText(String.valueOf(MainActivity.appUser.getCurrentPoints()));
-                            fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
-                            Toast.makeText(fragmentActivity, "You have successfully purchased a trophy", Toast.LENGTH_LONG).show();
+                            if(!MainActivity.appUser._addTrophy(docRef, db)){
+                                fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
+                            }else{
+                                fragment_shop.TotalPoints.setText(String.valueOf(MainActivity.appUser.getCurrentPoints()));
+                                fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
+                                Toast.makeText(fragmentActivity, "You have successfully purchased a trophy", Toast.LENGTH_LONG).show();
+                            }
                         }else{
                             fragment_shop.TotalPoints.setText(String.valueOf(MainActivity.appUser.getCurrentPoints()));
                             Toast.makeText(fragmentActivity, "Error, try again.", Toast.LENGTH_LONG).show();

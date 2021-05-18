@@ -2,6 +2,7 @@ package com.example.bottomnavigationview.model;
 
 import com.example.bottomnavigationview.MainActivity;
 import com.example.bottomnavigationview.fragment_home_missions;
+import com.example.bottomnavigationview.tcpClient;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -48,7 +49,7 @@ public class User {
         this.profilePic = profilePic;
     }
 
-    public User(String email, String firstName, String lastName) {
+    public User(String email, String firstName, String lastName, Date date) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -56,7 +57,7 @@ public class User {
         this.totalPointsSum = 0;
         this.trophies = new ArrayList<HashMap<String, Object>>();
         this.currentPoints = 0;
-        this.created = new Timestamp(new Date());
+        this.created = new Timestamp(date);
         this.confirmedMissions = 0;
         this.profilePic = null;
     }
@@ -81,39 +82,48 @@ public class User {
         }
     }
 
-    public void _addTrophy(DocumentReference trophyDocRef, FirebaseFirestore db) {
+    public boolean _addTrophy(DocumentReference trophyDocRef, FirebaseFirestore db) {
         if (trophies == null) trophies = new ArrayList<HashMap<String, Object>>();
-
-
 
         boolean already_have_this_trophy=false;
         for(int i=0; i<trophies.size(); i++){
-
             for ( String key : trophies.get(i).keySet() ) {
-
                 if ( trophies.get(i).get(key) == trophyDocRef ) { already_have_this_trophy=true; }
             }
         }
 
         if(!already_have_this_trophy)
         {
-            HashMap<String, Object> HM = new HashMap<>();
+            Date date = MainActivity.getDateFromServer();
 
-            HM.put("trophy_id", trophyDocRef);
-            HM.put("unlockDate", new Timestamp(new Date()));
+            if(date != null)
+            {
+                HashMap<String, Object> HM = new HashMap<>();
 
-            trophies.add( HM );
+                HM.put("trophy_id", trophyDocRef);
+                HM.put("unlockDate", new Timestamp( date));
 
-            _save(db);
+                trophies.add( HM );
+                _save(db);
+                return true;
+            }else{
+                return false;
+            }
         }
+        return false;
     }
 
     public boolean _isUserBanned(){
         if(ban == null)
             return false;
-        Date date = new Date();
-        long time = date.getTime();
-        return time/1000 < ban.getSeconds();
+
+        Date date = MainActivity.getDateFromServer();
+        if(date != null)
+        {
+            long time = date.getTime();
+            return time/1000 < ban.getSeconds();
+        }
+        return true;
     }
 
     public String _getEndOfBanDate () {

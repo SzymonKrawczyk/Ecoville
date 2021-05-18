@@ -1,6 +1,8 @@
-package com.example.ecoville_app_S.model;
+package com.example.bottomnavigationview.model;
 
-import com.example.ecoville_app_S.fragment_home_missions;
+import com.example.bottomnavigationview.MainActivity;
+import com.example.bottomnavigationview.fragment_home_missions;
+import com.example.bottomnavigationview.tcpClient;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -55,15 +57,24 @@ public class Mission {
     public boolean _isNew() {
 
         Date date = new Date();
-        long time = date.getTime();
-        return _isAvailable() && (time/1000 - added.getSeconds()) < 60*60*24*7;
+        if(date != null)
+        {
+            long time =date.getTime();
+            return _isAvailable() && (time/1000 - added.getSeconds()) < 60*60*24*7;
+        }else{
+            return false;
+        }
     }
 
     public boolean _isAvailable() {
 
         Date date = new Date();
-        long time = date.getTime();
-        return time/1000 < when.getSeconds();
+        if(date != null){
+            long time = date.getTime();
+            return time/1000 < when.getSeconds();
+        }else{
+            return false;
+        }
     }
 
     public boolean _hasUser(DocumentReference userDocRef) {
@@ -86,6 +97,15 @@ public class Mission {
 
     public void _addUser(DocumentReference userDocRef, FirebaseFirestore db) {
 
+        Date date = MainActivity.getDateFromServer();
+        if(date != null)
+        {
+            long time = date.getTime();
+            if(time/1000 >= when.getSeconds()){
+                return;
+            }
+        }else { return; }
+
         boolean userAlreadyIn = false;
         for(HashMap<String, Object> currentUser : getCurrentParticipants()) {
 
@@ -105,6 +125,15 @@ public class Mission {
 
     public void _removeUser(DocumentReference userDocRef, FirebaseFirestore db) {
         if (currentParticipants == null) return;
+
+        Date date = MainActivity.getDateFromServer();
+        if(date != null)
+        {
+            long time = date.getTime();
+            if(time/1000 >= when.getSeconds()){
+                return;
+            }
+        }else { return; }
 
         for(HashMap<String, Object> currentUser : getCurrentParticipants()) {
 
