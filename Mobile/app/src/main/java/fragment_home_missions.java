@@ -55,7 +55,8 @@ public class fragment_home_missions extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home_missions, container, false);
 
-        date = MainActivity.getDateFromServer();
+        //date = MainActivity.getDateFromServer();
+        date = new Date();
         if(date == null) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
         }
