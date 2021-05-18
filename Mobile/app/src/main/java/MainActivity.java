@@ -34,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.security.PublicKey;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -109,5 +110,20 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
             }
         });
+    }
+
+    public static Date getDateFromServer()
+    {
+        try {
+            tcpClient mTcpClient = new tcpClient();
+            Thread thread = new Thread(mTcpClient);
+            thread.start();
+            thread.join();
+            System.out.println("Login date: " + mTcpClient.serverTime);
+            return mTcpClient.serverTime;
+        } catch (InterruptedException e) {
+            System.err.println("Tcp interrupted!!");
+            return null;
+        }
     }
 }

@@ -134,10 +134,19 @@ public class fragment_home_talk extends Fragment {
                     startActivity(intent);
                 }else{
                     String content = ETMLPostContent.getText().toString().trim();
-                    Timestamp time = new Timestamp(new Date());
 
-                    if (content.length() <= 512) {
+                    //Timestamp time = new Timestamp(new Date());
+                    Timestamp time = null;
 
+                    Date date = MainActivity.getDateFromServer();
+                    if(date != null)
+                    {
+                        time = new Timestamp(date);
+                    }else{
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
+                    }
+
+                    if (content.length() <= 512 && time != null) {
 
                         Post post = new Post(MainActivity.userDocRef, content, time);
 

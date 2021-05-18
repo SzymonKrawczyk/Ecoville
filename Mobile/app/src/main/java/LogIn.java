@@ -1,17 +1,18 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
         import androidx.annotation.NonNull;
         import androidx.appcompat.app.AppCompatActivity;
 
         import android.content.Intent;
         import android.os.Bundle;
+        import android.os.StrictMode;
         import android.util.Patterns;
         import android.view.View;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.Toast;
 
-        import com.example.ecoville_app_S.model.User;
+        import com.example.bottomnavigationview.model.User;
         import com.google.android.gms.tasks.OnCompleteListener;
         import com.google.android.gms.tasks.OnFailureListener;
         import com.google.android.gms.tasks.OnSuccessListener;
@@ -50,6 +51,8 @@ public class LogIn extends AppCompatActivity {
         SingUp = (Button) findViewById(R.id.BSingup);
         ForgetPassword = (Button) findViewById(R.id.BForgetPassword);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         SingUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +120,6 @@ public class LogIn extends AppCompatActivity {
                 Toast.makeText(LogIn.this, "You successfully log in :)", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

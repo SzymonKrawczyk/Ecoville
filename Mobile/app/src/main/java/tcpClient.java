@@ -1,16 +1,19 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
+
+import com.google.api.Logging;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.Date;
 
 public class tcpClient implements Runnable {
 
     public Date serverTime;
 
-    public static final String SERVER_IP = "192.168.1.11"; //server IP address
+    public static final String SERVER_IP = "10.7.67.135"; //server IP address
     public static final int SERVER_PORT = 8052;
     // message to send to the server
     private String mServerMessage;
@@ -71,31 +74,25 @@ public class tcpClient implements Runnable {
 
                 //in this while the client listens for the messages sent by the server
                 while (mRun) {
-
                     mServerMessage = mBufferIn.readLine();
-
                     if (mServerMessage != null) {
                         //call the method messageReceived from MyActivity class
                         System.out.println("RESPONSE FROM SERVER - Received Message: '" + mServerMessage + "'");
                         mRun = false;
 
                         serverTime = new Date(Long.parseLong(mServerMessage));
-
                     }
-
                 }
                 stopClient();
-
-
-            } catch (Exception e) {
-
+            }  catch (SocketTimeoutException exception) {
+                // Output expected SocketTimeoutExceptions.
+                serverTime = null;
+                System.out.println("TCP - Error" + exception);
+            }  catch (Exception e) {
                 System.out.println("TCP - Error" + e);
-
-            } finally {
-
+            }finally {
                 socket.close();
             }
-
         } catch (Exception e) {
             System.out.println("TCP - Error" + e);
         }

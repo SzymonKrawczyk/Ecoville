@@ -26,6 +26,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -89,7 +90,10 @@ public class SingUpActivity extends AppCompatActivity {
         String Email = _Email.getText().toString().trim();
         String Password = _Password.getText().toString().trim();
 
-        if(validation()) {
+        Date date = MainActivity.getDateFromServer();
+        if(date == null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
+        }else{
             mAuth.createUserWithEmailAndPassword(Email, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -99,16 +103,7 @@ public class SingUpActivity extends AppCompatActivity {
                         userId = mAuth.getCurrentUser().getUid();
                         DocumentReference docRef = db.collection("user").document(userId);
 
-                        User user = new User( Email, FName, LName);
-                    /*
-                    Map<String, Object>user = new HashMap<>();
-                    user.put("firstName", FName);
-                    user.put("lastName", LName);
-                    user.put("email", Email);
-                    user.put("password", Password);
-                    */
-
-
+                        User user = new User( Email, FName, LName, date);
                         docRef.set(user).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
@@ -116,6 +111,14 @@ public class SingUpActivity extends AppCompatActivity {
                             }
                         });
                         startActivity(new Intent(getApplicationContext(), LogIn.class));
+
+                    /*
+                    Map<String, Object>user = new HashMap<>();
+                    user.put("firstName", FName);
+                    user.put("lastName", LName);
+                    user.put("email", Email);
+                    user.put("password", Password);
+                    */
                     } else {
                         Toast.makeText(SingUpActivity.this, "Something went wrong :c \n " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }

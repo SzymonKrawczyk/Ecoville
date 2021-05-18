@@ -22,6 +22,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.Date;
+
 
 public class fragment_home_missions extends Fragment {
 
@@ -36,10 +38,10 @@ public class fragment_home_missions extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    private Date date;
 
     private Button BTHomeTalk;
     private Button BTHomeTips;
-
 
     RecyclerView rv;
     FirebaseFirestore db;
@@ -52,6 +54,11 @@ public class fragment_home_missions extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home_missions, container, false);
+
+        date = MainActivity.getDateFromServer();
+        if(date == null) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
+        }
 
         BTHomeTalk = (Button) view.findViewById(R.id.BTHomeTalk);
         BTHomeTips = (Button) view.findViewById(R.id.BTHomeTips);
@@ -111,11 +118,16 @@ public class fragment_home_missions extends Fragment {
                 holder.TVMissionName.setText(model.getName().toUpperCase());
 
                 //System.out.println("here 9");
-                System.out.println(model.getName() + " | " + model._isAvailable());
+                //System.out.println(model.getName() + " | " + model._isAvailable());
                 //System.out.println("here 10");
-                if (model._isAvailable()) {
 
-                    if (model._isNew()) holder.TVMissionNew.setVisibility(View.VISIBLE);
+                //if (model._isAvailable()) {
+                if (date.getTime()/1000 < model.getWhen().getSeconds() ){
+
+                    //if (model._isNew()) holder.TVMissionNew.setVisibility(View.VISIBLE);
+                    if((date.getTime()/1000 - model.getAdded().getSeconds()) < 60*60*24*7){
+                        holder.TVMissionNew.setVisibility(View.VISIBLE);
+                    }
                     holder.CVMission.setBackgroundColor(getResources().getColor(R.color.white));
                     holder.TVMissionName.setTextColor(getResources().getColor(R.color.black));
                     holder.TVMissionPointsValue.setTextColor(getResources().getColor(R.color.lightGreen));
