@@ -26,6 +26,8 @@ public class User {
     private ArrayList<HashMap<String, Object>> totalPoints;
     private Integer totalPointsSum;
     private ArrayList<HashMap<String, Object>> trophies;
+    private ArrayList<HashMap<String, Object>> gadgets;
+
     private int confirmedMissions;
 
     private String profilePic;
@@ -35,7 +37,8 @@ public class User {
 
     public User(Timestamp ban, Timestamp created, int currentPoints, String email, String firstName,
                 String lastName, ArrayList<HashMap<String, Object>> totalPoints, Integer totalPointsSum,
-                ArrayList<HashMap<String, Object>> trophies, int confirmedMissions, String profilePic) {
+                ArrayList<HashMap<String, Object>> trophies, ArrayList<HashMap<String, Object>> gadgets,
+                int confirmedMissions, String profilePic) {
         this.ban = ban;
         this.created = created;
         this.currentPoints = currentPoints;
@@ -45,9 +48,12 @@ public class User {
         this.totalPoints = totalPoints;
         this.totalPointsSum = totalPointsSum;
         this.trophies = trophies;
+        this.gadgets = gadgets;
         this.confirmedMissions = confirmedMissions;
         this.profilePic = profilePic;
     }
+
+
 
     public User(String email, String firstName, String lastName, Date date) {
         this.email = email;
@@ -56,6 +62,7 @@ public class User {
         this.totalPoints = new ArrayList<HashMap<String, Object>>();
         this.totalPointsSum = 0;
         this.trophies = new ArrayList<HashMap<String, Object>>();
+        this.gadgets =  new ArrayList<HashMap<String, Object>>();
         this.currentPoints = 0;
         this.created = new Timestamp(date);
         this.confirmedMissions = 0;
@@ -111,6 +118,29 @@ public class User {
             }
         }
         return false;
+    }
+
+    public void _addGadget(DocumentReference gadgetDocRef, FirebaseFirestore db){
+
+        if (gadgets == null) gadgets = new ArrayList<HashMap<String, Object>>();
+
+        boolean already_have_this_gadget = false;
+        for(int i=0; i<gadgets.size(); i++){
+            for ( String key : gadgets.get(i).keySet() ) {
+                if ( gadgets.get(i).get(key) == gadgetDocRef ) { already_have_this_gadget = true; }
+            }
+        }
+
+        if(!already_have_this_gadget) {
+
+            HashMap<String, Object> HM = new HashMap<>();
+
+            HM.put("ref", gadgetDocRef);
+            HM.put("collected", false);
+
+            gadgets.add(HM);
+            _save(db);
+        }
     }
 
     public boolean _isUserBanned(){
@@ -208,5 +238,13 @@ public class User {
 
     public void setConfirmedMissions(int confirmedMissions) {
         this.confirmedMissions = confirmedMissions;
+    }
+
+    public ArrayList<HashMap<String, Object>> getGadgets() {
+        return gadgets;
+    }
+
+    public void setGadgets(ArrayList<HashMap<String, Object>> gadgets) {
+        this.gadgets = gadgets;
     }
 }
