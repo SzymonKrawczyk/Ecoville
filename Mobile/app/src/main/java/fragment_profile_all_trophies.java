@@ -18,15 +18,12 @@ import com.bumptech.glide.Glide;
 import com.example.bottomnavigationview.model.Trophy;
 import com.example.bottomnavigationview.model.User;
 import com.example.bottomnavigationview.model.fragment_profile_all_trophies_adapter;
-import com.example.bottomnavigationview.model.fragment_shop_adapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -89,9 +86,9 @@ public class fragment_profile_all_trophies extends Fragment {
         Date javaDate = MainActivity.appUser.getCreated().toDate();
         TVMemberSince.setText("member since " + (javaDate.getYear()+1900));
 
-        BTProfileAll = (Button) view.findViewById(R.id.BTProfileAll);
-        BTProfileNewTrophy = (Button) view.findViewById(R.id.BTProfileNewTrophy);
-        BTProfileCollection = (Button) view.findViewById(R.id.BTProfileCollection);
+        BTProfileAll = (Button) view.findViewById(R.id.BTProfileTrophies);
+        BTProfileNewTrophy = (Button) view.findViewById(R.id.BTProfileGadgets);
+        BTProfileCollection = (Button) view.findViewById(R.id.BTProfileGames);
 
 
         ImageView IVProfile = view.findViewById(R.id.IVProfile);
@@ -131,7 +128,7 @@ public class fragment_profile_all_trophies extends Fragment {
         BTProfileNewTrophy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment_profile_new_trophie.newOrCollection = true;
+                //fragment_profile_new_trophie.newOrCollection = true;
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_profile_new_trophie()).addToBackStack(null).commit();
             }
         });
@@ -139,7 +136,7 @@ public class fragment_profile_all_trophies extends Fragment {
         BTProfileCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment_profile_new_trophie.newOrCollection = false;
+                //fragment_profile_new_trophie.newOrCollection = false;
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_profile_new_trophie()).addToBackStack(null).commit();
             }
         });

@@ -218,7 +218,7 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
                 BProfileGoToCollection.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_profile_all_trophies()).addToBackStack(null).commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_profile_new_trophie()).addToBackStack(null).commit();
                     }
                 });
 
