@@ -37,11 +37,18 @@ import TrophyDelete from "./components/TrophyDelete"
 import TrophyAdd from "./components/TrophyAdd"
 import TrophyEdit from "./components/TrophyEdit"
 
+import GadgetsList from "./components/GadgetsList"
+import GadgetDelete from "./components/GadgetDelete"
+import GadgetAdd from "./components/GadgetAdd"
+import GadgetEdit from "./components/GadgetEdit"
+import GadgetDeletePic from "./components/GadgetDeletePic"
+
 import UsersList from "./components/UsersList"
 import UserDelete from "./components/UserDelete"
 import UserEdit from "./components/UserEdit"
 import UserAddPoints from "./components/UserAddPoints"
 import UserDeleteTrophy from "./components/UserDeleteTrophy"
+import UserRedeemGadget from "./components/UserRedeemGadget"
 import UserDeletePic from "./components/UserDeletePic"
 import UserDeletePosts from "./components/UserDeletePosts"
 
@@ -98,11 +105,18 @@ export default class App extends Component
                     <PrivateRoute exact path="/TrophyAdd" component={TrophyAdd}/> 
                     <PrivateRoute exact path="/TrophyEdit/:id" component={TrophyEdit} />
 
+                    <PrivateRoute exact path="/GadgetsList" component={GadgetsList}/> 
+                    <PrivateRoute exact path="/GadgetDelete/:id" component={GadgetDelete} />
+                    <PrivateRoute exact path="/GadgetAdd" component={GadgetAdd}/> 
+                    <PrivateRoute exact path="/GadgetEdit/:id" component={GadgetEdit} />
+                    <PrivateRoute exact path="/GadgetDeletePic/:id" component={GadgetDeletePic} />
+
                     <PrivateRoute exact path="/UsersList" component={UsersList}/> 
                     <PrivateRoute exact path="/UserDelete/:id" component={UserDelete} />
                     <PrivateRoute exact path="/UserEdit/:id" component={UserEdit} />
                     <PrivateRoute exact path="/UserAddPoints/:idm/:idu" component={UserAddPoints} />
                     <PrivateRoute exact path="/UserDeleteTrophy/:idm/:idu" component={UserDeleteTrophy} />
+                    <PrivateRoute exact path="/UserRedeemGadget/:idu/:idg" component={UserRedeemGadget} />
                     <PrivateRoute exact path="/UserDeletePic/:id" component={UserDeletePic} />
                     <PrivateRoute exact path="/UserDeletePosts/:id" component={UserDeletePosts} />
 					

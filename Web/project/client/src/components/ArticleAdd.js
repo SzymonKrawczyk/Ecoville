@@ -21,6 +21,7 @@ export default class ArticleAdd extends Component {
             , redirectToArticlesList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, errorMessage: {}
 			, logout: false
+			, canSubmit: true
         }
     }
 
@@ -62,7 +63,10 @@ export default class ArticleAdd extends Component {
 		
 		e.preventDefault();		
 		
-		if (this.validate()){
+		if (this.validate() && this.state.canSubmit){
+
+			this.state.canSubmit = false;
+
 			const articleObject = {
                     title: this.state.title
                   , shortDescription: this.state.shortDescription
@@ -73,6 +77,8 @@ export default class ArticleAdd extends Component {
 			axios.post(`${SERVER_HOST}/article`, articleObject)
 			.then(res =>  {   
 			
+				this.state.canSubmit = true;
+
 				if(res.data) {
 					
 					if (res.data.isLogged == false || res.data.isAdmin == false) {

@@ -18,6 +18,7 @@ export default class Login extends Component
             , password:""
             , isLoggedIn: sessionStorage.accessLevel >= ACCESS_LEVEL_ADMIN
             , errorMessage:""
+			, canSubmit: true
         }
     }
     
@@ -41,12 +42,14 @@ export default class Login extends Component
     {
 		
         e.preventDefault()
-		if (this.validate()){
+		if (this.validate() && this.state.canSubmit){
+			this.state.canSubmit = false;
 		
 			axios.defaults.withCredentials = true // needed for sessions to work
 			axios.post(`${SERVER_HOST}/login/${this.state.username}/${this.state.password}`)
 			.then(res => 
 			{     
+				this.state.canSubmit = true;
 				if(res.data)
 				{
 					if (res.data.errorMessage)

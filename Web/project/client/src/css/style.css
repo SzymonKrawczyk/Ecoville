@@ -213,6 +213,16 @@ a {
 	width: 300px;
 }
 
+.userGadgetPic {
+	height: 100px;
+	width: 100px;
+	display: block;
+}
+.userGadgetName {
+	display: block;
+	text-align: left;
+}
+
 .panel_button_container {
 	width: 800px;
 	margin-left: auto;

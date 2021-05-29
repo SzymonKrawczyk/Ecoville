@@ -9,7 +9,7 @@ import LinkInClass from "../components/LinkInClass"
 import {ACCESS_LEVEL_GUEST, ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
 
 
-export default class TrophyAdd extends Component {
+export default class GadgetAdd extends Component {
 	
     constructor(props) {
 		
@@ -17,10 +17,9 @@ export default class TrophyAdd extends Component {
 
         this.state = {
               name: ""
-            , description: ""
             , cost: 0
-            , image: ""
-            , redirectToTrophiesList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
+            , amount: 0
+            , redirectToGadgetsList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, errorMessage: {}
 			, logout: false
 			, canSubmit: true
@@ -47,19 +46,18 @@ export default class TrophyAdd extends Component {
 			}
 		}
 		
-        let nameValidation = this.state.name.length >= 5;
-        let descriptionValidation = this.state.description.length >= 16;
-        let costValidation = this.state.cost >= 0;
-        let imageValidation = this.state.image.length > 0;
+		let nameValidation = this.state.name.length >= 5;
+		let costValidation = this.state.cost >= 0;
+		let amountValidation = this.state.amount >= 0;
+        
+        
 		
 		this.setState({errorMessage: {
-              nameError: nameValidation ? null : 'name has to be at least 5 characters long',
-              descriptionError: descriptionValidation ? null : 'description has to be at least 16 characters long',
-              costError: costValidation ? null : 'cost has to be non-negative number',
-              imageError: imageValidation ? null : 'Media Path is required',              
-        }}) 
-        
-        return nameValidation && descriptionValidation && costValidation && imageValidation;
+            nameError:  nameValidation ? null : 'name has to be at least 5 characters long',
+			costError: costValidation ? null : 'cost has to be non-negative number',
+			amountError: amountValidation ? null : 'amount has to be non-negative number'
+		}}) 
+        return nameValidation && costValidation && amountValidation;
 	}
 
     handleSubmit = (e) =>  {
@@ -70,17 +68,16 @@ export default class TrophyAdd extends Component {
 			
 			this.state.canSubmit = false;
 
-			const trophyObject = {
-                  name: this.state.name,
-                  description: this.state.description,
-                  cost: this.state.cost,
-                  image: this.state.image
+			const gadgetObject = {
+                  name: this.state.name
+                  , cost: this.state.cost 
+                  , amount: this.state.amount 
 			}
 
-            console.log(trophyObject);
+            console.log(gadgetObject);
 
 			axios.defaults.withCredentials = true // needed for sessions to work
-			axios.post(`${SERVER_HOST}/trophy`, trophyObject)
+			axios.post(`${SERVER_HOST}/gadget`, gadgetObject)
 			.then(res =>  {   
 			
 				this.state.canSubmit = true;
@@ -104,7 +101,7 @@ export default class TrophyAdd extends Component {
 					} else {   
 					
 						console.log("Record added")
-						this.setState({redirectToTrophiesList:true})
+						this.setState({redirectToGadgetsList:true})
 					} 
 				} else {
 					console.log("Record not added")
@@ -116,18 +113,18 @@ export default class TrophyAdd extends Component {
 
     render() {  
 	
-		document.title = 'Trophies | Add'
+		document.title = 'Gadgets | Add'
         return (
 		<div className="body_content">
 		
 			{this.state.logout ? <Redirect to="/Login"/> : null} 
-            {this.state.redirectToTrophiesList ? <Redirect to="/TrophiesList"/> : null} 
+            {this.state.redirectToGadgetsList ? <Redirect to="/GadgetsList"/> : null} 
 				
 			<div className="card_standard">
 		
 				<div className="card_title_container">
 					<div className="card_standard card_title">
-						<h2>Trophies | Add</h2>
+						<h2>Gadgets | Add</h2>
 					</div>
 				</div>
 		
@@ -153,24 +150,6 @@ export default class TrophyAdd extends Component {
 						</tr>
 
                         <tr>
-							<td>
-                            	Description
-							</td>
-							<td>
-								<textarea 
-								className = "input textarea" 
-								type = "text"
-								name = "description"
-								value = {this.state.description}
-								onChange = {this.handleChange}
-								/>
-							</td>
-							<td>
-								<span className="error_msg">{this.state.errorMessage.descriptionError}</span>
-							</td>
-						</tr>
-
-                        <tr>
 						    <td>
 							    Cost
 						    </td>
@@ -187,19 +166,30 @@ export default class TrophyAdd extends Component {
 							    <span className="error_msg">{this.state.errorMessage.costError}</span>
 						    </td>
 					    </tr>
-					    <tr>
+
+                        <tr>
 						    <td>
-							    Media Path
+							    Amount
 						    </td>
 						    <td>
                                 <input 
                                 className="input" 
-                                type="text" 
-                                name="image" 
-                                value={this.state.image}
+                                type="number" 
+                                name="amount" 
+                                value={this.state.amount}
                                 onChange={this.handleChange}
                                 />
-					        </td>
+						    </td>
+						    <td>
+							    <span className="error_msg">{this.state.errorMessage.amountError}</span>
+						    </td>
+					    </tr>
+						
+					    <tr>
+						    <td>
+							    Picture
+						    </td>
+						    
 						    <td>
                                 <span className="error_msg">{this.state.errorMessage.imageError}</span>
 						    </td>
@@ -229,7 +219,7 @@ export default class TrophyAdd extends Component {
 						</tr>
 						<tr>
 							<td>
-								<Link to={"/TrophiesList"}>Back</Link>
+								<Link to={"/GadgetsList"}>Back</Link>
 							</td>
 							<td>
 								&nbsp;

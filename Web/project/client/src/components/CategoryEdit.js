@@ -16,6 +16,7 @@ export default class CategoryEdit extends Component  {
 			, errorMessage: {}
 			, redirectToCategoriesList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, logout: false
+			, canSubmit: true
         }
     }
 
@@ -88,7 +89,9 @@ export default class CategoryEdit extends Component  {
 		
         e.preventDefault();
 		
-		if (this.validate()){
+		if (this.validate() && this.state.canSubmit){
+
+			this.state.canSubmit = false;
 
 			const categoryObject = {
 				name: this.state.name
@@ -98,6 +101,8 @@ export default class CategoryEdit extends Component  {
 			axios.put(`${SERVER_HOST}/category/${this.props.match.params.id}`, categoryObject)
 			.then(res =>  {    
 			
+				this.state.canSubmit = true;
+
 				if(res.data) {
 					
 					if (res.data.isLogged == false || res.data.isAdmin == false) {
@@ -115,8 +120,7 @@ export default class CategoryEdit extends Component  {
 							errorMessage: res.data.errorMessage
 						});
 						
-					} else {  
-					
+					} else {
 						console.log(`Record updated`)
 						this.setState({redirectToCategoriesList:true})
 					}

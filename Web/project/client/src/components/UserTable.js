@@ -43,7 +43,7 @@ export default class UserTable extends Component
 				return ((a.email.toUpperCase() <b.email.toUpperCase()) ? -1 : ((a.email.toUpperCase() > b.email.toUpperCase()) ? 1 : 0));
 			},
 			byPoints : function(a,b) {
-				return (a.currentPoints - b.currentPoints);
+				return (a.totalPointsSum - b.totalPointsSum);
 			},
 			byCreated : function(a,b) {
 				return (a.created._seconds - b.created._seconds);

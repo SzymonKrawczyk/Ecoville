@@ -6,6 +6,7 @@ const categoryRef = firestore.db.collection('category');
 const userRef = firestore.db.collection('user');
 const articleRef = firestore.db.collection('tips');
 const trophyRef = firestore.db.collection('trophy');
+const gadgetRef = firestore.db.collection('gadget');
 
 const isLogged = (req, res, next) => {
 	
@@ -289,6 +290,48 @@ const validateTrophyObject = async (req, res, next) => {
 	}
 }
 
+const validateGadgetObject = async (req, res, next) => {
+
+	const id = req.params.id;
+	let gadgetObject = req.body;
+	console.log(`gadgetObject`);
+	console.log(gadgetObject);
+
+	let nameValidation = gadgetObject.name.length >= 5;
+    let costValidation = gadgetObject.cost >= 0;
+    let amountValidation = gadgetObject.amount >= 0;
+			
+	let nameIsUsedValidation;
+
+	const snapshotT = await gadgetRef.where('name', '==', gadgetObject.name).get();	
+
+	if(snapshotT.size == 0){
+		nameIsUsedValidation = true;
+	}else if( typeof(id) != 'undefined'){
+		snapshotT.forEach((doc) => {
+			if(id == doc.id){
+				nameIsUsedValidation = true;
+			}else{
+				nameIsUsedValidation = false;
+			}
+		});
+	}else{
+		nameIsUsedValidation = false;
+	}
+
+	let errorMessage = {
+		nameError:  nameValidation ? nameIsUsedValidation ? null : 'gadget with this name already exists' : 'name has to be at least 5 characters long',
+		costError: costValidation ? null : 'cost has to be non-negative number',
+		amountError: amountValidation ? null : 'amount has to be non-negative number'
+	};
+		
+	if (!(nameValidation && amountValidation && costValidation && nameIsUsedValidation)) {
+		return res.json({errorMessage});
+	} else {
+		return next();
+	}
+}
+
 const validateCategoryObject = async (req, res, next) => {
 
 	const id = req.params.id;
@@ -342,8 +385,9 @@ exports.isAdmin = isAdmin;
 exports.validateAdministratorObject = validateAdministratorObject;
 exports.validateMissionObject = validateMissionObject;
 exports.validateUserObject = validateUserObject;
-exports.validateArticleObject =validateArticleObject;
+exports.validateArticleObject = validateArticleObject;
 exports.validateTrophyObject = validateTrophyObject;
+exports.validateGadgetObject = validateGadgetObject;
 exports.validateCategoryObject = validateCategoryObject;
 exports.trimObj = trimObj;
 

@@ -7,6 +7,7 @@ const userRef = firestore.db.collection('user');
 const categoryRef = firestore.db.collection('category');
 const missionRef = firestore.db.collection('mission');
 const trophyRef = firestore.db.collection('trophy');
+const gadgetRef = firestore.db.collection('gadget');
 const postRef = firestore.db.collection('post');
 
 const appDataRef = firestore.db.collection('_appData');
@@ -124,6 +125,37 @@ router.get(`/user/:id`,  middleware.isLogged, middleware.isAdmin, async (req, re
 				});
 			}
         }
+		
+		//gadgets
+		let gadgetsArrT = doc.data().gadgets != null ? doc.data().gadgets : [];
+		let gadgetsArr = [];
+		
+		for (let i = 0; i < gadgetsArrT.length; ++i) {
+			const current = gadgetsArrT[i].ref;
+			const gadgetGet = await current.get();	
+			
+			if (gadgetGet.exists) {		
+			
+				let tempGadgetObj = {
+					  _id: gadgetGet.id
+					, name: gadgetGet.data().name
+					, pic: "defaultGadget.jpg"
+					, collected: gadgetsArrT[i].collected
+				};
+				
+				const pic = gadgetGet.data().pic;			
+				let bucket = firestore.admin.storage().bucket();
+				try {
+					await bucket.file("gadgets/" + pic).download({destination: "./public/gadgets/" + pic}); 
+					
+					tempGadgetObj.pic = pic;
+				} catch (error) {
+					console.log("no pic");
+				}
+								
+				gadgetsArr.push(tempGadgetObj);
+			}
+        }
         
 
         userObject = {
@@ -136,6 +168,7 @@ router.get(`/user/:id`,  middleware.isLogged, middleware.isAdmin, async (req, re
             confirmedMissions: doc.data().confirmedMissions,
             totalPoints: totalPointsProcessedArr,
             trophies: trophiesProcessedArr,
+			gadgets: gadgetsArr,
 			
             ban: doc.data().ban,
 			
@@ -272,6 +305,64 @@ router.delete(`/user/:id`, middleware.isLogged, middleware.isAdmin, async (req, 
 			  
 })
 
+//confirm gadget redeem
+router.post(`/userRedeemGadget/:id/:gadget_id`, middleware.isLogged, middleware.isAdmin, async (req, res) => {	
+	
+    const id = req.params.id;
+    const gadget_id = req.params.gadget_id;
+
+    const docG = await gadgetRef.doc(gadget_id).get();
+
+    console.log(id + "  " + gadget_id);
+
+	if (!docG.exists) {
+		console.log('No gadget');
+		res.json({errorMessage: `No gadget: ${id}`});
+		
+	} else {
+
+        const docU = await userRef.doc(id).get();
+
+        if (!docU.exists) {
+            console.log('No user');
+            res.json({errorMessage: `No user: ${id}`});
+        }else{
+
+            console.log(docU.data().gadgets);
+
+
+            if(docU.data().gadgets != null){
+
+                let newGadgetslist = docU.data().gadgets;
+				
+                for (let i = 0; i < newGadgetslist.length; ++i) {
+
+                    if (gadget_id == newGadgetslist[i].ref.id) {
+
+						newGadgetslist[i].collected = true;
+						break;
+                    }
+                }
+
+                console.log(newGadgetslist);
+
+                userObject = {
+                      gadgets: newGadgetslist
+                    //, _id: docU.id
+                }
+
+                const docEM = await userRef.doc(id).set(userObject, { merge: true });
+                res.json({});     	   
+            }
+			else res.json({errorMessage: `No gadgets..`});
+        }
+    }
+})
+
+
+
+
+
 // tempBan
 //if (new Date(missionObject.when) <= new Date()) dateValidation = false;
 //		missionObject.when = firestore.admin.firestore.Timestamp.fromDate(new Date(missionObject.when));
@@ -385,8 +476,8 @@ router.post(`/userDeleteTrophy/:id/:trophy_id`, middleware.isLogged, middleware.
                 console.log(newTrophielist);
 
                 userObject = {
-                    trophies: newTrophielist,
-                    _id: docU.id
+                      trophies: newTrophielist
+                    //, _id: docU.id
                 }
 
                 const docEM = await userRef.doc(id).set(userObject, { merge: true });

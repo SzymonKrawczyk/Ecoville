@@ -44,6 +44,7 @@ router.post(`/trophy/`, middleware.isLogged, middleware.isAdmin, middleware.trim
 	
 	const id = req.params.id;
     console.log(req.body);
+	req.body.cost = parseInt(req.body.cost);
 
     const doc = await trophyRef.add(req.body);
 
@@ -95,6 +96,7 @@ router.put(`/trophy/:id`, middleware.isLogged, middleware.isAdmin, middleware.tr
 			
 	} else {
 			
+		req.body.cost = parseInt(req.body.cost);
 		const docE = await trophyRef.doc(id).set(req.body, { merge: true });
 	}
 		

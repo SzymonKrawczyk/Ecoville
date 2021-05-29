@@ -21,6 +21,8 @@ export default class AdministratorAdd extends Component {
             , redirectToAdministratorsList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, errorMessage: {}
 			, logout: false
+			, canSubmit: true
+
         }
     }
 
@@ -60,7 +62,9 @@ export default class AdministratorAdd extends Component {
 		
 		e.preventDefault();		
 		
-		if (this.validate()){
+		if (this.validate() && this.state.canSubmit){
+
+			this.state.canSubmit = false;
 
 			const adminObject = {
 				  username: this.state.username
@@ -71,6 +75,8 @@ export default class AdministratorAdd extends Component {
 			axios.post(`${SERVER_HOST}/administrator`, adminObject)
 			.then(res =>  {   
 			
+				this.state.canSubmit = true;
+
 				if(res.data) {
 					
 					if (res.data.isLogged == false || res.data.isAdmin == false) {

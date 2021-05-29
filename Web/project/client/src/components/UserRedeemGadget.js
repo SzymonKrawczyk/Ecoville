@@ -5,7 +5,7 @@ import axios from "axios"
 import {ACCESS_LEVEL_GUEST, ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
 
 
-export default class UserAddPoints extends Component  {
+export default class UserRedeemGadget extends Component  {
 	
     constructor(props)  {
 		
@@ -18,9 +18,9 @@ export default class UserAddPoints extends Component  {
     
     
     componentDidMount() {  
-
+	
         axios.defaults.withCredentials = true // needed for sessions to work
-        axios.post(`${SERVER_HOST}/userAddPoints/${this.props.match.params.idm}/${this.props.match.params.idu}`)
+        axios.post(`${SERVER_HOST}/userRedeemGadget/${this.props.match.params.idu}/${this.props.match.params.idg}`)
         .then(res =>  {
 			
             if(res.data) {
@@ -41,11 +41,11 @@ export default class UserAddPoints extends Component  {
 						
 				} else { 
                     console.log("User confirmed")
-
                 }
                 this.setState({redirectToUserEdit:true})
 				
             } else {
+				
                 console.log("User not confirmed")
             }
         })
@@ -53,7 +53,7 @@ export default class UserAddPoints extends Component  {
   
   
     render()  {
-		let temp = `/UserEdit/${this.props.match.params.idm}`
+		let temp = `/UserEdit/${this.props.match.params.idu}`
         return (
             <div>   
 				{this.state.logout ? <Redirect to="/Login"/> : null} 

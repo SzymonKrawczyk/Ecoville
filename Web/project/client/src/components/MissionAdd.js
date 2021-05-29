@@ -29,6 +29,7 @@ export default class MissionAdd extends Component {
             , redirectToMissionsList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, errorMessage: {}
 			, logout: false
+			, canSubmit: true
         }
     }
 
@@ -170,7 +171,9 @@ export default class MissionAdd extends Component {
 		
 		e.preventDefault();		
 		
-		if (this.validate()){
+		if (this.validate() && this.state.canSubmit){
+
+			this.state.canSubmit = false;
 
 			const missionObject = {
 				  name: this.state.name
@@ -188,6 +191,8 @@ export default class MissionAdd extends Component {
 			axios.post(`${SERVER_HOST}/mission`, missionObject)
 			.then(res =>  {   
 			
+				this.state.canSubmit = true;
+
 				if(res.data) {
 					
 					if (res.data.isLogged == false || res.data.isAdmin == false) {

@@ -19,6 +19,7 @@ export default class TrophyEdit extends Component  {
             , redirectToTrophiesList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, errorMessage: {}
 			, logout: false
+			, canSubmit: true
         }
     }
 
@@ -101,7 +102,9 @@ export default class TrophyEdit extends Component  {
 		
         e.preventDefault();
 		
-		if (this.validate()){
+		if (this.validate() && this.state.canSubmit){
+
+			this.state.canSubmit = false;
 
 			const trophyObject = {
                 name: this.state.name,
@@ -114,6 +117,8 @@ export default class TrophyEdit extends Component  {
 			axios.put(`${SERVER_HOST}/trophy/${this.props.match.params.id}`, trophyObject)
 			.then(res =>  {    
 			
+				this.state.canSubmit = true;
+
 				if(res.data) {
 					
 					if (res.data.isLogged == false || res.data.isAdmin == false) {

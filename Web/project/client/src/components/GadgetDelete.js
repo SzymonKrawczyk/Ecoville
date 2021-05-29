@@ -5,22 +5,23 @@ import axios from "axios"
 import {ACCESS_LEVEL_GUEST, ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
 
 
-export default class UserAddPoints extends Component  {
+export default class GadgetDelete extends Component  {
 	
     constructor(props)  {
 		
         super(props)
+        
         this.state = {
-              redirectToUserEdit: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
+              redirectToGadgetsList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, logout: false
         }
     }
     
     
     componentDidMount() {  
-
+	
         axios.defaults.withCredentials = true // needed for sessions to work
-        axios.post(`${SERVER_HOST}/userAddPoints/${this.props.match.params.idm}/${this.props.match.params.idu}`)
+        axios.delete(`${SERVER_HOST}/gadget/${this.props.match.params.id}`)
         .then(res =>  {
 			
             if(res.data) {
@@ -40,24 +41,23 @@ export default class UserAddPoints extends Component  {
 					console.log(res.data.errorMessage)  
 						
 				} else { 
-                    console.log("User confirmed")
-
+                    console.log("Record deleted")
                 }
-                this.setState({redirectToUserEdit:true})
+                this.setState({redirectToGadgetsList:true})
 				
             } else {
-                console.log("User not confirmed")
+				
+                console.log("Record not deleted")
             }
         })
     }
   
   
     render()  {
-		let temp = `/UserEdit/${this.props.match.params.idm}`
         return (
             <div>   
 				{this.state.logout ? <Redirect to="/Login"/> : null} 
-                {this.state.redirectToUserEdit ? <Redirect to={temp}/> : null}                      
+                {this.state.redirectToGadgetsList ? <Redirect to="/GadgetsList"/> : null}                      
             </div>
         )
     }

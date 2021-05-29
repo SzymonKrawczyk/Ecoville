@@ -30,6 +30,7 @@ export default class UserEdit extends Component {
 			, addPoints: 0
 			, ban: ""
 			, banDate: ""
+			, gadgets: []
 			, canSubmit: true
         }
     }
@@ -90,6 +91,7 @@ export default class UserEdit extends Component {
 						createdString: dateString,
 						totalPoints: res.data.totalPoints,
 						trophies: res.data.trophies,
+						gadgets: res.data.gadgets,
 						ban: dateString2,
 						_id: res.data._id
                     });
@@ -466,6 +468,41 @@ export default class UserEdit extends Component {
 														<td>{trophy.name}</td>
 														<td><Link to={"/UserDeleteTrophy/" + this.state._id + "/" + trophy._id}>Delete</Link></td>
 														</tr>)
+													}
+												</tbody>
+											</table>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+						<td></td>
+					</tr>
+
+					<tr>
+						<td>
+							Gadgets
+						</td>
+						<td>
+							<table className="table table_user_spec">
+								<tbody>
+									<tr>
+										<td>
+											<table className="table table_user_spec">
+												<tbody>
+													{
+														this.state.gadgets.map((gadget) => 
+										
+															<tr key={gadget._id}>
+																<td>
+																	<img className="userGadgetPic" src={SERVER_HOST + "/gadgets/" + gadget.pic} alt="Gadget Picture"/>									
+																	<div className="userGadgetName">{gadget.name}</div>
+																</td>
+																<td>
+																	{ gadget.collected ? "Redeemed!" : <Link to={"/UserRedeemGadget/" + this.state._id + "/" + gadget._id}>Confirm Redeem</Link>}
+																</td>
+															</tr>
+														)
 													}
 												</tbody>
 											</table>

@@ -47,6 +47,7 @@ export default class DisplayAllCars extends Component
 					<Link className="button panel_button" to={"/ArticlesList"}>Articles (Tips)</Link>
 					<Link className="button panel_button" to={"/TrophiesList"}>Trophies</Link>
 					<Link className="button panel_button" to={"/CategoriesList"}>Categories</Link>
+					<Link className="button panel_button" to={"/GadgetsList"}>Gadgets</Link>
 						
 					<div style={{clear: "both"}}></div>
 					<div></div>

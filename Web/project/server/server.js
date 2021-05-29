@@ -30,6 +30,7 @@ app.use(require(`../server/routes/categories`))
 app.use(require(`../server/routes/missions`))
 app.use(require(`../server/routes/articles`))
 app.use(require(`../server/routes/trophies`))
+app.use(require(`../server/routes/gadgets`))
 app.use(require(`../server/routes/users`))
 
 
