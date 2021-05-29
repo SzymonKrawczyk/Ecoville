@@ -67,7 +67,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/img_default" />
+            app:srcCompat="@drawable/profil_picture" />
 
     </androidx.cardview.widget.CardView>
 
@@ -90,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:text=""
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="TextView"
+        android:text=""
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -112,13 +112,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TVFullNameWithNoSpacesInBetween" />
 
     <Button
-        android:id="@+id/BTProfileAll"
+        android:id="@+id/BTProfileTrophies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -140,7 +140,7 @@
         app:layout_constraintTop_toBottomOf="@id/TVMemberSince" />
 
     <Button
-        android:id="@+id/BTProfileNewTrophy"
+        android:id="@+id/BTProfileGadgets"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -158,12 +158,12 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@android:color/black"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/BTProfileCollection"
-        app:layout_constraintStart_toEndOf="@+id/BTProfileAll"
-        app:layout_constraintTop_toTopOf="@+id/BTProfileAll" />
+        app:layout_constraintEnd_toStartOf="@+id/BTProfileGames"
+        app:layout_constraintStart_toEndOf="@+id/BTProfileTrophies"
+        app:layout_constraintTop_toTopOf="@+id/BTProfileTrophies" />
 
     <Button
-        android:id="@+id/BTProfileCollection"
+        android:id="@+id/BTProfileGames"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="23dp"
@@ -181,7 +181,7 @@
         android:textColor="@android:color/black"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/BTProfileNewTrophy" />
+        app:layout_constraintTop_toTopOf="@+id/BTProfileGadgets" />
 
 
     <ScrollView
@@ -194,7 +194,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BTProfileAll">
+        app:layout_constraintTop_toBottomOf="@+id/BTProfileTrophies">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
