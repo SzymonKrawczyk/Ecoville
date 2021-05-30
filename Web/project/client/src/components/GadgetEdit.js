@@ -17,7 +17,10 @@ export default class GadgetEdit extends Component {
               name:""
 			, cost: 0
 			, amount: 0
-			, pic: ""
+			, pic: null
+			, picNew: null
+			, picChanged: false
+			, picName: ""
             , redirectToGadgetsList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, errorMessage: {}
 			, logout: false
@@ -84,6 +87,12 @@ export default class GadgetEdit extends Component {
     handleChange = (e) =>  {
         this.setState({[e.target.name]: e.target.value})
     }
+	
+	handleChangePic = (e) =>  {
+        this.setState({[e.target.name]: e.target.value})
+		this.setState({picChanged: true});
+		this.setState({picNew: e.target.files[0]});
+    }
 		
 
 	validate = () => {
@@ -107,6 +116,55 @@ export default class GadgetEdit extends Component {
 		}}) 
         return nameValidation && costValidation && amountValidation;
 	}
+	
+	handleSubmitPic = (e) =>  {
+		
+		e.preventDefault();		
+		
+		if (this.state.canSubmit && this.state.picNew != null && this.state.picChanged){
+			console.log(this.state.picNew);
+
+			this.state.canSubmit = false;
+
+			const gadgetObject = new FormData();
+			gadgetObject.append('file', this.state.picNew);
+			for (var value of gadgetObject.values()) {
+				console.log(value);
+			}
+
+			axios.defaults.withCredentials = true // needed for sessions to work
+			axios.post(`${SERVER_HOST}/gadgetUploadPicture/${this.props.match.params.id}`, gadgetObject)
+			.then(res =>  {   
+			
+				this.state.canSubmit = true;
+
+				if(res.data) {
+					
+					if (res.data.isLogged == false || res.data.isAdmin == false) {
+					
+						this.setState({logout: true});
+						
+						sessionStorage.clear() ;
+						sessionStorage.username = "GUEST";
+						sessionStorage.accessLevel = ACCESS_LEVEL_GUEST;
+						console.log('logout, server restart');
+					}
+					if (res.data.errorMessage) {
+						
+						console.log(res.data.errorMessage)  
+						this.setState({errorMessage:res.data.errorMessage})  
+						
+					} else {   
+					
+						console.log("Record added")
+						this.setState({redirectToGadgetsList:true})
+					} 
+				} else {
+					console.log("Record not added")
+				}
+			})
+		}
+    }
 	
 
     handleSubmit = (e) =>  {
@@ -233,10 +291,19 @@ export default class GadgetEdit extends Component {
 					
 					<tr>
 						<td>
-							Picture
+							Picture 
 						</td>
 						<td>
-							<img className="userProfilePic" src={SERVER_HOST + "/gadgets/" + this.state.pic} alt="Gadget Picture"/>
+							<img className="userProfilePic" src={SERVER_HOST + "/gadgets/" + this.state.pic} alt="Gadget Picture"/><br/>
+							<input 
+							className="input" 
+							type="file" 
+							name="picName" 
+							accept="image/png, image/jpeg"
+							value={this.state.picName}
+							onChange={this.handleChangePic}
+							/><br/>
+							<LinkInClass className="linkInClass" value="Change" onClick={this.handleSubmitPic}/>	
 						</td>
 						<td>
 							{ this.state.pic != "defaultGadget.jpg" ? <Link to={"/GadgetDeletePic/" + this.state._id}>Delete</Link> : ""}						

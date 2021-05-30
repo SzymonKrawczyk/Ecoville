@@ -20,9 +20,11 @@ export default class GadgetAdd extends Component {
             , cost: 0
             , amount: 0
             , redirectToGadgetsList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
+			, redirectToEdit: false
 			, errorMessage: {}
 			, logout: false
 			, canSubmit: true
+			, id: null
         }
     }
 
@@ -91,7 +93,7 @@ export default class GadgetAdd extends Component {
 						sessionStorage.clear() ;
 						sessionStorage.username = "GUEST";
 						sessionStorage.accessLevel = ACCESS_LEVEL_GUEST;
-                    console.log('logout, server restart');
+						console.log('logout, server restart');
 					}
 					if (res.data.errorMessage) {
 						
@@ -100,8 +102,11 @@ export default class GadgetAdd extends Component {
 						
 					} else {   
 					
-						console.log("Record added")
-						this.setState({redirectToGadgetsList:true})
+						
+						this.setState({id: res.data.id})
+						console.log("Record added " + this.state.id)
+						
+						this.setState({redirectToEdit:true})
 					} 
 				} else {
 					console.log("Record not added")
@@ -117,6 +122,7 @@ export default class GadgetAdd extends Component {
         return (
 		<div className="body_content">
 		
+			{this.state.redirectToEdit ? <Redirect to={"/GadgetEdit/" + this.state.id}/> : null}
 			{this.state.logout ? <Redirect to="/Login"/> : null} 
             {this.state.redirectToGadgetsList ? <Redirect to="/GadgetsList"/> : null} 
 				
@@ -182,16 +188,6 @@ export default class GadgetAdd extends Component {
 						    </td>
 						    <td>
 							    <span className="error_msg">{this.state.errorMessage.amountError}</span>
-						    </td>
-					    </tr>
-						
-					    <tr>
-						    <td>
-							    Picture
-						    </td>
-						    
-						    <td>
-                                <span className="error_msg">{this.state.errorMessage.imageError}</span>
 						    </td>
 					    </tr>
 

@@ -292,6 +292,8 @@ const validateTrophyObject = async (req, res, next) => {
 
 const validateGadgetObject = async (req, res, next) => {
 
+	
+
 	const id = req.params.id;
 	let gadgetObject = req.body;
 	console.log(`gadgetObject`);
