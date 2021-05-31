@@ -71,33 +71,23 @@ public class fragment_shop_gadgets_adapter extends RecyclerView.Adapter<fragment
 
                 Gadget g = new Gadget(gadget);
 
-                if (gadget.getPic() != null) {
-                    FirebaseStorage storage = FirebaseStorage.getInstance();
-                    // Create a storage reference from our app
-                    StorageReference storageRef = storage.getReference();
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                // Create a storage reference from our app
+                StorageReference storageRef = storage.getReference();
 
-                    // Create a reference with an initial file path and name
-                    StorageReference pathReference = storageRef.child("gadgets/" + gadget.getPic());
+                // Create a reference with an initial file path and name
+                StorageReference pathReference = storageRef.child("gadgets/" + documentSnapshot.getId());
 
-                    Glide.with(context /* context */)
-                            .load(pathReference)
-                            .into(holder.IVGadget);
+                Glide.with(context /* context */)
+                        .load(pathReference)
+                        .into(holder.IVGadget);
 
-                    holder.BTGadgetInteraction.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            showPopUp(g, docRefArray.get(position).getId(), pathReference);
-                        }
-                    });
-                }else{
-                    holder.BTGadgetInteraction.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            showPopUp(g, docRefArray.get(position).getId(), null);
-                        }
-                    });
-                }
-
+                holder.BTGadgetInteraction.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showPopUp(g, docRefArray.get(position).getId(), pathReference);
+                    }
+                });
 
                 if( MainActivity.appUser.getCurrentPoints() < gadget.getCost()  ){
                     holder.CLGadgetBackground.setBackgroundResource(R.drawable.round_corners_button_darkgray);

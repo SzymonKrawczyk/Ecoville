@@ -8,27 +8,23 @@ public class Gadget {
     int amount;
     int cost;
     String name;
-    String pic;
 
     public Gadget(){
         this.amount = 0;
         this.cost = 0;
         this.name = null;
-        this.pic = null;
     }
 
-    public Gadget(int amount, int cost, String name, String pic) {
+    public Gadget(int amount, int cost, String name) {
         this.amount = amount;
         this.cost = cost;
         this.name = name;
-        this.pic = pic;
     }
 
     public Gadget(Gadget g){
         this.amount = g.amount;
         this.cost = g.cost;
         this.name = g.name;
-        this.pic = g.pic;
     }
 
     public void _buyGadget(String gadgetId, FirebaseFirestore db){
@@ -64,11 +60,4 @@ public class Gadget {
         this.name = name;
     }
 
-    public String getPic() {
-        return pic;
-    }
-
-    public void setPic(String pic) {
-        this.pic = pic;
-    }
 }

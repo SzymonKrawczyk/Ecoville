@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.bottomnavigationview.MainActivity;
 import com.example.bottomnavigationview.R;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -28,12 +29,14 @@ public class fragment_profile_gadgets_adapter extends RecyclerView.Adapter<fragm
 
     ArrayList<Gadget> gadgetsList;
     ArrayList<Boolean> isGadgetCollected;
+    ArrayList<DocumentReference> decRef;
     Context context;
 
-    public fragment_profile_gadgets_adapter(Context context,  ArrayList<Gadget> gadgetsList, ArrayList<Boolean> isGadgetCollected){
+    public fragment_profile_gadgets_adapter(Context context,  ArrayList<Gadget> gadgetsList, ArrayList<Boolean> isGadgetCollected, ArrayList<DocumentReference> docRef){
         this.context = context;
         this.gadgetsList = gadgetsList;
         this.isGadgetCollected = isGadgetCollected;
+        this.decRef = docRef;
     }
 
 
@@ -53,18 +56,17 @@ public class fragment_profile_gadgets_adapter extends RecyclerView.Adapter<fragm
 
             Gadget g = new Gadget(gadgetsList.get(position));
 
-            if (g.getPic() != null) {
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                // Create a storage reference from our app
-                StorageReference storageRef = storage.getReference();
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            // Create a storage reference from our app
+            StorageReference storageRef = storage.getReference();
 
-                // Create a reference with an initial file path and name
-                StorageReference pathReference = storageRef.child("gadgets/" + g.getPic());
+            // Create a reference with an initial file path and name
+            StorageReference pathReference = storageRef.child("gadgets/" + decRef.get(position).getId());
 
-                Glide.with(context /* context */)
-                        .load(pathReference)
-                        .into(holder.IVGadgetRich);
-            }
+            Glide.with(context /* context */)
+                    .load(pathReference)
+                    .into(holder.IVGadgetRich);
+
 
             holder.TVGadgetName.setText(gadgetsList.get(position).getName());
 
