@@ -49,8 +49,6 @@ public class fragment_profile_gadgets extends Fragment {
     ArrayList<Gadget> gadgetsList;
     ArrayList<Boolean> isCollected;
 
-    int numberOfGadgets;
-
     public fragment_profile_gadgets() {
         // Required empty public constructor
     }
@@ -162,7 +160,7 @@ public class fragment_profile_gadgets extends Fragment {
     }
 
     private void setRecycleViewContent(){
-        fragment_profile_gadgets_adapter adapter = new fragment_profile_gadgets_adapter(this.getContext(), gadgetsList, isCollected);
+        fragment_profile_gadgets_adapter adapter = new fragment_profile_gadgets_adapter(this.getContext(), gadgetsList, isCollected, userGadgetsDocRef);
         rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         rv.setAdapter(adapter);
     }
