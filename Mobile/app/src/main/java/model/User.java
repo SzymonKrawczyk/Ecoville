@@ -1,10 +1,7 @@
-package com.example.bottomnavigationview.model;
+package com.example.ecoville_app_S.model;
 
-import com.example.bottomnavigationview.MainActivity;
-import com.example.bottomnavigationview.fragment_home_missions;
-import com.example.bottomnavigationview.tcpClient;
+import com.example.ecoville_app_S.MainActivity;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -12,8 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class User {
 

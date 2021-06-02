@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview.model;
+package com.example.ecoville_app_S.model;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,12 +17,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.bottomnavigationview.MainActivity;
-import com.example.bottomnavigationview.R;
-import com.example.bottomnavigationview.UserBannedErrorActivity;
-import com.example.bottomnavigationview.fragment_connection_error;
-import com.example.bottomnavigationview.fragment_shop;
-import com.example.bottomnavigationview.fragment_shop_gadgets;
+import com.example.ecoville_app_S.MainActivity;
+import com.example.ecoville_app_S.R;
+import com.example.ecoville_app_S.UserBannedErrorActivity;
+import com.example.ecoville_app_S.fragment_connection_error;
+import com.example.ecoville_app_S.fragment_shop;
+import com.example.ecoville_app_S.fragment_shop_gadgets;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;

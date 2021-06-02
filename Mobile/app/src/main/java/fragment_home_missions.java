@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.os.Bundle;
 
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.bottomnavigationview.model.Mission;
+import com.example.ecoville_app_S.model.Mission;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -57,9 +57,9 @@ public class fragment_home_missions extends Fragment {
 
         //date = MainActivity.getDateFromServer();
         date = new Date();
-        if(date == null) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
-        }
+        //if(date == null) {
+        //    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
+        //}
 
         BTHomeTalk = (Button) view.findViewById(R.id.BTHomeTalk);
         BTHomeTips = (Button) view.findViewById(R.id.BTHomeTips);

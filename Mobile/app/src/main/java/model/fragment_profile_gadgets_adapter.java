@@ -1,29 +1,23 @@
-package com.example.bottomnavigationview.model;
+package com.example.ecoville_app_S.model;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.bottomnavigationview.MainActivity;
-import com.example.bottomnavigationview.R;
-import com.google.firebase.Timestamp;
+import com.example.ecoville_app_S.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class fragment_profile_gadgets_adapter extends RecyclerView.Adapter<fragment_profile_gadgets_adapter.ViewHolder> {
 

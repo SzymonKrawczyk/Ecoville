@@ -49,6 +49,8 @@ public class fragment_profile_new_trophie_adapter extends RecyclerView.Adapter<f
             holder.TVTrophyDescription.setText(trophiesList.get(position).getDescription());
             if( isNew(trophiesTimestamp.get(position)) ){
                 holder.TVTrophyMinimalistic.setVisibility(View.VISIBLE);
+            } else {
+                holder.TVTrophyMinimalistic.setVisibility(View.INVISIBLE);
             }
             SimpleDateFormat sfd = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             holder.TVTrophyTimestamp.setText(sfd.format(trophiesTimestamp.get(position).toDate()));

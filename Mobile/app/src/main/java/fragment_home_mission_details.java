@@ -1,10 +1,9 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -14,8 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.bottomnavigationview.model.Mission;
-import com.example.bottomnavigationview.model.Tip;
+import com.example.ecoville_app_S.model.Mission;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;

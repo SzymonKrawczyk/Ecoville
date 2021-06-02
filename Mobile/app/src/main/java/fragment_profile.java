@@ -1,9 +1,7 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,10 +10,8 @@ import android.graphics.Color;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,8 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,34 +26,20 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
-import com.example.bottomnavigationview.model.Trophy;
-import com.example.bottomnavigationview.model.User;
-import com.example.bottomnavigationview.model.fragment_profile_adapter;
-import com.example.bottomnavigationview.model.fragment_profile_all_trophies_adapter;
-//import com.example.bottomnavigationview.model.fragment_profile_slide_adapter;
+import com.example.ecoville_app_S.model.User;
+import com.example.ecoville_app_S.model.fragment_profile_adapter;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.Timestamp;
 import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -71,15 +51,10 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-import java.net.URI;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class fragment_profile extends Fragment implements OnChartValueSelectedListener {
 
@@ -476,7 +451,7 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
         data.setValueTextColor(Color.WHITE);
         PieChartProfile.setData(data);
 
-        PieChartProfile.setNoDataText("Get points to see the chat you lazy fuck");
+        PieChartProfile.setNoDataText("Get points to see the chart");
         PieChartProfile.setNoDataTextColor(Color.parseColor("#ffffff"));
 
         setRecycleView();

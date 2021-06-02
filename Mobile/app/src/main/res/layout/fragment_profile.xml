@@ -67,7 +67,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/img_default" />
+            app:srcCompat="@drawable/profil_picture" />
 
     </androidx.cardview.widget.CardView>
 

@@ -1,6 +1,5 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
-import com.google.api.Logging;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -13,7 +12,7 @@ public class tcpClient implements Runnable {
 
     public Date serverTime;
 
-    public static final String SERVER_IP = "10.7.67.135"; //server IP address
+    public static final String SERVER_IP = "192.168.1.11"; //server IP address
     public static final int SERVER_PORT = 8052;
     // message to send to the server
     private String mServerMessage;

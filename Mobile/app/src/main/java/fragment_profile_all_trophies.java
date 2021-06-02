@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.os.Bundle;
 
@@ -15,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.bottomnavigationview.model.Trophy;
-import com.example.bottomnavigationview.model.User;
-import com.example.bottomnavigationview.model.fragment_profile_all_trophies_adapter;
+import com.example.ecoville_app_S.model.Trophy;
+import com.example.ecoville_app_S.model.User;
+import com.example.ecoville_app_S.model.fragment_profile_all_trophies_adapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;

@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,28 +12,15 @@ import androidx.fragment.app.Fragment;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Toast;
-
-import com.example.bottomnavigationview.model.User;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.example.ecoville_app_S.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import java.security.PublicKey;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }else{
             setContentView(R.layout.activity_main);
-            BottomNavigationView BNV = findViewById(R.id.bottomNavigationView);
+            BottomNavigationView BNV = findViewById(R.id.BottomNavigationView);
             BNV.setOnNavigationItemSelectedListener(bnvListener);
         }
     }

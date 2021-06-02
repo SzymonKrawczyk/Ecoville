@@ -1,30 +1,19 @@
-package com.example.bottomnavigationview.model;
+package com.example.ecoville_app_S.model;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bottomnavigationview.MainActivity;
-import com.example.bottomnavigationview.R;
-import com.example.bottomnavigationview.fragment_profile;
-import com.example.bottomnavigationview.fragment_shop;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.ecoville_app_S.MainActivity;
+import com.example.ecoville_app_S.R;
+import com.example.ecoville_app_S.fragment_profile;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class fragment_profile_adapter extends RecyclerView.Adapter<fragment_profile_adapter.Categories> {
 

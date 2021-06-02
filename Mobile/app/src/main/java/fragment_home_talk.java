@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,10 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.bottomnavigationview.model.Mission;
-import com.example.bottomnavigationview.model.Post;
-import com.example.bottomnavigationview.model.Tip;
-import com.example.bottomnavigationview.model.User;
+import com.example.ecoville_app_S.model.Post;
+import com.example.ecoville_app_S.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,10 +32,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
 import java.util.Date;
-
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class fragment_home_talk extends Fragment {
 

@@ -1,6 +1,5 @@
-package com.example.bottomnavigationview.model;
+package com.example.ecoville_app_S.model;
 
-import com.example.bottomnavigationview.MainActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Gadget {

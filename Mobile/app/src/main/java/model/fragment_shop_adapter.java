@@ -1,7 +1,6 @@
-package com.example.bottomnavigationview.model;
+package com.example.ecoville_app_S.model;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -15,16 +14,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bottomnavigationview.LogIn;
-import com.example.bottomnavigationview.MainActivity;
-import com.example.bottomnavigationview.R;
-import com.example.bottomnavigationview.UserBannedErrorActivity;
-import com.example.bottomnavigationview.fragment_connection_error;
-import com.example.bottomnavigationview.fragment_home_tips;
-import com.example.bottomnavigationview.fragment_shop;
+import com.example.ecoville_app_S.MainActivity;
+import com.example.ecoville_app_S.R;
+import com.example.ecoville_app_S.UserBannedErrorActivity;
+import com.example.ecoville_app_S.fragment_connection_error;
+import com.example.ecoville_app_S.fragment_shop;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;

@@ -1,11 +1,10 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class UserBannedErrorActivity extends AppCompatActivity {
 

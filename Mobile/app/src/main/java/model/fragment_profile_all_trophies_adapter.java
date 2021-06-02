@@ -57,6 +57,8 @@ public class fragment_profile_all_trophies_adapter extends RecyclerView.Adapter<
 
             if( isNew(trophiesTimestamp.get(position)) ){
                 holder.TVTrophyMinimalistic.setVisibility(View.VISIBLE);
+            } else {
+                holder.TVTrophyMinimalistic.setVisibility(View.INVISIBLE);
             }
         }
     }

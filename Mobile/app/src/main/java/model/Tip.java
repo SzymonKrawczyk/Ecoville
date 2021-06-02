@@ -2,14 +2,11 @@ package com.example.ecoville_app_S.model;
 
 import com.example.ecoville_app_S.fragment_home_tips;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class Tip {
 
