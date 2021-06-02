@@ -34,6 +34,7 @@ import ArticleEdit from "./components/ArticleEdit"
 
 import TrophiesList from "./components/TrophiesList"
 import TrophyDelete from "./components/TrophyDelete"
+import TrophyDeletePic from "./components/TrophyDeletePic"
 import TrophyAdd from "./components/TrophyAdd"
 import TrophyEdit from "./components/TrophyEdit"
 
@@ -102,6 +103,7 @@ export default class App extends Component
 
                     <PrivateRoute exact path="/TrophiesList" component={TrophiesList}/> 
                     <PrivateRoute exact path="/TrophyDelete/:id" component={TrophyDelete} />
+                    <PrivateRoute exact path="/TrophyDeletePic/:id" component={TrophyDeletePic} />
                     <PrivateRoute exact path="/TrophyAdd" component={TrophyAdd}/> 
                     <PrivateRoute exact path="/TrophyEdit/:id" component={TrophyEdit} />
 

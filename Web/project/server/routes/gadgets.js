@@ -265,58 +265,43 @@ router.delete(`/gadget/:id`, middleware.isLogged, middleware.isAdmin, async (req
 
     const docU = await gadgetRef.doc(id).get();
 
-    /*if (!docU.exists) {
+    if (!docU.exists) {
 		
         console.log('No gadget');
+        res.json({errorMessage: `No gadget: ${id}`});
 		
     }else{
-		
-		
 
 		// img
-		const profilePic = docU.data().profilePic;
+		const pic = id;
 		
-		console.log(`Profile pic: ${profilePic}`);
+		console.log(`Gadget pic: ${pic}`);
 		
-		if (profilePic != null && typeof(profilePic) != 'undefined'){
-		
-			
-			// delete from storage
+		// delete from storage
 			try {
 				let bucket = firestore.admin.storage().bucket();
 			//console.log(bucket);
-				await bucket.file("users/" + profilePic).delete(); 
+				await bucket.file("gadgets/" + pic).delete(); 
 			} catch (error) {
 				console.log("no pic");
 			}
 			
-			// delete from user
-			try {
-				await userRef.doc(id).update({
-				  profilePic: null
-				});
-			} catch (error) {
-				console.log("no pic field");
-			}
+		
 			
-			// delete local
+		// delete local
 			try { 
 				var fs = require('fs');
-				var filePath = './public/userImg/' + profilePic;
-				fs.unlinkSync(filePath);
+				var filePath = './public/gadgets/' + pic;
+				fs.unlink(filePath);
 			} catch (error) {
 				console.log("no local pic");
 			}
-		}
-		console.log(`Deleted user image`);
-    }*/
-	
-	
-	
-	
-	const del = await gadgetRef.doc(id).delete();
-	console.log('Successfully deleted gadget ' + id);
-	res.json({}); 
+		console.log(`Deleted gadget image`);
+
+        const del = await gadgetRef.doc(id).delete();
+		console.log('Successfully deleted gadget ' + id);
+		res.json({});  
+    }
 })
 
 
@@ -336,7 +321,7 @@ router.post(`/gadgetDeletePic/:id`, middleware.isLogged, middleware.isAdmin, asy
     }else{
 
 		// img
-		const pic = docU.data().pic;
+		const pic = id;
 		
 		console.log(`Gadget pic: ${pic}`);
 		
@@ -349,21 +334,13 @@ router.post(`/gadgetDeletePic/:id`, middleware.isLogged, middleware.isAdmin, asy
 				console.log("no pic");
 			}
 			
-		// delete from gadget
-			try {
-				await gadgetRef.doc(id).update({
-				  pic: null
-				});
-			} catch (error) {
-				console.log("no pic field");
-			}
 		
 			
 		// delete local
 			try { 
 				var fs = require('fs');
 				var filePath = './public/gadgets/' + pic;
-				fs.unlinkSync(filePath);
+				fs.unlink(filePath);
 			} catch (error) {
 				console.log("no local pic");
 			}

@@ -9,7 +9,13 @@ const middleware = require(`../middleware/middleware`);
 
 const adminRef = firestore.db.collection('admin');
  
-
+ 
+router.get(`/ping`, middleware.isLogged, middleware.isAdmin, (req,res) =>  {	
+ 
+	console.log('panel ping');
+	res.json({});
+})
+  
 router.post(`/login/:username/:password`, async (req,res) =>  {	
 
 	const username = req.params.username;

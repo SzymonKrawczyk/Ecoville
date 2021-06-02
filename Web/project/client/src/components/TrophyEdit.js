@@ -15,11 +15,18 @@ export default class TrophyEdit extends Component  {
             name: ""
             , description: ""
             , cost: 0
-            , image: ""
+            //, image: ""
+			, pic: null
+			, _id: null
+			, picNew: null
+			, picChanged: false
+			, picName: ""
             , redirectToTrophiesList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
+			//, reload: false
 			, errorMessage: {}
 			, logout: false
 			, canSubmit: true
+			, reload: false
         }
     }
 
@@ -57,7 +64,8 @@ export default class TrophyEdit extends Component  {
                         name: res.data.name,
                         description: res.data.description,
                         cost: res.data.cost,
-                        image: res.data.image
+						pic: res.data.pic, 
+						_id: res.data._id
                     });
                 }
 				
@@ -74,6 +82,12 @@ export default class TrophyEdit extends Component  {
         this.setState({[e.target.name]: e.target.value})
     }
 	
+	handleChangePic = (e) =>  {
+        this.setState({[e.target.name]: e.target.value})
+		this.setState({picChanged: true});
+		this.setState({picNew: e.target.files[0]});
+    }
+	
 	validate = () => {
 		
 		for (var key in this.state) {
@@ -85,17 +99,72 @@ export default class TrophyEdit extends Component  {
 		let nameValidation = this.state.name.length >= 5;
         let descriptionValidation = this.state.description.length >= 16;
         let costValidation = this.state.cost >= 0;
-        let imageValidation = this.state.image.length > 0;
+        //let imageValidation = this.state.image.length > 0;
 		
 		this.setState({errorMessage: {
               nameError: nameValidation ? null : 'name has to be at least 5 characters long',
               descriptionError: descriptionValidation ? null : 'description has to be at least 16 characters long',
-              costError: costValidation ? null : 'cost has to be non-negative number',
-              imageError: imageValidation ? null : 'Media Path is required',              
+              costError: costValidation ? null : 'cost has to be non-negative number'
+              //imageError: imageValidation ? null : 'Media Path is required'            
         }}) 
         
-        return nameValidation && descriptionValidation && costValidation && imageValidation;
+        return nameValidation && descriptionValidation && costValidation;
 	}
+	
+	handleSubmitPic = (e) =>  {
+		
+		e.preventDefault();		
+		
+		if (this.state.canSubmit && this.state.picNew != null && this.state.picChanged){
+			console.log(this.state.picNew);
+
+			this.state.canSubmit = false;
+
+			const trophyObject = new FormData();
+			trophyObject.append('file', this.state.picNew);
+			trophyObject.append('myData', this.state.name);
+			for (var value of trophyObject.values()) {
+				console.log(value);
+			}
+
+			axios.defaults.withCredentials = true // needed for sessions to work
+			axios.post(`${SERVER_HOST}/trophyUploadPicture/${this.props.match.params.id}`, trophyObject)
+			.then(res =>  {   
+			
+				this.state.canSubmit = true;
+
+				if(res.data) {
+					
+					if (res.data.isLogged == false || res.data.isAdmin == false) {
+					
+						this.setState({logout: true});
+						
+						sessionStorage.clear() ;
+						sessionStorage.username = "GUEST";
+						sessionStorage.accessLevel = ACCESS_LEVEL_GUEST;
+						console.log('logout, server restart');
+					}
+					if (res.data.errorMessage) {
+						
+						console.log(res.data.errorMessage)  
+						this.setState({errorMessage:res.data.errorMessage})  
+						
+					} else {   
+					
+						console.log("Record added")
+						//this.setState({redirectToTrophiesList:true})
+						//this.setState({reload:true})
+					} 
+				} else {
+					console.log("Record not added")
+				}
+			})
+			
+			
+			this.setState({reload:true})
+			
+		}
+    }
 
 
     handleSubmit = (e) =>  {
@@ -109,8 +178,7 @@ export default class TrophyEdit extends Component  {
 			const trophyObject = {
                 name: this.state.name,
                 description: this.state.description,
-                cost: this.state.cost,
-                image: this.state.image
+                cost: this.state.cost
           }
 
 			axios.defaults.withCredentials = true // needed for sessions to work
@@ -222,22 +290,25 @@ export default class TrophyEdit extends Component  {
 						    </td>
 					    </tr>
 					    <tr>
-						    <td>
-							    Media Path
-						    </td>
-						    <td>
-                                <input 
-                                className="input" 
-                                type="text" 
-                                name="image" 
-                                value={this.state.image}
-                                onChange={this.handleChange}
-                                />
-					        </td>
-						    <td>
-                                <span className="error_msg">{this.state.errorMessage.imageError}</span>
-						    </td>
-					    </tr>
+							<td>
+								Picture 
+							</td>
+							<td>
+								<img className="userProfilePic" src={SERVER_HOST + "/trophies/" + this.state.pic} alt="Trophy Picture"/><br/>
+								<input 
+								className="input" 
+								type="file" 
+								name="picName" 
+								accept="image/png, image/jpeg"
+								value={this.state.picName}
+								onChange={this.handleChangePic}
+								/><br/>
+								<LinkInClass className="linkInClass" value="Change" onClick={this.handleSubmitPic}/>	
+							</td>
+							<td>
+								{ this.state.pic != "defaultTrophy.jpg" ? <Link to={"/TrophyDeletePic/" + this.state._id}>Delete</Link> : ""}						
+							</td>
+						</tr>
 
 						<tr>
 							<td>

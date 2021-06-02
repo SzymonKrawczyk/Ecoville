@@ -5,13 +5,13 @@ import axios from "axios"
 import {ACCESS_LEVEL_GUEST, ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
 
 
-export default class GadgetDeletePic extends Component  {
+export default class TrophyDeletePic extends Component  {
 	
     constructor(props)  {
 		
         super(props)
         this.state = {
-              redirectToGadgetEdit: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
+              redirectToTrophyEdit: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, logout: false
         }
     }
@@ -20,7 +20,7 @@ export default class GadgetDeletePic extends Component  {
     componentDidMount() {  
 	
         axios.defaults.withCredentials = true // needed for sessions to work
-        axios.post(`${SERVER_HOST}/gadgetDeletePic/${this.props.match.params.id}`)
+        axios.post(`${SERVER_HOST}/trophyDeletePic/${this.props.match.params.id}`)
         .then(res =>  {
 			
             if(res.data) {
@@ -40,24 +40,24 @@ export default class GadgetDeletePic extends Component  {
 					console.log(res.data.errorMessage)  
 						
 				} else { 
-                    console.log("Gadget confirmed")
+                    console.log("Trophy confirmed")
                 }
-                this.setState({redirectToGadgetEdit:true})
+                this.setState({redirectToTrophyEdit:true})
 				
             } else {
 				
-                console.log("Gadget not confirmed")
+                console.log("Trophy not confirmed")
             }
         })
     }
   
   
     render()  {
-		let temp = `/GadgetEdit/${this.props.match.params.id}`
+		let temp = `/TrophyEdit/${this.props.match.params.id}`
         return (
             <div>   
 				{this.state.logout ? <Redirect to="/Login"/> : null} 
-                {this.state.redirectToGadgetEdit ? <Redirect to={temp}/> : null}                      
+                {this.state.redirectToTrophyEdit ? <Redirect to={temp}/> : null}                      
             </div>
         )
     }

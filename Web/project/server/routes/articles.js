@@ -54,6 +54,8 @@ router.post(`/article/`, middleware.isLogged, middleware.isAdmin, middleware.tri
         likedBy: [],
         added: firestore.admin.firestore.Timestamp.fromDate(new Date(Date.now()))
     }
+	
+	if (req.body.source) temp.source = req.body.source;
     
     //const doc = await articleRef.add(req.body);
     const doc = await articleRef.add(temp);
@@ -82,6 +84,7 @@ router.get(`/article/:id`,  middleware.isLogged, middleware.isAdmin, async (req,
             likes: doc.data().likedBy != null ? doc.data().likedBy.length : 0,
             shortDescription: doc.data().shortDescription,
             content: doc.data().content,
+			source: doc.data().source,
             added: doc.data().added
         }
 
@@ -105,7 +108,7 @@ router.put(`/article/:id`, middleware.isLogged, middleware.isAdmin, middleware.t
 		res.json({errorMessage: `No article: ${id}`});
 			
 	} else {
-			
+					
 		const docE = await articleRef.doc(id).set(req.body, { merge: true });
 	}
 		

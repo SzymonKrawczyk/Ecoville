@@ -157,7 +157,7 @@ export default class GadgetEdit extends Component {
 					} else {   
 					
 						console.log("Record added")
-						this.setState({redirectToGadgetsList:true})
+						//this.setState({redirectToGadgetsList:true})
 					} 
 				} else {
 					console.log("Record not added")

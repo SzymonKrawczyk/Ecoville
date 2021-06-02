@@ -11,7 +11,6 @@ export default class TrophyTableRow extends Component
             <tr>
                 <td>{this.props.trophy.name}</td>
                 <td>{this.props.trophy.cost}</td>
-                <td>{this.props.trophy.image}</td>
                 <td>
                     <Link to={"/TrophyEdit/" + this.props.trophy._id}>Edit</Link>                  
                 </td>

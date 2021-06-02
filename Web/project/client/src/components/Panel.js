@@ -8,16 +8,57 @@ import Logout from "./Logout"
 import {ACCESS_LEVEL_GUEST, ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
 
 
-export default class DisplayAllCars extends Component 
+export default class Panel extends Component 
 {
     constructor(props) 
     {
         super(props)
         
         this.state = {
-            cars:[]
+            
+			  errorMessage: {}
+			, logout: false
         }
     }
+	
+	componentDidMount() { 
+	
+  
+        axios.defaults.withCredentials = true // needed for sessions to work
+        axios.get(`${SERVER_HOST}/ping`)
+        .then(res =>  {    
+		
+            if(res.data) {
+				
+				if (res.data.isLogged == false || res.data.isAdmin == false) {
+					
+					this.setState({logout: true});
+					
+					sessionStorage.clear();
+                    sessionStorage.username = "GUEST";
+                    sessionStorage.accessLevel = ACCESS_LEVEL_GUEST;
+					
+                    console.log('logout, server restart');
+				}
+				
+                if (res.data.errorMessage) {
+					
+					console.log(res.data.errorMessage);
+                    this.setState({
+                        errorMessage: res.data.errorMessage
+                    });
+					
+					console.log(this.state.errorMessage);
+					
+                } 
+				
+            } else {
+				
+                console.log(`error`);
+            }
+        })
+    }
+	
     
     
   
@@ -26,6 +67,8 @@ export default class DisplayAllCars extends Component
 		document.title = 'Ecoville | Panel'	
         return (           
 		<div className="body_content">
+		
+		{this.state.logout ? <Redirect to="/Login"/> : null} 
 		
 		{sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN ? <Redirect to="/Login"/> : null }
 		

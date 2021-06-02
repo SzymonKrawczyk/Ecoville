@@ -47,6 +47,7 @@ router.post(`/messagesList/`, middleware.isLogged, middleware.isAdmin, async (re
 			messageTable.push({
 				  _id: currentDoc.id
 				, author: authorString
+				, author_id: currentDoc.data().id_user.id
 				, timestamp: currentDoc.data().timestamp
 				, content: currentDoc.data().message
 			});				

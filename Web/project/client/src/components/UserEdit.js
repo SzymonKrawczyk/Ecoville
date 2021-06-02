@@ -437,7 +437,7 @@ export default class UserEdit extends Component {
 													{this.state.totalPoints.map((category) => 
 									
 														<tr key={category._id}>
-														<td>{category.name}</td>
+														<td><Link to={"/CategoryEdit/" + category._id}>{category.name}</Link></td>
 														<td>{category.points}</td>
 														</tr>)
 													}
@@ -465,7 +465,7 @@ export default class UserEdit extends Component {
 													{this.state.trophies.map((trophy) => 
 									
 														<tr key={trophy._id}>
-														<td>{trophy.name}</td>
+														<td><Link to={"/TrophyEdit/" + trophy._id}>{trophy.name}</Link></td>
 														<td><Link to={"/UserDeleteTrophy/" + this.state._id + "/" + trophy._id}>Delete</Link></td>
 														</tr>)
 													}
@@ -496,7 +496,7 @@ export default class UserEdit extends Component {
 															<tr key={gadget._id}>
 																<td>
 																	<img className="userGadgetPic" src={SERVER_HOST + "/gadgets/" + gadget.pic} alt="Gadget Picture"/>									
-																	<div className="userGadgetName">{gadget.name}</div>
+																	<div className="userGadgetName"><Link to={"/GadgetEdit/" + gadget._id}>{gadget.name}</Link></div>
 																</td>
 																<td>
 																	{ gadget.collected ? "Redeemed!" : <Link to={"/UserRedeemGadget/" + this.state._id + "/" + gadget._id}>Confirm Redeem</Link>}

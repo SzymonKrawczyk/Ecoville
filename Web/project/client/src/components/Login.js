@@ -86,7 +86,7 @@ export default class Login extends Component
 		
 			<div className="body_content">
 				
-				{sessionStorage.accessLevel >= ACCESS_LEVEL_ADMIN && this.state.isLoggedIn ? <Redirect to="/Panel"/> : null }
+				{sessionStorage.accessLevel >= ACCESS_LEVEL_ADMIN && this.state.isLoggedIn ? <Redirect to="/Panel"/> : null}
 		 
 				<div className="card_standard card_login">
 		

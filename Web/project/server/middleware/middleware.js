@@ -10,6 +10,8 @@ const gadgetRef = firestore.db.collection('gadget');
 
 const isLogged = (req, res, next) => {
 	
+	//console.log("log check")
+	
     if(typeof req.session.user == `undefined`) {    
 	
 		console.log("Middleware isLogged: false");
@@ -21,7 +23,7 @@ const isLogged = (req, res, next) => {
 		console.log("Middleware isLogged: true");
 		
         return next();
-    }
+    } 
 }
 
 const isAdmin = (req, res, next) => {
@@ -256,7 +258,6 @@ const validateTrophyObject = async (req, res, next) => {
 	let nameValidation = trophyObject.name.length >= 5;
     let descriptionValidation = trophyObject.description.length >= 16;
     let costValidation = trophyObject.cost >= 0;
-    let imageValidation = trophyObject.image.length > 0;
 			
 	let nameIsUsedValidation;
 
@@ -279,11 +280,10 @@ const validateTrophyObject = async (req, res, next) => {
 	let errorMessage = {
 		nameError:  nameValidation ? nameIsUsedValidation ? null : 'trophy with this name already exists' : 'name has to be at least 5 characters long',
 		descriptionError: descriptionValidation ? null : 'description has to be at least 16 characters long',
-		costError: costValidation ? null : 'cost has to be non-negative number',
-		imageError: imageValidation ? null : 'Media Path is required'
+		costError: costValidation ? null : 'cost has to be non-negative number'
 	};
 		
-	if (!(nameValidation && descriptionValidation && costValidation && imageValidation && nameIsUsedValidation)) {
+	if (!(nameValidation && descriptionValidation && costValidation && nameIsUsedValidation)) {
 		return res.json({errorMessage});
 	} else {
 		return next();

@@ -101,7 +101,6 @@ export default class TrophyTable extends Component
 					<tr>
 						<td> <LinkInClass className="linkInClass" value="Name" onClick={this.sortTrophies}/> </td>
 						<td> <LinkInClass className="linkInClass" value="Cost" onClick={this.sortTrophies}/> </td>
-						<td> <LinkInClass className="linkInClass" value="Media Path" onClick={this.sortTrophies}/> </td>
 					</tr>
 				</thead>
 				<tbody>

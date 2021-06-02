@@ -17,6 +17,7 @@ export default class ArticleEdit extends Component  {
             , shortDescription: ``
             , content: ``
             , added: ""
+			, source: ""
 			, errorMessage: {}
 			, redirectToArticlesList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, logout: false
@@ -69,6 +70,7 @@ export default class ArticleEdit extends Component  {
                         shortDescription: res.data.shortDescription,
                         content: res.data.content,
                         added: dateString,
+						source: res.data.source
                     });
                 }
 				
@@ -118,6 +120,7 @@ export default class ArticleEdit extends Component  {
                 title: this.state.title,
                 shortDescription: this.state.shortDescription,
                 content: this.state.content,
+				source: this.state.source
 			};
 
 			axios.defaults.withCredentials = true // needed for sessions to work
@@ -245,6 +248,24 @@ export default class ArticleEdit extends Component  {
 							</td>
 							<td>
 								<span className="error_msg">{this.state.errorMessage.contentError}</span>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>
+                            Source<br/>(optional)
+							</td>
+							<td>
+								<textarea 
+								className = "input textarea" 
+								type = "text"
+								name = "source"
+								value = {this.state.source}
+								onChange = {this.handleChange}
+								/>
+							</td>
+							<td>
+								
 							</td>
 						</tr>
 

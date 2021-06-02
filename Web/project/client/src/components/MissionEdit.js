@@ -431,7 +431,7 @@ export default class MissionEdit extends Component  {
 								{this.state.currentParticipants.map((participant) => 
 								
 									<tr key={participant._id}>
-										<td>{participant.firstName} {participant.lastName}</td>
+										<td><Link to={"/UserEdit/" + participant._id}>{participant.firstName} {participant.lastName}</Link></td>
 										
 										{participant.confirmed ? <td><Link to={"/MissionConfirmUser/" + this.state._id + "/" + participant._id}>Remove</Link></td> : <td></td>}
 										

@@ -143,7 +143,7 @@ router.get(`/user/:id`,  middleware.isLogged, middleware.isAdmin, async (req, re
 					, collected: gadgetsArrT[i].collected
 				};
 				
-				const pic = gadgetGet.data().pic;			
+				const pic = gadgetGet.id;			
 				let bucket = firestore.admin.storage().bucket();
 				try {
 					await bucket.file("gadgets/" + pic).download({destination: "./public/gadgets/" + pic}); 

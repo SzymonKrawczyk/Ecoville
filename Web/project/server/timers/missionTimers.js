@@ -138,7 +138,7 @@ const missionTimers = async() => {
 			}		
 			
 			
-			console.log(`\n mission ${currentMissionObject.name}: completed=${currentMissionObject.completed}`);
+			console.log(` mission ${currentMissionObject.name}: completed=${currentMissionObject.completed}`);
 			
 			
 			
