@@ -1,11 +1,15 @@
-package com.example.ecoville_app_S.model;
+package com.example.bottomnavigationview.model;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,12 +21,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.ecoville_app_S.MainActivity;
-import com.example.ecoville_app_S.R;
-import com.example.ecoville_app_S.UserBannedErrorActivity;
-import com.example.ecoville_app_S.fragment_connection_error;
-import com.example.ecoville_app_S.fragment_shop;
-import com.example.ecoville_app_S.fragment_shop_gadgets;
+import com.example.bottomnavigationview.MainActivity;
+import com.example.bottomnavigationview.R;
+import com.example.bottomnavigationview.UserBannedErrorActivity;
+import com.example.bottomnavigationview.fragment_connection_error;
+import com.example.bottomnavigationview.fragment_shop;
+import com.example.bottomnavigationview.fragment_shop_gadgets;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -123,20 +127,12 @@ public class fragment_shop_gadgets_adapter extends RecyclerView.Adapter<fragment
         }
     }
 
+    public void showPopUp(Gadget g, String Id, StorageReference sr){
 
-    public void  showPopUp(Gadget g, String Id, StorageReference sr){
+        Dialog dialog = new Dialog(context);
 
-        //Dialog dialog = new Dialog(context);
-        //dialog.setContentView(R.layout.shop_popup);
-
-        System.out.println(g.getName() + " : " + Id);
-
-        AlertDialog.Builder dialogBuilder;
-        AlertDialog dialog;
-
-        dialogBuilder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View contactPopupView = inflater.inflate(R.layout.shop_popup, null, false);
+        dialog.setContentView(R.layout.shop_popup_2);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         TextView TVTrophyMinimalistic;
         TextView TVTrophyTitle;
@@ -148,13 +144,12 @@ public class fragment_shop_gadgets_adapter extends RecyclerView.Adapter<fragment
         Button BTShopBuy;
         Button BTShopNotBuy;
 
-        TVTrophyTitle = (TextView) contactPopupView.findViewById(R.id.TVTrophyTitle);
-        TVTrophyDescription = (TextView) contactPopupView.findViewById(R.id.TVTrophyDescription);
-        TVTrophyPointsValue = (TextView) contactPopupView.findViewById(R.id.TVTrophyPointsValue);
-        IVTrophyMinimalistic = (ImageView) contactPopupView.findViewById(R.id.IVTrophyMinimalistic);
-        BTShopBuy = (Button) contactPopupView.findViewById(R.id.BTShopBuy);
-        BTShopNotBuy = (Button) contactPopupView.findViewById(R.id.BTShopNotBuy);
-
+        TVTrophyTitle = (TextView) dialog.findViewById(R.id.TVTrophyTitle);
+        TVTrophyDescription = (TextView) dialog.findViewById(R.id.TVTrophyDescription);
+        TVTrophyPointsValue = (TextView) dialog.findViewById(R.id.TVTrophyPointsValue);
+        IVTrophyMinimalistic = (ImageView) dialog.findViewById(R.id.IVTrophyMinimalistic);
+        BTShopBuy = (Button) dialog.findViewById(R.id.BTShopBuy);
+        BTShopNotBuy = (Button) dialog.findViewById(R.id.BTShopNotBuy);
 
         TVTrophyTitle.setText(g.getName());
         TVTrophyDescription.setText("Left: " + g.getAmount());
@@ -166,11 +161,10 @@ public class fragment_shop_gadgets_adapter extends RecyclerView.Adapter<fragment
                     .into(IVTrophyMinimalistic);
         }
 
-        dialogBuilder.setView(contactPopupView);
-        dialog = dialogBuilder.create();
+
 
         if( MainActivity.appUser.getCurrentPoints() < g.getCost() || g.getAmount() < 1 ){
-            contactPopupView.findViewById(R.id.CLShopPopUpBuy).setBackgroundResource(R.drawable.round_corners_button_darkgray);
+            dialog.findViewById(R.id.CLShopPopUpBuy).setBackgroundResource(R.drawable.round_corners_button_darkgray);
         }else {
             BTShopBuy.setOnClickListener(new View.OnClickListener() {
                 @Override

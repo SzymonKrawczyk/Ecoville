@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
         import androidx.annotation.NonNull;
         import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +12,7 @@ package com.example.ecoville_app_S;
         import android.widget.EditText;
         import android.widget.Toast;
 
-        import com.example.ecoville_app_S.model.User;
+        import com.example.bottomnavigationview.model.User;
         import com.google.android.gms.tasks.OnCompleteListener;
         import com.google.android.gms.tasks.OnFailureListener;
         import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,9 +33,6 @@ public class LogIn extends AppCompatActivity {
     Button SingUp;
     Button ForgetPassword;
 
-    User AppUser = null;    //TODO: zminić nazwę na coś bardziej sensownego
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +50,14 @@ public class LogIn extends AppCompatActivity {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        ForgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ResetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
         SingUp.setOnClickListener(new View.OnClickListener() {
             @Override

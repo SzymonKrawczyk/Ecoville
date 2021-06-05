@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S.model;
+package com.example.bottomnavigationview.model;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;

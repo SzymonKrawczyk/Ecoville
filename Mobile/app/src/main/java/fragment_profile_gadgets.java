@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.ecoville_app_S.model.Gadget;
-import com.example.ecoville_app_S.model.Trophy;
-import com.example.ecoville_app_S.model.fragment_profile_gadgets_adapter;
-import com.example.ecoville_app_S.model.fragment_profile_new_trophie_adapter;
+import com.example.bottomnavigationview.model.Gadget;
+import com.example.bottomnavigationview.model.Trophy;
+import com.example.bottomnavigationview.model.fragment_profile_gadgets_adapter;
+import com.example.bottomnavigationview.model.fragment_profile_new_trophie_adapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -121,8 +121,17 @@ public class fragment_profile_gadgets extends Fragment {
         if(hashMaps != null)
         {
             for(int i=0; i<hashMaps.size(); i++){
-                userGadgetsDocRef.add( (DocumentReference) hashMaps.get(i).get("ref") );
-                isCollected.add( (Boolean) hashMaps.get(i).get("collected") );
+                if(! (Boolean) hashMaps.get(i).get("collected") ){
+                    userGadgetsDocRef.add( (DocumentReference) hashMaps.get(i).get("ref") );
+                    isCollected.add( (Boolean) hashMaps.get(i).get("collected") );
+                }
+            }
+
+            for(int i=0; i<hashMaps.size(); i++){
+                if( (Boolean) hashMaps.get(i).get("collected") ){
+                    userGadgetsDocRef.add( (DocumentReference) hashMaps.get(i).get("ref") );
+                    isCollected.add( (Boolean) hashMaps.get(i).get("collected") );
+                }
             }
         }
 

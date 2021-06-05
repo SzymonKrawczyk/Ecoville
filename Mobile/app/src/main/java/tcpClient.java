@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
 
 import java.io.BufferedReader;

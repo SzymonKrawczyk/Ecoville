@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
 import android.os.Bundle;
 
@@ -27,7 +27,6 @@ public class fragment_connection_error extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_connection_error, container, false);
-
 
         return view;
     }

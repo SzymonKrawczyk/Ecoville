@@ -1,8 +1,11 @@
-package com.example.ecoville_app_S.model;
+package com.example.bottomnavigationview.model;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +19,19 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ecoville_app_S.MainActivity;
-import com.example.ecoville_app_S.R;
-import com.example.ecoville_app_S.UserBannedErrorActivity;
-import com.example.ecoville_app_S.fragment_connection_error;
-import com.example.ecoville_app_S.fragment_shop;
+import com.bumptech.glide.Glide;
+import com.example.bottomnavigationview.MainActivity;
+import com.example.bottomnavigationview.R;
+import com.example.bottomnavigationview.UserBannedErrorActivity;
+import com.example.bottomnavigationview.fragment_connection_error;
+import com.example.bottomnavigationview.fragment_shop;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -70,34 +76,28 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
 
                 Trophy t = new Trophy(trophy);
 
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                // Create a storage reference from our app
+                StorageReference storageRef = storage.getReference();
+
+                // Create a reference with an initial file path and name
+                StorageReference pathReference = storageRef.child("trophies/" + documentSnapshot.getId());
+
+                Glide.with(context /* context */)
+                        .load(pathReference)
+                        .into(holder.IVTrophy);
+
                 holder.BTTrophyInteraction.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //MainActivity.appUser.setCurrentPoints( MainActivity.appUser.getCurrentPoints() - costFinal );
 
-                        showPopUp(t, docRefArray.get(position).getId());
-
-//                            docRefArray.get(position).getId();
-//                            buyATrophy( docRefArray.get(position).getId(), costFinal);
-//                            fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
+                        showPopUp(t, docRefArray.get(position).getId(), pathReference);
                     }
                 });
 
                 if( MainActivity.appUser.getCurrentPoints() < trophy.getCost()  ){
                     holder.CLTrophyBackground.setBackgroundResource(R.drawable.round_corners_button_darkgray);
-                }else {
-//                    holder.BTTrophyInteraction.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            //MainActivity.appUser.setCurrentPoints( MainActivity.appUser.getCurrentPoints() - costFinal );
-//
-//                            showPopUp(t);
-//
-////                            docRefArray.get(position).getId();
-////                            buyATrophy( docRefArray.get(position).getId(), costFinal);
-////                            fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
-//                        }
-//                    });
                 }
             }
         });
@@ -126,19 +126,12 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
         }
     }
 
-    public void  showPopUp(Trophy t, String Id){
+    public void showPopUp(Trophy t, String Id, StorageReference sr){
 
-        //Dialog dialog = new Dialog(context);
-        //dialog.setContentView(R.layout.shop_popup);
+        Dialog dialog = new Dialog(context);
 
-        System.out.println(t.getName() + " : " + Id);
-
-        AlertDialog.Builder dialogBuilder;
-        AlertDialog dialog;
-
-        dialogBuilder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View contactPopupView = inflater.inflate(R.layout.shop_popup, null, false);
+        dialog.setContentView(R.layout.shop_popup_2);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         TextView TVTrophyMinimalistic;
         TextView TVTrophyTitle;
@@ -150,25 +143,26 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
         Button BTShopBuy;
         Button BTShopNotBuy;
 
-        TVTrophyTitle = (TextView) contactPopupView.findViewById(R.id.TVTrophyTitle);
-        TVTrophyDescription = (TextView) contactPopupView.findViewById(R.id.TVTrophyDescription);
-        TVTrophyPointsValue = (TextView) contactPopupView.findViewById(R.id.TVTrophyPointsValue);
-        IVTrophyMinimalistic = (ImageView) contactPopupView.findViewById(R.id.IVTrophyMinimalistic);
-        BTShopBuy = (Button) contactPopupView.findViewById(R.id.BTShopBuy);
-        BTShopNotBuy = (Button) contactPopupView.findViewById(R.id.BTShopNotBuy);
+        TVTrophyTitle = (TextView) dialog.findViewById(R.id.TVTrophyTitle);
+        TVTrophyDescription = (TextView) dialog.findViewById(R.id.TVTrophyDescription);
+        TVTrophyPointsValue = (TextView) dialog.findViewById(R.id.TVTrophyPointsValue);
+        IVTrophyMinimalistic = (ImageView) dialog.findViewById(R.id.IVTrophyMinimalistic);
+        BTShopBuy = (Button) dialog.findViewById(R.id.BTShopBuy);
+        BTShopNotBuy = (Button) dialog.findViewById(R.id.BTShopNotBuy);
 
 
         TVTrophyTitle.setText(t.getName());
         TVTrophyDescription.setText(t.getDescription());
         TVTrophyPointsValue.setText(String.valueOf(t.getCost()));
-        String imageName = t.getImage();
-        IVTrophyMinimalistic.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
 
-        dialogBuilder.setView(contactPopupView);
-        dialog = dialogBuilder.create();
+        if(sr != null){
+            Glide.with(context /* context */)
+                    .load(sr)
+                    .into(IVTrophyMinimalistic);
+        }
 
         if( MainActivity.appUser.getCurrentPoints() < t.getCost()  ){
-            contactPopupView.findViewById(R.id.CLShopPopUpBuy).setBackgroundResource(R.drawable.round_corners_button_darkgray);
+            dialog.findViewById(R.id.CLShopPopUpBuy).setBackgroundResource(R.drawable.round_corners_button_darkgray);
         }else {
 
             BTShopBuy.setOnClickListener(new View.OnClickListener() {
@@ -233,11 +227,6 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
                         fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
                     }
                 });
-
-
-
-
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

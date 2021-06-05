@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import com.example.ecoville_app_S.model.User;
+import com.example.bottomnavigationview.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -101,16 +101,18 @@ public class MainActivity extends AppCompatActivity {
 
     public static Date getDateFromServer()
     {
-        try {
-            tcpClient mTcpClient = new tcpClient();
-            Thread thread = new Thread(mTcpClient);
-            thread.start();
-            thread.join();
-            System.out.println("Login date: " + mTcpClient.serverTime);
-            return mTcpClient.serverTime;
-        } catch (InterruptedException e) {
-            System.err.println("Tcp interrupted!!");
-            return null;
-        }
+        return new Date();
+
+//        try {
+//            tcpClient mTcpClient = new tcpClient();
+//            Thread thread = new Thread(mTcpClient);
+//            thread.start();
+//            thread.join();
+//            System.out.println("Login date: " + mTcpClient.serverTime);
+//            return mTcpClient.serverTime;
+//        } catch (InterruptedException e) {
+//            System.err.println("Tcp interrupted!!");
+//            return null;
+//        }
     }
 }

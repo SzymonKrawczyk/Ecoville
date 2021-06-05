@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S.model;
+package com.example.bottomnavigationview.model;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.ecoville_app_S.R;
+import com.example.bottomnavigationview.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -70,7 +70,8 @@ public class fragment_profile_gadgets_adapter extends RecyclerView.Adapter<fragm
                 holder.CLGadgetItem.setVisibility(View.VISIBLE);
             }else{
                 holder.TVGadgetInfo.setText("You already picked up this gadget");
-                holder.CLGadgetItem.setVisibility(View.INVISIBLE);
+                holder.CLGadgetItem.setBackgroundResource(R.drawable.round_corners_left_darkgray_bg);
+                holder.CLGadgetItem.setVisibility(View.VISIBLE);
             }
         }
     }

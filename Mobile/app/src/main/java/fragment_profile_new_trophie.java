@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
 import android.os.Bundle;
 
@@ -16,9 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.ecoville_app_S.model.Trophy;
-import com.example.ecoville_app_S.model.User;
-import com.example.ecoville_app_S.model.fragment_profile_new_trophie_adapter;
+import com.example.bottomnavigationview.model.Trophy;
+import com.example.bottomnavigationview.model.User;
+import com.example.bottomnavigationview.model.fragment_profile_new_trophie_adapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -187,7 +187,7 @@ public class fragment_profile_new_trophie extends Fragment {
 
     private void setRecycleViewContent(){
         if(trophiesList.size() == numberOfTrophies){
-            fragment_profile_new_trophie_adapter adapter = new fragment_profile_new_trophie_adapter(this.getContext(), trophiesList, trophiesTimestamp);
+            fragment_profile_new_trophie_adapter adapter = new fragment_profile_new_trophie_adapter(this.getContext(), trophiesList, trophiesTimestamp, userTrophiesDocRef);
             rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
             rv.setAdapter(adapter);
         }

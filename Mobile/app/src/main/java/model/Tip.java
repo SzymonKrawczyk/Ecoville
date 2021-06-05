@@ -1,6 +1,6 @@
-package com.example.ecoville_app_S.model;
+package com.example.bottomnavigationview.model;
 
-import com.example.ecoville_app_S.fragment_home_tips;
+import com.example.bottomnavigationview.fragment_home_tips;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,15 +13,17 @@ public class Tip {
     private String title;
     private String shortDescription;
     private String content;
+    private String source;
     private ArrayList<DocumentReference> likedBy;
     private Timestamp added;
 
     public Tip() { }
 
-    public Tip(String title, String shortDescription, String content, ArrayList<DocumentReference> likedBy, Timestamp added) {
+    public Tip(String title, String shortDescription, String content, String source, ArrayList<DocumentReference> likedBy, Timestamp added) {
         this.title = title;
         this.shortDescription = shortDescription;
         this.content = content;
+        this.source = source;
         this.likedBy = likedBy;
         this.added = added;
     }
@@ -98,4 +100,8 @@ public class Tip {
     public void setAdded(Timestamp added) {
         this.added = added;
     }
+
+    public String getSource() { return source; }
+
+    public void setSource(String source) { this.source = source; }
 }

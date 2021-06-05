@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
 import android.os.Bundle;
 
@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.ecoville_app_S.model.User;
-import com.example.ecoville_app_S.model.fragment_shop_adapter;
+import com.example.bottomnavigationview.model.User;
+import com.example.bottomnavigationview.model.fragment_shop_adapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;

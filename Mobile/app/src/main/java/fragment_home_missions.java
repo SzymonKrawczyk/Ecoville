@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
 import android.os.Bundle;
 
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.ecoville_app_S.model.Mission;
+import com.example.bottomnavigationview.model.Mission;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -129,7 +129,7 @@ public class fragment_home_missions extends Fragment {
                     if((date.getTime()/1000 - model.getAdded().getSeconds()) < 60*60*24*7){
                         holder.TVMissionNew.setVisibility(View.VISIBLE);
                     }
-                    holder.CVMission.setBackgroundColor(getResources().getColor(R.color.white));
+                    holder.CLMissionContainer.setBackgroundColor(getResources().getColor(R.color.white));
                     holder.TVMissionName.setTextColor(getResources().getColor(R.color.black));
                     holder.TVMissionPointsValue.setTextColor(getResources().getColor(R.color.lightGreen));
                     holder.TVMissionPointsValueLabel.setTextColor(getResources().getColor(R.color.lightGreen));
@@ -141,7 +141,7 @@ public class fragment_home_missions extends Fragment {
                     else holder.CLMissionParticipation.setVisibility(View.INVISIBLE);
                 } else {
                     holder.TVMissionNew.setVisibility(View.INVISIBLE);
-                    holder.CVMission.setBackgroundColor(getResources().getColor(R.color.lightGray));
+                    holder.CLMissionContainer.setBackgroundColor(getResources().getColor(R.color.lightGray));
                     holder.TVMissionName.setTextColor(getResources().getColor(R.color.darkGray));
                     holder.TVMissionPointsValue.setTextColor(getResources().getColor(R.color.darkGray));
                     holder.TVMissionPointsValueLabel.setTextColor(getResources().getColor(R.color.darkGray));
@@ -192,7 +192,9 @@ public class fragment_home_missions extends Fragment {
         TextView TVMissionPointsValue;
         TextView TVMissionPointsValueLabel;
         ConstraintLayout CLMissionParticipation;
+        ConstraintLayout CLMissionContainer;
         CardView CVMission;
+
 
         public MissionViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -204,7 +206,9 @@ public class fragment_home_missions extends Fragment {
             TVMissionPointsValue = (TextView) itemView.findViewById(R.id.TVMissionPointsValue);
             TVMissionPointsValueLabel = (TextView) itemView.findViewById(R.id.TVMissionPointsValueLabel);
             CLMissionParticipation = (ConstraintLayout) itemView.findViewById(R.id.CLMissionParticipation);
+            CLMissionContainer = (ConstraintLayout) itemView.findViewById(R.id.CLMissionContainer);
             CVMission = (CardView) itemView.findViewById(R.id.CVMission);
+
             //System.out.println("here 5.5");
         }
 

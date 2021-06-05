@@ -1,5 +1,7 @@
-package com.example.ecoville_app_S;
+package com.example.bottomnavigationview;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.ecoville_app_S.model.Tip;
+import com.example.bottomnavigationview.model.Tip;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -34,6 +36,7 @@ public class fragment_home_tip_details extends Fragment {
     TextView TVTipsDetailsTitle;
     TextView TVTipsDetailsDate;
     TextView TVTipContent;
+    TextView TVSource;
     Button BTTipsDtailsLike;
 
 
@@ -50,6 +53,7 @@ public class fragment_home_tip_details extends Fragment {
         TVTipsDetailsTitle = (TextView) view.findViewById(R.id.TVTipsDetailsTitle);
         TVTipsDetailsDate = (TextView) view.findViewById(R.id.TVTipsDetailsDate);
         TVTipContent = (TextView) view.findViewById(R.id.TVTipContent);
+        TVSource = (TextView) view.findViewById(R.id.TVSource);
         BTTipsDtailsLike = (Button) view.findViewById(R.id.BTTipsDtailsLike);
 
 
@@ -62,7 +66,21 @@ public class fragment_home_tip_details extends Fragment {
                     TVTipsDetailsTitle.setText(tip.getTitle().toUpperCase());
                     TVTipsDetailsDate.setText(tip._getDate());
                     TVTipContent.setText(tip.getContent());
+                    TVSource.setText(tip.getSource());
                     BTTipsDtailsLike.setVisibility(View.VISIBLE);
+
+                    if(tip.getSource() != null) {
+                        if(tip.getSource().contains("www") || tip.getSource().contains("http")){
+                            TVSource.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tip.getSource()));
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+                    }
+
 
                     if (tip._isLikedByUser(MainActivity.userDocRef)) {
                         BTTipsDtailsLike.setText("Not my cup of tea");

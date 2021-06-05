@@ -1,4 +1,4 @@
-package com.example.ecoville_app_S.model;
+package com.example.bottomnavigationview.model;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,9 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ecoville_app_S.MainActivity;
-import com.example.ecoville_app_S.R;
-import com.example.ecoville_app_S.fragment_profile;
+import com.example.bottomnavigationview.MainActivity;
+import com.example.bottomnavigationview.R;
+import com.example.bottomnavigationview.fragment_profile;
 
 import java.util.ArrayList;
 
@@ -40,8 +40,8 @@ public class fragment_profile_adapter extends RecyclerView.Adapter<fragment_prof
     @Override
     public void onBindViewHolder(@NonNull fragment_profile_adapter.Categories holder, int position) {
         if(categoryName.get(position) != null && categoryPoints.get(position) != null ){
-            holder.TVCategoryName.setText( categoryName.get(position) + " :" );
-            holder.TVCategoryPoints.setText( String.valueOf(categoryPoints.get(position)));
+            holder.TVCategoryName.setText( categoryName.get(position));
+            //holder.TVCategoryPoints.setText( String.valueOf(categoryPoints.get(position)));
             if( MainActivity.appUser.getTotalPointsSum() != 0 ){
                 holder.TVPointsPercent.setText(String.format("%.1f",  ( (categoryPoints.get(position)*100.0) / (double)MainActivity.appUser.getTotalPointsSum()) ) + "%" );
                 holder.TVPointsPercent.setTextColor(colors.get(position));
