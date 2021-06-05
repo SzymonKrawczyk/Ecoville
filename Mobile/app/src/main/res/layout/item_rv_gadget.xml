@@ -89,6 +89,8 @@
         app:cardCornerRadius="10dp"
         app:cardBackgroundColor="#FFFFFF"
         app:cardElevation="8dp"
+        android:outlineAmbientShadowColor="@color/transparent"
+        android:outlineSpotShadowColor="@color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/CVGadgetShop">

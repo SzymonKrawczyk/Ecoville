@@ -117,6 +117,9 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/black"
             android:textSize="14sp"
+
+            android:visibility="invisible"
+
             app:layout_constraintStart_toEndOf="@+id/BTShopGadgets"
             app:layout_constraintTop_toTopOf="@+id/BTShopGadgets" />
 

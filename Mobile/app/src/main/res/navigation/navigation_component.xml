@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/fragment_1"
-        android:name="com.example.ecoville_app_S.fragment_home_missions"
+        android:name="com.example.bottomnavigationview.fragment_home_missions"
         android:label="fragment_1"
         tools:layout="@layout/fragment_home_missions" />
     <fragment
         android:id="@+id/fragment_2"
-        android:name="com.example.ecoville_app_S.fragment_rank"
+        android:name="com.example.bottomnavigationview.fragment_rank"
         android:label="fragment_2"
         tools:layout="@layout/fragment_rank" />
     <fragment
         android:id="@+id/fragment_3"
-        android:name="com.example.ecoville_app_S.fragment_shop"
+        android:name="com.example.bottomnavigationview.fragment_shop"
         android:label="fragment_3"
         tools:layout="@layout/fragment_shop" />
     <fragment
         android:id="@+id/fragment_4"
-        android:name="com.example.ecoville_app_S.fragment_profile"
+        android:name="com.example.bottomnavigationview.fragment_profile"
         android:label="fragment_4"
         tools:layout="@layout/fragment_profile" />
 </navigation>

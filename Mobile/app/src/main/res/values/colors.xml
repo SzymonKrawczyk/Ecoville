@@ -16,4 +16,6 @@
     <color name="lightGray">#E4E4E4</color>
     <color name="darkGray">#9F9F9F</color>
     <color name="orange">#fCA503</color>
+
+    <color name="transparent">#00FFFFFF</color>
 </resources>

@@ -112,12 +112,15 @@
         android:layout_height="20dp"
         android:layout_marginTop="145dp"
         android:background="@drawable/round_corner_transparent"
-        app:cardCornerRadius="10dp"
         app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="10dp"
         app:cardElevation="8dp"
+        android:outlineAmbientShadowColor="@color/transparent"
+        android:outlineSpotShadowColor="@color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/CVTrophyShop">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -134,6 +137,7 @@
                 android:insetBottom="0dp"
                 android:text="DETAILS"
                 android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
