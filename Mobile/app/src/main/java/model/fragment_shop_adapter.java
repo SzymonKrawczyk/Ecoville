@@ -214,11 +214,12 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
                             }else{
                                 fragment_shop.TotalPoints.setText(String.valueOf(MainActivity.appUser.getCurrentPoints()));
                                 fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
-                                Toast.makeText(fragmentActivity, "You have successfully purchased a trophy", Toast.LENGTH_LONG).show();
+                                Toast.makeText(fragmentActivity, "Thank you for your purchase", Toast.LENGTH_LONG).show();
                             }
                         }else{
                             fragment_shop.TotalPoints.setText(String.valueOf(MainActivity.appUser.getCurrentPoints()));
-                            Toast.makeText(fragmentActivity, "Error, try again.", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(fragmentActivity, "Error, try again.", Toast.LENGTH_LONG).show();
+                            fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
