@@ -1,17 +1,24 @@
 package com.example.bottomnavigationview;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bottomnavigationview.model.Tip;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -69,18 +76,45 @@ public class fragment_home_tip_details extends Fragment {
                     TVSource.setText(tip.getSource());
                     BTTipsDtailsLike.setVisibility(View.VISIBLE);
 
-                    if(tip.getSource() != null) {
-                        if(tip.getSource().contains("www") || tip.getSource().contains("http")){
-                            TVSource.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tip.getSource()));
-                                    startActivity(intent);
-                                }
-                            });
-                        }
-                    }
 
+                    // Working example: "https://pl.wikipedia.org/wiki/Ziemniak AAAAAAAAAA https://pl.wikipedia.org/wiki/Pietruszka_zwyczajna www.google.com"
+                    // www.google.com is not recognized as valid address and so, it's not treated as such
+
+                    if(tip.getSource() != null) {
+
+                        String s = tip.getSource().replace(' ','\n');
+
+                        SpannableString sss = new SpannableString(s);
+                        int start = 0;
+                        int end;
+
+                        String[] arr = s.split("\n");
+
+                        for ( String ss : arr) {
+
+                            end = start + ss.length();
+
+                            if(ss.contains("http")){
+                                ClickableSpan clickableSpan = new ClickableSpan() {
+                                    @Override
+                                    public void onClick(@NonNull View widget) {
+                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ss));
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    public void updateDrawState(@NonNull TextPaint ds) {
+                                        super.updateDrawState(ds);
+                                        ds.setColor(Color.BLUE);
+                                    }
+                                };
+                                sss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            }
+                            start = end + 1;
+                        }
+                        TVSource.setText(sss);
+                        TVSource.setMovementMethod(LinkMovementMethod.getInstance());
+                    }
 
                     if (tip._isLikedByUser(MainActivity.userDocRef)) {
                         BTTipsDtailsLike.setText("Not my cup of tea");

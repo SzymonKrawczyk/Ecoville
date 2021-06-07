@@ -38,6 +38,8 @@ public class fragment_profile_gadgets extends Fragment {
     TextView TVFullName;
     TextView TVMemberSince;
 
+    TextView TVNoContentInfo;
+
     Button BTProfileTrophies;
     Button BTProfileGadgets;
     Button BTProfileGames;
@@ -69,6 +71,8 @@ public class fragment_profile_gadgets extends Fragment {
         TVMemberSince = (TextView) view.findViewById(R.id.TVMemberSince);
         Date javaDate = MainActivity.appUser.getCreated().toDate();
         TVMemberSince.setText("member since " + (javaDate.getYear()+1900));
+
+        TVNoContentInfo = (TextView) view.findViewById(R.id.TVNoContentInfo);
 
         BTProfileTrophies = (Button) view.findViewById(R.id.BTProfileTrophies);
         BTProfileGadgets = (Button) view.findViewById(R.id.BTProfileGadgets);
@@ -133,9 +137,11 @@ public class fragment_profile_gadgets extends Fragment {
                     isCollected.add( (Boolean) hashMaps.get(i).get("collected") );
                 }
             }
+            loadTrophies(userGadgetsDocRef);
+        }else {
+            TVNoContentInfo.setVisibility(View.VISIBLE);
         }
 
-        loadTrophies(userGadgetsDocRef);
 
         return view;
     }

@@ -84,7 +84,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             showPopUp();
                         }else {
-                            Toast.makeText(ResetPasswordActivity.this, "Something went wrong. Try again later.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ResetPasswordActivity.this, "We are currently facing some technical issues,\n please try again later", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

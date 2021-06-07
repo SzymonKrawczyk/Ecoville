@@ -99,7 +99,7 @@ public class LogIn extends AppCompatActivity {
                         if(task.isSuccessful()){
                             setUser();
                         }else {
-                            Toast.makeText(LogIn.this, "Something went wrong :c \n " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -122,7 +122,7 @@ public class LogIn extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 MainActivity.appUser = documentSnapshot.toObject(User.class);
 
-                Toast.makeText(LogIn.this, "You successfully log in :)", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LogIn.this, "You successfully log in :)", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }

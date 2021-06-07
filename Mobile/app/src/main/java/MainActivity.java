@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static Date getDateFromServer()
     {
+        //for testing purpose, use local date
         return new Date();
 
 //        try {

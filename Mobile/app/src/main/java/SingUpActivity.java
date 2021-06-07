@@ -93,7 +93,7 @@ public class SingUpActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(SingUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingUpActivity.this, "New account created.\nYou can now use it to log in", Toast.LENGTH_LONG).show();
 
                         userId = mAuth.getCurrentUser().getUid();
                         DocumentReference docRef = db.collection("user").document(userId);
@@ -102,7 +102,7 @@ public class SingUpActivity extends AppCompatActivity {
                         docRef.set(user).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(SingUpActivity.this, "Something went wrong :c \n " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SingUpActivity.this, "We are currently facing some technical issues,\n please try again later", Toast.LENGTH_LONG).show();
                             }
                         });
                         startActivity(new Intent(getApplicationContext(), LogIn.class));
@@ -115,7 +115,8 @@ public class SingUpActivity extends AppCompatActivity {
                     user.put("password", Password);
                     */
                     } else {
-                        Toast.makeText(SingUpActivity.this, "Something went wrong :c \n " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingUpActivity.this, "We are currently facing some technical issues,\n please try again later", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(SingUpActivity.this, "Something went wrong :c \n " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -223,7 +224,7 @@ public class SingUpActivity extends AppCompatActivity {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 if(!queryDocumentSnapshots.isEmpty()){
-                    _Email.setError("Given email address is on the naughty kids list");
+                    _Email.setError("Given email address was banned,\ncontact your administrator for details");
                     _Email.requestFocus();
                 }else {
                     createUser();
