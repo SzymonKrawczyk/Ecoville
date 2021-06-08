@@ -295,6 +295,8 @@ const validateGadgetObject = async (req, res, next) => {
 	
 
 	const id = req.params.id;
+		
+	
 	let gadgetObject = req.body;
 	console.log(`gadgetObject`);
 	console.log(gadgetObject);

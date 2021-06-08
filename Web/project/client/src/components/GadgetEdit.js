@@ -21,6 +21,7 @@ export default class GadgetEdit extends Component {
 			, picNew: null
 			, picChanged: false
 			, picName: ""
+			, changePicText: ""
             , redirectToGadgetsList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, errorMessage: {}
 			, logout: false
@@ -122,6 +123,8 @@ export default class GadgetEdit extends Component {
 		e.preventDefault();		
 		
 		if (this.state.canSubmit && this.state.picNew != null && this.state.picChanged){
+			
+			this.setState({changePicText: ""});
 			console.log(this.state.picNew);
 
 			this.state.canSubmit = false;
@@ -156,7 +159,8 @@ export default class GadgetEdit extends Component {
 						
 					} else {   
 					
-						console.log("Record added")
+						console.log("Record added");
+						this.setState({changePicText: "Picture changed"});
 						//this.setState({redirectToGadgetsList:true})
 					} 
 				} else {
@@ -303,7 +307,8 @@ export default class GadgetEdit extends Component {
 							value={this.state.picName}
 							onChange={this.handleChangePic}
 							/><br/>
-							<LinkInClass className="linkInClass" value="Change" onClick={this.handleSubmitPic}/>	
+							<LinkInClass className="linkInClass" value="Change" onClick={this.handleSubmitPic}/><br/>
+								<span className="error_msg">{this.state.changePicText}</span>
 						</td>
 						<td>
 							{ this.state.pic != "defaultGadget.jpg" ? <Link to={"/GadgetDeletePic/" + this.state._id}>Delete</Link> : ""}						

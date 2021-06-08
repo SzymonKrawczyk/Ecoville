@@ -96,7 +96,7 @@ export default class GadgetTable extends Component
     render() 
     {
         return (
-			<table className="table table_data">
+			<table className="table table_data table_gadgets">
 				<thead>
 					<tr>
 						<td> <LinkInClass className="linkInClass" value="Name" onClick={this.sortGadgets}/> </td>

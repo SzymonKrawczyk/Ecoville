@@ -65,7 +65,7 @@ export default class GadgetsList extends Component {
 			
 					<div className="card_title_container">
 						<div className="card_standard card_title">
-							<h2>Trophies</h2>
+							<h2>Gadgets</h2>
 						</div>
 					</div>			
 					<GadgetTable gadgetTable={this.state.gadgetTable} /> 

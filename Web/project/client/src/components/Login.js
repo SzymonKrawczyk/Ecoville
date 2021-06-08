@@ -131,7 +131,7 @@ export default class Login extends Component
 									
 								</td>
 								<td>
-									<input className="button" defaultValue="Login" onClick={this.handleSubmit} readOnly/>
+									<input className="button input" defaultValue="Login" onClick={this.handleSubmit} readOnly/>
 								</td>
 							</tr>
 							<tr>

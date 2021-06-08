@@ -118,6 +118,10 @@ router.put(`/gadget/:id`, middleware.isLogged, middleware.isAdmin, middleware.tr
 		res.json({errorMessage: `No gadget: ${id}`});
 			
 	} else {
+		
+		
+		req.body.cost = parseInt(req.body.cost);
+		req.body.amount = parseInt(req.body.amount);
 			
 		const docE = await gadgetRef.doc(id).set(req.body, { merge: true });
 	}

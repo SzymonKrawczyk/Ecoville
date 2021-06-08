@@ -75,7 +75,7 @@ export default class CategoryTable extends Component
     render() 
     {
         return (
-			<table className="table table_data">
+			<table className="table table_data table_categories">
 				<thead>
 					<tr>
 						<td> <LinkInClass className="linkInClass" value="Category name"onClick={this.sortCategories}/> </td>

@@ -18,6 +18,7 @@ export default class ArticleAdd extends Component {
               title:""
             , shortDescription:""
             , content:""
+			, source: ""
             , redirectToArticlesList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			, errorMessage: {}
 			, logout: false
@@ -72,6 +73,8 @@ export default class ArticleAdd extends Component {
                   , shortDescription: this.state.shortDescription
                   , content: this.state.content
 			}
+			
+			if (this.state.source != "") articleObject.source = this.state.source;
 
 			axios.defaults.withCredentials = true // needed for sessions to work
 			axios.post(`${SERVER_HOST}/article`, articleObject)
@@ -180,6 +183,24 @@ export default class ArticleAdd extends Component {
 							</td>
 							<td>
 								<span className="error_msg">{this.state.errorMessage.contentError}</span>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>
+                            Source<br/>(optional)
+							</td>
+							<td>
+								<textarea 
+								className = "input textarea" 
+								type = "text"
+								name = "source"
+								value = {this.state.source}
+								onChange = {this.handleChange}
+								/>
+							</td>
+							<td>
+								
 							</td>
 						</tr>
 

@@ -19,8 +19,9 @@ export default class TrophyAdd extends Component {
               name: ""
             , description: ""
             , cost: 0
-            , image: ""
+            //, image: ""
             , redirectToTrophiesList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
+			, redirectToEdit: false
 			, errorMessage: {}
 			, logout: false
 			, canSubmit: true
@@ -50,16 +51,16 @@ export default class TrophyAdd extends Component {
         let nameValidation = this.state.name.length >= 5;
         let descriptionValidation = this.state.description.length >= 16;
         let costValidation = this.state.cost >= 0;
-        let imageValidation = this.state.image.length > 0;
+        //let imageValidation = this.state.image.length > 0;
 		
 		this.setState({errorMessage: {
               nameError: nameValidation ? null : 'name has to be at least 5 characters long',
               descriptionError: descriptionValidation ? null : 'description has to be at least 16 characters long',
               costError: costValidation ? null : 'cost has to be non-negative number',
-              imageError: imageValidation ? null : 'Media Path is required',              
+              //imageError: imageValidation ? null : 'Media Path is required',              
         }}) 
         
-        return nameValidation && descriptionValidation && costValidation && imageValidation;
+        return nameValidation && descriptionValidation && costValidation;
 	}
 
     handleSubmit = (e) =>  {
@@ -73,8 +74,8 @@ export default class TrophyAdd extends Component {
 			const trophyObject = {
                   name: this.state.name,
                   description: this.state.description,
-                  cost: this.state.cost,
-                  image: this.state.image
+                  cost: this.state.cost
+                  //image: this.state.image
 			}
 
             console.log(trophyObject);
@@ -103,8 +104,9 @@ export default class TrophyAdd extends Component {
 						
 					} else {   
 					
+						this.setState({id: res.data.id})
 						console.log("Record added")
-						this.setState({redirectToTrophiesList:true})
+						this.setState({redirectToEdit:true})
 					} 
 				} else {
 					console.log("Record not added")
@@ -120,6 +122,7 @@ export default class TrophyAdd extends Component {
         return (
 		<div className="body_content">
 		
+			{this.state.redirectToEdit ? <Redirect to={"/TrophyEdit/" + this.state.id}/> : null}
 			{this.state.logout ? <Redirect to="/Login"/> : null} 
             {this.state.redirectToTrophiesList ? <Redirect to="/TrophiesList"/> : null} 
 				
@@ -185,23 +188,6 @@ export default class TrophyAdd extends Component {
 						    </td>
 						    <td>
 							    <span className="error_msg">{this.state.errorMessage.costError}</span>
-						    </td>
-					    </tr>
-					    <tr>
-						    <td>
-							    Media Path
-						    </td>
-						    <td>
-                                <input 
-                                className="input" 
-                                type="text" 
-                                name="image" 
-                                value={this.state.image}
-                                onChange={this.handleChange}
-                                />
-					        </td>
-						    <td>
-                                <span className="error_msg">{this.state.errorMessage.imageError}</span>
 						    </td>
 					    </tr>
 

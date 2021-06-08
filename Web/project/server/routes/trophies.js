@@ -51,7 +51,7 @@ router.post(`/trophy/`, middleware.isLogged, middleware.isAdmin, middleware.trim
     const doc = await trophyRef.add(req.body);
 
 	console.log(`Added trophy with ID: ${doc.id}`);
-    res.json({});   
+    res.json({id: doc.id});   
 })
 
 // Read one record

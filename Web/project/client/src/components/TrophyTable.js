@@ -96,11 +96,13 @@ export default class TrophyTable extends Component
     render() 
     {
         return (
-			<table className="table table_data">
+			<table className="table table_data table_trophies">
 				<thead>
 					<tr>
 						<td> <LinkInClass className="linkInClass" value="Name" onClick={this.sortTrophies}/> </td>
 						<td> <LinkInClass className="linkInClass" value="Cost" onClick={this.sortTrophies}/> </td>
+						<td></td>
+						<td></td>
 					</tr>
 				</thead>
 				<tbody>

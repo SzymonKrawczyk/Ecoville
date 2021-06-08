@@ -23,6 +23,7 @@ export default class TrophyEdit extends Component  {
 			, picName: ""
             , redirectToTrophiesList: sessionStorage.accessLevel < ACCESS_LEVEL_ADMIN
 			//, reload: false
+			, changePicText: ""
 			, errorMessage: {}
 			, logout: false
 			, canSubmit: true
@@ -116,13 +117,15 @@ export default class TrophyEdit extends Component  {
 		e.preventDefault();		
 		
 		if (this.state.canSubmit && this.state.picNew != null && this.state.picChanged){
+			
+			this.setState({changePicText: ""});
 			console.log(this.state.picNew);
 
 			this.state.canSubmit = false;
 
 			const trophyObject = new FormData();
 			trophyObject.append('file', this.state.picNew);
-			trophyObject.append('myData', this.state.name);
+			//trophyObject.append('myData', this.state.name);
 			for (var value of trophyObject.values()) {
 				console.log(value);
 			}
@@ -151,7 +154,10 @@ export default class TrophyEdit extends Component  {
 						
 					} else {   
 					
-						console.log("Record added")
+						console.log("Record added");
+						//this.state.changePicText = "Picture changed";
+						this.setState({changePicText: "Picture changed"});
+						//console.log(this.state.changePicText)
 						//this.setState({redirectToTrophiesList:true})
 						//this.setState({reload:true})
 					} 
@@ -303,7 +309,8 @@ export default class TrophyEdit extends Component  {
 								value={this.state.picName}
 								onChange={this.handleChangePic}
 								/><br/>
-								<LinkInClass className="linkInClass" value="Change" onClick={this.handleSubmitPic}/>	
+								<LinkInClass className="linkInClass" value="Change" onClick={this.handleSubmitPic}/><br/>
+								<span className="error_msg">{this.state.changePicText}</span>
 							</td>
 							<td>
 								{ this.state.pic != "defaultTrophy.jpg" ? <Link to={"/TrophyDeletePic/" + this.state._id}>Delete</Link> : ""}						

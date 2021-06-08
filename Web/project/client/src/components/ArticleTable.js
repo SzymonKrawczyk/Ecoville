@@ -95,7 +95,7 @@ export default class ArticleTable extends Component
     render() 
     {
         return (
-			<table className="table table_data">
+			<table className="table table_data table_articles">
 				<thead>
 					<tr>
 						<td> <LinkInClass className="linkInClass" value="Title" onClick={this.sortArticles}/> </td>
