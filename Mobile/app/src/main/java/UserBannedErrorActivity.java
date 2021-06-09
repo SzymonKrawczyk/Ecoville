@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.os.Bundle;
 import android.widget.TextView;

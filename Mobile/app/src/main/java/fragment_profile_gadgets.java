@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.bottomnavigationview.model.Gadget;
-import com.example.bottomnavigationview.model.Trophy;
-import com.example.bottomnavigationview.model.fragment_profile_gadgets_adapter;
-import com.example.bottomnavigationview.model.fragment_profile_new_trophie_adapter;
+import com.example.ecoville_app_S.model.Gadget;
+import com.example.ecoville_app_S.model.Trophy;
+import com.example.ecoville_app_S.model.fragment_profile_gadgets_adapter;
+import com.example.ecoville_app_S.model.fragment_profile_new_trophie_adapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,6 +26,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -51,6 +53,8 @@ public class fragment_profile_gadgets extends Fragment {
     ArrayList<Gadget> gadgetsList;
     ArrayList<Boolean> isCollected;
     ArrayList<String> gadgetId;
+
+    ArrayList<HashMap<String, Object>> hashMaps;
 
     public fragment_profile_gadgets() {
         // Required empty public constructor
@@ -117,32 +121,84 @@ public class fragment_profile_gadgets extends Fragment {
         db = FirebaseFirestore.getInstance();
         rv = (RecyclerView) view.findViewById(R.id.RVProfileAll);
 
-        ArrayList<HashMap<String, Object>> hashMaps = new ArrayList<>();
         hashMaps = MainActivity.appUser.getGadgets();
 
-        userGadgetsDocRef = new ArrayList<>();
-        isCollected = new ArrayList<>();
 
-        if(hashMaps != null && !hashMaps.isEmpty())
-        {
-            for(int i=0; i<hashMaps.size(); i++){
-                if(! (Boolean) hashMaps.get(i).get("collected") ){
-                    userGadgetsDocRef.add( (DocumentReference) hashMaps.get(i).get("ref") );
-                    isCollected.add( (Boolean) hashMaps.get(i).get("collected") );
-                }
-            }
+        ArrayList<HashMap<String, Object>> hashMaps2 = new ArrayList<>();
 
-            for(int i=0; i<hashMaps.size(); i++){
-                if( (Boolean) hashMaps.get(i).get("collected") ){
-                    userGadgetsDocRef.add( (DocumentReference) hashMaps.get(i).get("ref") );
-                    isCollected.add( (Boolean) hashMaps.get(i).get("collected") );
-                }
-            }
-            loadTrophies(userGadgetsDocRef);
-        }else {
-            TVNoContentInfo.setVisibility(View.VISIBLE);
-        }
+        ArrayList<String> allGadgets = new ArrayList<>();
 
+        db.collection("gadget")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                allGadgets.add(document.getId());
+                            }
+
+
+                            for (int i = 0; i < hashMaps.size(); ++i) {
+
+                                    HashMap<String, Object> hashmap_ = hashMaps.get(i);
+                                    try {
+
+                                        if (!allGadgets.contains(((DocumentReference)hashmap_.get("ref")).getId())) continue;
+
+                                        hashMaps2.add(hashmap_);
+
+                                    } catch (Exception e) {
+                                        System.err.println(e);
+                                    }
+
+
+                            }
+
+                            System.err.println(hashMaps2.size());
+                            System.err.println(hashMaps.size());
+                            //for (HashMap<String, Object> hashmap_ : hashMaps2) {
+                            //    System.err.println("a2222a");
+                            //}
+
+                            //for (HashMap<String, Object> hashmap_ : hashMaps) {
+                            //    System.err.println("aa");
+                            //}
+
+                            hashMaps = hashMaps2;
+
+                            MainActivity.appUser.setGadgets(hashMaps);
+
+                            userGadgetsDocRef = new ArrayList<>();
+                            isCollected = new ArrayList<>();
+
+
+                            if(hashMaps != null && !hashMaps.isEmpty())
+                            {
+                                TVNoContentInfo.setVisibility(View.GONE);
+                                for(int i=0; i<hashMaps.size(); i++){
+                                    if(! (Boolean) hashMaps.get(i).get("collected") ){
+                                        userGadgetsDocRef.add( (DocumentReference) hashMaps.get(i).get("ref") );
+                                        isCollected.add( (Boolean) hashMaps.get(i).get("collected") );
+                                    }
+                                }
+
+                                for(int i=0; i<hashMaps.size(); i++){
+                                    if( (Boolean) hashMaps.get(i).get("collected") ){
+                                        userGadgetsDocRef.add( (DocumentReference) hashMaps.get(i).get("ref") );
+                                        isCollected.add( (Boolean) hashMaps.get(i).get("collected") );
+                                    }
+                                }
+                                loadTrophies(userGadgetsDocRef);
+
+                            }else {
+                                TVNoContentInfo.setVisibility(View.VISIBLE);
+                            }
+
+
+                        }
+                    }
+                });
 
         return view;
     }
@@ -158,8 +214,17 @@ public class fragment_profile_gadgets extends Fragment {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     Gadget gadget = documentSnapshot.toObject(Gadget.class);
-                    gadgetId.add(documentSnapshot.getId());
-                    gadgetsList.add(gadget);
+                    //if (gadget != null) {
+                        gadgetId.add(documentSnapshot.getId());
+                        gadgetsList.add(gadget);
+
+                    for(int i=0; i<hashMaps.size(); i++){
+                        if(((DocumentReference) hashMaps.get(i).get("ref")).getId().equals(gadgetId.get(gadgetId.size()-1)))
+                        {
+                            isCollected.set(gadgetId.size()-1, (Boolean) hashMaps.get(i).get("collected"));
+                        }
+                    }
+                    //}
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -177,11 +242,32 @@ public class fragment_profile_gadgets extends Fragment {
     }
 
     private void setRecycleViewContent(){
+
         if(gadgetsList.size() == userGadgetsDocRef.size()) {
-            for(int i=0; i<gadgetsList.size(); i++)
-            {
-                System.out.println(i + " " + gadgetsList.get(i).getName() + ", " + isCollected.get(i) + ", " + gadgetId.get(i));
+
+            ArrayList<Gadget> gadgetsList2 = new ArrayList<>();
+            ArrayList<Boolean> isCollected2 = new ArrayList<>();
+            ArrayList<String> gadgetId2 = new ArrayList<>();
+
+            for (int i = 0; i < isCollected.size(); ++i) {
+                if (!isCollected.get(i)) {
+                    gadgetsList2.add(gadgetsList.get(i));
+                    isCollected2.add(isCollected.get(i));
+                    gadgetId2.add(gadgetId.get(i));
+                }
             }
+            for (int i = 0; i < isCollected.size(); ++i) {
+                if (isCollected.get(i)) {
+                    gadgetsList2.add(gadgetsList.get(i));
+                    isCollected2.add(isCollected.get(i));
+                    gadgetId2.add(gadgetId.get(i));
+                }
+            }
+
+            gadgetsList = gadgetsList2;
+            isCollected = isCollected2;
+            gadgetId = gadgetId2;
+
 
             fragment_profile_gadgets_adapter adapter = new fragment_profile_gadgets_adapter(this.getContext(), gadgetsList, isCollected, gadgetId);
             rv.setLayoutManager(new LinearLayoutManager(this.getContext()));

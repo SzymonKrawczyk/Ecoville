@@ -1,7 +1,7 @@
-package com.example.bottomnavigationview.model;
+package com.example.ecoville_app_S.model;
 
-import com.example.bottomnavigationview.MainActivity;
-import com.example.bottomnavigationview.fragment_home_missions;
+import com.example.ecoville_app_S.MainActivity;
+import com.example.ecoville_app_S.fragment_home_missions;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;

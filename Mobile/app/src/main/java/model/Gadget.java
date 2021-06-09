@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview.model;
+package com.example.ecoville_app_S.model;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 

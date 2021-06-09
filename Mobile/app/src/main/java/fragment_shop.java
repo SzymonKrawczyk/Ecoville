@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.bottomnavigationview.model.User;
-import com.example.bottomnavigationview.model.fragment_shop_adapter;
+import com.example.ecoville_app_S.model.User;
+import com.example.ecoville_app_S.model.fragment_shop_adapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -106,6 +106,11 @@ public class fragment_shop extends Fragment {
 
                     userTrophiesDocRef = new ArrayList<>();
                     allTrophiesDocRef = new ArrayList<>();
+
+
+
+
+
 
                     if(hashMaps != null)
                     {

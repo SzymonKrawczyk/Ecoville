@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview.model;
+package com.example.ecoville_app_S.model;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,7 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.bottomnavigationview.R;
+import com.example.ecoville_app_S.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -85,7 +85,7 @@ public class fragment_profile_gadgets_adapter extends RecyclerView.Adapter<fragm
                 holder.CLGadgetItem.setBackgroundResource(R.drawable.round_corners_left_green_bg);
                 holder.CLGadgetItem.setVisibility(View.VISIBLE);
             }else{
-                holder.TVGadgetInfo.setText("You already picked up this gadget");
+                holder.TVGadgetInfo.setText("You have already picked up this gadget");
                 holder.CLGadgetItem.setBackgroundResource(R.drawable.round_corners_left_darkgray_bg);
                 holder.CLGadgetItem.setVisibility(View.VISIBLE);
             }

@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.os.Bundle;
 
@@ -19,7 +19,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import com.example.bottomnavigationview.model.Tip;
+import com.example.ecoville_app_S.model.Tip;
 
 public class fragment_home_tips extends Fragment {
 

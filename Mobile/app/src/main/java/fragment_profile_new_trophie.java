@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.os.Bundle;
 
@@ -16,15 +16,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.bottomnavigationview.model.Trophy;
-import com.example.bottomnavigationview.model.User;
-import com.example.bottomnavigationview.model.fragment_profile_new_trophie_adapter;
+import com.example.ecoville_app_S.model.Trophy;
+import com.example.ecoville_app_S.model.User;
+import com.example.ecoville_app_S.model.fragment_profile_new_trophie_adapter;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -53,6 +57,8 @@ public class fragment_profile_new_trophie extends Fragment {
     ArrayList<DocumentReference> userTrophiesDocRef;
     ArrayList<Timestamp> trophiesTimestamp;
     ArrayList<Trophy>trophiesList;
+    ArrayList<String>trophiesId;
+    ArrayList<HashMap<String, Object>> hashMaps;
 
     int numberOfTrophies;
 
@@ -138,25 +144,81 @@ public class fragment_profile_new_trophie extends Fragment {
         db = FirebaseFirestore.getInstance();
         rv = (RecyclerView) view.findViewById(R.id.RVProfileAll);
 
-        ArrayList<HashMap<String, Object>> hashMaps = new ArrayList<>();
         hashMaps = MainActivity.appUser.getTrophies();
 
         userTrophiesDocRef = new ArrayList<>();
         trophiesTimestamp = new ArrayList<>();
         trophiesList = new ArrayList<>();
 
-        if(hashMaps != null && !hashMaps.isEmpty())
-        {
-            Collections.sort (hashMaps, new MapComparator("unlockDate"));
 
-            for(int i=0; i<hashMaps.size(); i++){
-                userTrophiesDocRef.add( (DocumentReference) hashMaps.get(i).get("trophy_id") );
-                trophiesTimestamp.add( (Timestamp) hashMaps.get(i).get("unlockDate") );
-            }
-            loadTrophies(userTrophiesDocRef);
-        }else{
-            TVNoContentInfo.setVisibility(View.VISIBLE);
-        }
+        ArrayList<HashMap<String, Object>> hashMaps2 = new ArrayList<>();
+        ArrayList<String> allGadgets = new ArrayList<>();
+
+        db.collection("trophy")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                allGadgets.add(document.getId());
+                            }
+
+
+                            for (int i = 0; i < hashMaps.size(); ++i) {
+
+                                HashMap<String, Object> hashmap_ = hashMaps.get(i);
+                                try {
+
+                                    if (!allGadgets.contains(((DocumentReference)hashmap_.get("trophy_id")).getId())) continue;
+
+                                    hashMaps2.add(hashmap_);
+
+                                } catch (Exception e) {
+                                    System.err.println(e);
+                                }
+
+
+                            }
+
+                            System.err.println(hashMaps2.size());
+                            System.err.println(hashMaps.size());
+                            //for (HashMap<String, Object> hashmap_ : hashMaps2) {
+                            //    System.err.println("a2222a");
+                            //}
+
+                            //for (HashMap<String, Object> hashmap_ : hashMaps) {
+                            //    System.err.println("aa");
+                            //}
+
+                            hashMaps = hashMaps2;
+
+                            MainActivity.appUser.setTrophies(hashMaps);
+
+
+
+                            if(hashMaps != null && !hashMaps.isEmpty())
+                            {
+                                TVNoContentInfo.setVisibility(View.GONE);
+                                Collections.sort (hashMaps, new MapComparator("unlockDate"));
+
+                                for(int i=0; i<hashMaps.size(); i++){
+                                    userTrophiesDocRef.add( (DocumentReference) hashMaps.get(i).get("trophy_id") );
+                                    trophiesTimestamp.add( (Timestamp) hashMaps.get(i).get("unlockDate") );
+                                }
+                                loadTrophies(userTrophiesDocRef);
+                            }else{
+                                TVNoContentInfo.setVisibility(View.VISIBLE);
+                            }
+
+
+                        }
+                    }
+                });
+
+
+
+
 
         return view;
     }
@@ -169,6 +231,7 @@ public class fragment_profile_new_trophie extends Fragment {
 
     private void loadTrophies(ArrayList<DocumentReference> userTrophiesDocRef) {
 
+        trophiesId = new ArrayList<>();
         numberOfTrophies = userTrophiesDocRef.size();
 
         for(int i=0; i<userTrophiesDocRef.size(); i++)
@@ -180,6 +243,7 @@ public class fragment_profile_new_trophie extends Fragment {
                     Trophy trophy = documentSnapshot.toObject(Trophy.class);
                     if( trophy != null ){
                         trophiesList.add(trophy);
+                        trophiesId.add(documentSnapshot.getId());
                     }else {
                         numberOfTrophies--;
                     }
@@ -197,7 +261,7 @@ public class fragment_profile_new_trophie extends Fragment {
 
     private void setRecycleViewContent(){
         if(trophiesList.size() == numberOfTrophies){
-            fragment_profile_new_trophie_adapter adapter = new fragment_profile_new_trophie_adapter(this.getContext(), trophiesList, trophiesTimestamp, userTrophiesDocRef);
+            fragment_profile_new_trophie_adapter adapter = new fragment_profile_new_trophie_adapter(this.getContext(), trophiesList, trophiesTimestamp, trophiesId);
             rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
             rv.setAdapter(adapter);
         }

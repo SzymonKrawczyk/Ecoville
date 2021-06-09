@@ -1,8 +1,8 @@
-package com.example.bottomnavigationview.model;
+package com.example.ecoville_app_S.model;
 
 import androidx.annotation.NonNull;
 
-import com.example.bottomnavigationview.MainActivity;
+import com.example.ecoville_app_S.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

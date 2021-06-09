@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview.model;
+package com.example.ecoville_app_S.model;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,9 +13,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bottomnavigationview.MainActivity;
-import com.example.bottomnavigationview.R;
-import com.example.bottomnavigationview.fragment_shop;
+import com.example.ecoville_app_S.MainActivity;
+import com.example.ecoville_app_S.R;
+import com.example.ecoville_app_S.fragment_shop;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;

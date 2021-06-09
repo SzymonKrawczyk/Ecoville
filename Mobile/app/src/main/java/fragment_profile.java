@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -27,8 +27,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.bottomnavigationview.model.User;
-import com.example.bottomnavigationview.model.fragment_profile_adapter;
+import com.example.ecoville_app_S.model.User;
+import com.example.ecoville_app_S.model.fragment_profile_adapter;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;

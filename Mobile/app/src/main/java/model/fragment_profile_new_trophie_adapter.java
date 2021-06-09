@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview.model;
+package com.example.ecoville_app_S.model;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.bottomnavigationview.R;
+import com.example.ecoville_app_S.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -28,10 +28,10 @@ public class fragment_profile_new_trophie_adapter extends RecyclerView.Adapter<f
 
     ArrayList<Trophy> trophiesList;
     ArrayList<Timestamp> trophiesTimestamp;
-    ArrayList<DocumentReference> decRef;
+    ArrayList<String> decRef;
     Context context;
 
-    public fragment_profile_new_trophie_adapter(Context context, ArrayList<Trophy> trophiesList, ArrayList<Timestamp> trophiesTimestamp, ArrayList<DocumentReference> docRef){
+    public fragment_profile_new_trophie_adapter(Context context, ArrayList<Trophy> trophiesList, ArrayList<Timestamp> trophiesTimestamp, ArrayList<String> docRef){
         this.context = context;
         this.trophiesList = trophiesList;
         this.trophiesTimestamp = trophiesTimestamp;
@@ -62,7 +62,7 @@ public class fragment_profile_new_trophie_adapter extends RecyclerView.Adapter<f
             StorageReference storageRef = storage.getReference();
 
             // Create a reference with an initial file path and name
-            StorageReference pathReference = storageRef.child("trophies/" + decRef.get(trophy_position).getId());
+            StorageReference pathReference = storageRef.child("trophies/" + decRef.get(trophy_position));
 
             pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override

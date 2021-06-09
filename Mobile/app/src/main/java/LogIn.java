@@ -1,4 +1,4 @@
-package com.example.bottomnavigationview;
+package com.example.ecoville_app_S;
 
         import androidx.annotation.NonNull;
         import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +12,7 @@ package com.example.bottomnavigationview;
         import android.widget.EditText;
         import android.widget.Toast;
 
-        import com.example.bottomnavigationview.model.User;
+        import com.example.ecoville_app_S.model.User;
         import com.google.android.gms.tasks.OnCompleteListener;
         import com.google.android.gms.tasks.OnFailureListener;
         import com.google.android.gms.tasks.OnSuccessListener;
