@@ -195,8 +195,6 @@ public class fragment_profile_new_trophie extends Fragment {
 
                             MainActivity.appUser.setTrophies(hashMaps);
 
-
-
                             if(hashMaps != null && !hashMaps.isEmpty())
                             {
                                 TVNoContentInfo.setVisibility(View.GONE);
@@ -204,21 +202,15 @@ public class fragment_profile_new_trophie extends Fragment {
 
                                 for(int i=0; i<hashMaps.size(); i++){
                                     userTrophiesDocRef.add( (DocumentReference) hashMaps.get(i).get("trophy_id") );
-                                    trophiesTimestamp.add( (Timestamp) hashMaps.get(i).get("unlockDate") );
+                                    //trophiesTimestamp.add( (Timestamp) hashMaps.get(i).get("unlockDate") );
                                 }
                                 loadTrophies(userTrophiesDocRef);
                             }else{
                                 TVNoContentInfo.setVisibility(View.VISIBLE);
                             }
-
-
                         }
                     }
                 });
-
-
-
-
 
         return view;
     }
@@ -233,6 +225,7 @@ public class fragment_profile_new_trophie extends Fragment {
 
         trophiesId = new ArrayList<>();
         numberOfTrophies = userTrophiesDocRef.size();
+        trophiesTimestamp = new ArrayList<>();
 
         for(int i=0; i<userTrophiesDocRef.size(); i++)
         {
@@ -244,10 +237,16 @@ public class fragment_profile_new_trophie extends Fragment {
                     if( trophy != null ){
                         trophiesList.add(trophy);
                         trophiesId.add(documentSnapshot.getId());
+
+                        for(int i=0; i<hashMaps.size(); i++){
+                            if(((DocumentReference) hashMaps.get(i).get("trophy_id")).getId().equals(trophiesId.get(trophiesId.size()-1)))
+                            {
+                                trophiesTimestamp.add( (Timestamp) hashMaps.get(i).get("unlockDate") );
+                            }
+                        }
                     }else {
                         numberOfTrophies--;
                     }
-                    //trophiesList.add(trophy);
                     setRecycleViewContent();
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -260,7 +259,39 @@ public class fragment_profile_new_trophie extends Fragment {
     }
 
     private void setRecycleViewContent(){
+
         if(trophiesList.size() == numberOfTrophies){
+
+            ArrayList<Trophy> trophiesList2 = new ArrayList<>();
+            ArrayList<Timestamp> trophiesTimestamp2 = new ArrayList<>();
+            ArrayList<String> trophiesId2 = new ArrayList<>();
+
+            while(trophiesTimestamp.size() > 0)
+            {
+                int max = 0;
+
+                for(int i=1; i< trophiesTimestamp.size(); i++)
+                {
+                    if(trophiesTimestamp.get(max).compareTo(trophiesTimestamp.get(i)) < 0){
+                        max = i;
+                    }
+                }
+
+                trophiesList2.add(trophiesList.get(max));
+                trophiesTimestamp2.add(trophiesTimestamp.get(max));
+                trophiesId2.add(trophiesId.get(max));
+
+                trophiesList.remove(max);
+                trophiesTimestamp.remove(max);
+                trophiesId.remove(max);
+
+            }
+
+            trophiesList = trophiesList2;
+            trophiesTimestamp = trophiesTimestamp2;
+            trophiesId = trophiesId2;
+
+
             fragment_profile_new_trophie_adapter adapter = new fragment_profile_new_trophie_adapter(this.getContext(), trophiesList, trophiesTimestamp, trophiesId);
             rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
             rv.setAdapter(adapter);
@@ -284,7 +315,4 @@ public class fragment_profile_new_trophie extends Fragment {
             return secondValue.compareTo(firstValue);
         }
     }
-
-
 }
-
