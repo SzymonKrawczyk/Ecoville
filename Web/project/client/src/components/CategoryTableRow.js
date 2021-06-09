@@ -14,7 +14,8 @@ export default class CategoryTableRow extends Component
                     <Link to={"/CategoryEdit/" + this.props.category._id}>Edit</Link>                  
                 </td>
                 <td>
-                    <Link to={"/CategoryDelete/" + this.props.category._id}>Delete</Link>    
+					{ this.props.category.used == false ?  <Link to={"/CategoryDelete/" + this.props.category._id}>Delete</Link>  : ""}	
+                      
                 </td>
             </tr>
         )

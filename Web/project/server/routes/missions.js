@@ -77,6 +77,26 @@ router.post(`/mission/`, middleware.isLogged, middleware.isAdmin, middleware.tri
 	missionObject.completed = false;
 	
     const doc = await missionRef.add(req.body);
+	
+	
+	const docC = await req.body.id_category.get();
+	
+	if (!docC.exists) {
+
+		console.log('No category');
+		res.json({errorMessage: `No category: ${id}`});
+		
+	} else {
+		
+		if (docC.data().used == false) {
+			
+			const docCE = await req.body.id_category.set({used: true}, { merge: true });
+			
+		}
+	}
+	
+	
+	
 
 	timers.missionTimers();
 
@@ -180,6 +200,22 @@ router.put(`/mission/:id`, middleware.isLogged, middleware.isAdmin, middleware.t
 	} else {
 			
 		const docE = await missionRef.doc(id).set(missionObject, { merge: true });
+	}
+	
+	const docC = await req.body.id_category.get();
+	
+	if (!docC.exists) {
+
+		console.log('No category');
+		res.json({errorMessage: `No category: ${id}`});
+		
+	} else {
+		
+		if (docC.data().used == false) {
+			
+			const docCE = await req.body.id_category.set({used: true}, { merge: true });
+			
+		}
 	}
 		
 	timers.missionTimers();

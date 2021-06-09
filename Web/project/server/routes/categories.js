@@ -26,6 +26,7 @@ router.post(`/CategoriesList/`, middleware.isLogged, middleware.isAdmin, async (
 		snapshot.forEach((doc) => {
             let temp = {
                 name: doc.data().name,
+				used: doc.data().used,
                 _id: doc.id
             }
             categoryTable.push(temp);
@@ -40,9 +41,12 @@ router.post(`/CategoriesList/`, middleware.isLogged, middleware.isAdmin, async (
 router.post(`/category/`, middleware.isLogged, middleware.isAdmin, middleware.trimObj, middleware.validateCategoryObject, async (req, res) => {    
 		
 	const id = req.params.id;
+	req.body.used = false;
 	console.log(req.body);
+	
 	    
     const doc = await categoryRef.add(req.body);
+	
 
 	console.log(`Added category with ID: ${doc.id}`);
     res.json({});   
@@ -62,7 +66,11 @@ router.get(`/category/:id`,  middleware.isLogged, middleware.isAdmin, async (req
 		
 	} else {
 		console.log('category ' + doc.data().name);
-		res.json({name: doc.data().name, _id: doc.id});
+		res.json({
+			name: doc.data().name,
+			used: doc.data().used,
+			_id: doc.id
+			});
 	}
 			
 	
@@ -76,7 +84,7 @@ router.put(`/category/:id`, middleware.isLogged, middleware.isAdmin, middleware.
 	
 	const doc = await categoryRef.doc(id).get();
 	
-	if (!doc.exists) {
+	if (!doc.exists || req.body.used) {
 			
 		console.log('No category');
 		res.json({errorMessage: `No category: ${id}`});
@@ -98,9 +106,27 @@ router.delete(`/category/:id`, middleware.isLogged, middleware.isAdmin, async (r
 	const id = req.params.id;
 
 	console.log(`Delete category ${req.params.id}`);
-	const del = await categoryRef.doc(id).delete();
+	
+	const doc = await categoryRef.doc(id).get();
+	
+	if (!doc.exists) {
+
+		console.log('No category');
+		res.json({errorMessage: `No category: ${id}`});
+		
+	} else {
+		
+		if (doc.data().used == false) {
 			
-	res.json({});     
+			const del = await categoryRef.doc(id).delete();
+			res.json({});  
+			
+		} else {
+			
+			res.json({errorMessage: `Category used`});  
+		}
+	}
+			   
 	   
 })
 

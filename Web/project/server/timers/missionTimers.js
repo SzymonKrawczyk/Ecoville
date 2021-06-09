@@ -19,6 +19,7 @@ const missionCompleter = async (mission) => {
 		
 		let userArr = docM.data().currentParticipants != null ? docM.data().currentParticipants : [];
 		
+		
 				
 		for (let i = 0; i < userArr.length; ++i) {
 			
@@ -40,50 +41,54 @@ const missionCompleter = async (mission) => {
 						
 		
 			
-			
-		for (let i = 0; i < currentMissionObject.currentParticipants.length; ++i) {
-					
-			if (currentMissionObject.currentParticipants[i].confirmed == false){
-				
-				currentMissionObject.currentParticipants[i].confirmed = true;
-				
-				id_user = currentMissionObject.currentParticipants[i].id_user.id;
-							
-					
-				const docU = await firestore.db.collection('user').doc(id_user).get();
+		
+		if (userArr.length >= docM.data().requiredParticipants){
+			for (let i = 0; i < currentMissionObject.currentParticipants.length; ++i) {
 						
-				if (docU.exists) {
-							
-					pointArray = docU.data().totalPoints != null ? docU.data().totalPoints : [];
-					let addedPoints = false;
-					for (let p = 0; p < pointArray.length; ++p) {
-								
-						if (pointArray[p].id_category._path.segments[1] == docM.data().id_category._path.segments[1]) {
-									
-							pointArray[p].points = pointArray[p].points + docM.data().points;
-							addedPoints = true;
-							break;
-						}
-					}
+				if (currentMissionObject.currentParticipants[i].confirmed == false){
 					
-					if (!addedPoints) {
-						pointArray.push({
-							  id_category: docM.data().id_category
-							, points: docM.data().points
-							})
-					}
+					currentMissionObject.currentParticipants[i].confirmed = true;
+					
+					id_user = currentMissionObject.currentParticipants[i].id_user.id;
+								
+						
+					const docU = await firestore.db.collection('user').doc(id_user).get();
 							
-					let tempObjectUser = {
-						  confirmedMissions: parseInt(parseInt(docU.data().confirmedMissions) + 1)
-						, totalPoints: pointArray
-						, currentPoints: parseInt(parseInt(docU.data().currentPoints) + parseInt(docM.data().points))
-						, totalPointsSum: parseInt(parseInt(docU.data().totalPointsSum) + parseInt(docM.data().points))
-						};
-						//console.log(tempObjectUser)
-					const docEU = await firestore.db.collection('user').doc(id_user).set(tempObjectUser, { merge: true });
-				}
-			} 
-		}		
+					if (docU.exists) {
+								
+						pointArray = docU.data().totalPoints != null ? docU.data().totalPoints : [];
+						let addedPoints = false;
+						for (let p = 0; p < pointArray.length; ++p) {
+									
+							if (pointArray[p].id_category._path.segments[1] == docM.data().id_category._path.segments[1]) {
+										
+								pointArray[p].points = pointArray[p].points + docM.data().points;
+								addedPoints = true;
+								break;
+							}
+						}
+						
+						if (!addedPoints) {
+							pointArray.push({
+								  id_category: docM.data().id_category
+								, points: docM.data().points
+								})
+						}
+								
+						let tempObjectUser = {
+							  confirmedMissions: parseInt(parseInt(docU.data().confirmedMissions) + 1)
+							, totalPoints: pointArray
+							, currentPoints: parseInt(parseInt(docU.data().currentPoints) + parseInt(docM.data().points))
+							, totalPointsSum: parseInt(parseInt(docU.data().totalPointsSum) + parseInt(docM.data().points))
+							};
+							//console.log(tempObjectUser)
+						const docEU = await firestore.db.collection('user').doc(id_user).set(tempObjectUser, { merge: true });
+					}
+				} 
+			}
+		} else {
+			console.log(`Mission ${currentMissionObject.name} doesn't have enough participants!!! :<`)
+		}
 				
 				
 		//console.log(currentMissionObject)
@@ -115,6 +120,9 @@ const missionTimers = async() => {
 	console.log(` ${snapshot.docs.length} missions found`);
 		
 	if (!snapshot.empty) {
+		
+		let oldMissions = 0;
+		
 		for (let i = 0; i < snapshot.docs.length; ++i) {
 			
 			const currentDoc = snapshot.docs[i];
@@ -161,7 +169,15 @@ const missionTimers = async() => {
 				
 				if (!(timeLeft >= 40 * 24 * 60 * 60 * 1000)) { 
 					
-					let time = timeLeft > 0 ? timeLeft : 1; 
+					let time = 0; 
+					
+					if (timeLeft > 0) {
+						time = timeLeft;
+					} else {
+						time = (1 + oldMissions) * 10000;
+						++oldMissions;
+						console.log(`old mission ${oldMissions}: ${(oldMissions) * 10}s`);
+					}
 					
 					console.log("  setting timer: " + parseInt(time / 1000) + "s");
 									
