@@ -83,9 +83,17 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
                 // Create a reference with an initial file path and name
                 StorageReference pathReference = storageRef.child("trophies/" + documentSnapshot.getId());
 
-                Glide.with(context /* context */)
-                        .load(pathReference)
-                        .into(holder.IVTrophy);
+                System.out.println("path ref w store trophy: " + pathReference);
+
+
+                try{
+                    Glide.with(context /* context */)
+                            .load(pathReference)
+                            .into(holder.IVTrophy);
+
+                }catch (Exception e){
+                    System.err.println("###################################################################");
+                }
 
                 holder.BTTrophyInteraction.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -155,10 +163,12 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
         TVTrophyDescription.setText(t.getDescription());
         TVTrophyPointsValue.setText(String.valueOf(t.getCost()));
 
-        if(sr != null){
+        try{
             Glide.with(context /* context */)
                     .load(sr)
                     .into(IVTrophyMinimalistic);
+        }catch (Exception e){
+            System.err.println("###################################################################");
         }
 
         if( MainActivity.appUser.getCurrentPoints() < t.getCost()  ){
@@ -168,8 +178,7 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
             BTShopBuy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if(MainActivity.appUser._isUserBanned()){
+                    if(MainActivity.appUser == null || MainActivity.appUser._isUserBanned()){
                         dialog.dismiss();
                         Intent intent = new Intent(context.getApplicationContext(), UserBannedErrorActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -206,20 +215,27 @@ public class fragment_shop_adapter extends RecyclerView.Adapter<fragment_shop_ad
                     public void onSuccess(DocumentSnapshot documentSnapshotT) {
 
                         MainActivity.appUser = documentSnapshot.toObject(User.class);
-                        if( MainActivity.appUser.getCurrentPoints() >= cost  && documentSnapshotT.toObject(Trophy.class) != null){
-                            MainActivity.appUser.setCurrentPoints( MainActivity.appUser.getCurrentPoints() - cost );
-                            DocumentReference docRef = db.collection("trophy").document(trophyId);
-                            if(!MainActivity.appUser._addTrophy(docRef, db)){
-                                fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
+
+                        if(MainActivity.appUser == null || MainActivity.appUser._isUserBanned()){
+                            Intent intent = new Intent(context.getApplicationContext(), UserBannedErrorActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            context.startActivity(intent);
+                        }else {
+                            if( MainActivity.appUser.getCurrentPoints() >= cost  && documentSnapshotT.toObject(Trophy.class) != null){
+                                MainActivity.appUser.setCurrentPoints( MainActivity.appUser.getCurrentPoints() - cost );
+                                DocumentReference docRef = db.collection("trophy").document(trophyId);
+                                if(!MainActivity.appUser._addTrophy(docRef, db)){
+                                    fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
+                                }else{
+                                    fragment_shop.TotalPoints.setText(String.valueOf(MainActivity.appUser.getCurrentPoints()));
+                                    fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
+                                    Toast.makeText(fragmentActivity, "Thank you for your purchase", Toast.LENGTH_LONG).show();
+                                }
                             }else{
-                                fragment_shop.TotalPoints.setText(String.valueOf(MainActivity.appUser.getCurrentPoints()));
-                                fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_shop()).addToBackStack(null).commit();
-                                Toast.makeText(fragmentActivity, "Thank you for your purchase", Toast.LENGTH_LONG).show();
+                                //fragment_shop.TotalPoints.setText(String.valueOf(MainActivity.appUser.getCurrentPoints()));
+                                //Toast.makeText(fragmentActivity, "Error, try again.", Toast.LENGTH_LONG).show();
+                                fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
                             }
-                        }else{
-                            fragment_shop.TotalPoints.setText(String.valueOf(MainActivity.appUser.getCurrentPoints()));
-                            //Toast.makeText(fragmentActivity, "Error, try again.", Toast.LENGTH_LONG).show();
-                            fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {

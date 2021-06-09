@@ -16,7 +16,7 @@ public class UserBannedErrorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_was_banned);
 
         TVEndOfTheBan = (TextView) findViewById(R.id.TVEndOfTheBan);
-        TVEndOfTheBan.setText(MainActivity.appUser._getEndOfBanDate());
+        TVEndOfTheBan.setText(MainActivity.appUser != null ? MainActivity.appUser._getEndOfBanDate() : "never");
         MainActivity.logout();
     }
 }

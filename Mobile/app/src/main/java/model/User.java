@@ -1,8 +1,16 @@
 package com.example.bottomnavigationview.model;
 
+import androidx.annotation.NonNull;
+
 import com.example.bottomnavigationview.MainActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -139,6 +147,14 @@ public class User {
     }
 
     public boolean _isUserBanned(){
+
+//        MainActivity.userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                ban = documentSnapshot.toObject(User.class).getBan();
+//            }
+//        });
+
         if(ban == null)
             return false;
 

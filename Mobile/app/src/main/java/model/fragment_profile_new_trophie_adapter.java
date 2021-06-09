@@ -1,6 +1,7 @@
 package com.example.bottomnavigationview.model;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigationview.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.FirebaseStorage;
@@ -50,25 +53,34 @@ public class fragment_profile_new_trophie_adapter extends RecyclerView.Adapter<f
 
         if( trophiesList.get(position) != null){
 
-            String imageName = trophiesList.get(position).getImage();
+            int trophy_position = position;
 
-            holder.IVTrophyMinimalistic.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
+            String imageName = trophiesList.get(trophy_position).getImage();
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
             // Create a storage reference from our app
             StorageReference storageRef = storage.getReference();
 
             // Create a reference with an initial file path and name
-            StorageReference pathReference = storageRef.child("trophies/" + decRef.get(position).getId());
+            StorageReference pathReference = storageRef.child("trophies/" + decRef.get(trophy_position).getId());
 
-            Glide.with(context /* context */)
-                    .load(pathReference)
-                    .into(holder.IVTrophyMinimalistic);
+            pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(context /* context */)
+                            .load(pathReference)
+                            .into(holder.IVTrophyMinimalistic);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    holder.IVTrophyMinimalistic.setImageResource(context.getResources().getIdentifier("trophy_2", "drawable", context.getPackageName()));
+                }
+            });
 
-
-            holder.TVTrophyTitle.setText(trophiesList.get(position).getName());
-            holder.TVTrophyDescription.setText(trophiesList.get(position).getDescription());
-            if( isNew(trophiesTimestamp.get(position)) ){
+            holder.TVTrophyTitle.setText(trophiesList.get(trophy_position).getName());
+            holder.TVTrophyDescription.setText(trophiesList.get(trophy_position).getDescription());
+            if( isNew(trophiesTimestamp.get(trophy_position)) ){
                 holder.TVTrophyMinimalistic.setVisibility(View.VISIBLE);
             } else {
                 holder.TVTrophyMinimalistic.setVisibility(View.INVISIBLE);

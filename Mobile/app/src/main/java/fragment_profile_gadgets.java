@@ -50,6 +50,7 @@ public class fragment_profile_gadgets extends Fragment {
     ArrayList<DocumentReference> userGadgetsDocRef;
     ArrayList<Gadget> gadgetsList;
     ArrayList<Boolean> isCollected;
+    ArrayList<String> gadgetId;
 
     public fragment_profile_gadgets() {
         // Required empty public constructor
@@ -122,7 +123,7 @@ public class fragment_profile_gadgets extends Fragment {
         userGadgetsDocRef = new ArrayList<>();
         isCollected = new ArrayList<>();
 
-        if(hashMaps != null)
+        if(hashMaps != null && !hashMaps.isEmpty())
         {
             for(int i=0; i<hashMaps.size(); i++){
                 if(! (Boolean) hashMaps.get(i).get("collected") ){
@@ -146,9 +147,10 @@ public class fragment_profile_gadgets extends Fragment {
         return view;
     }
 
-    private void loadTrophies(ArrayList<DocumentReference> userTrophiesDocRef) {
+    private void loadTrophies(ArrayList<DocumentReference> userTrophiesDocRef){
 
         gadgetsList = new ArrayList<>();
+        gadgetId = new ArrayList<>();
 
         for(int i=0; i<userTrophiesDocRef.size(); i++)
         {
@@ -156,9 +158,8 @@ public class fragment_profile_gadgets extends Fragment {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     Gadget gadget = documentSnapshot.toObject(Gadget.class);
-                    if( gadget != null ){
-                        gadgetsList.add(gadget);
-                    }
+                    gadgetId.add(documentSnapshot.getId());
+                    gadgetsList.add(gadget);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -172,11 +173,19 @@ public class fragment_profile_gadgets extends Fragment {
                 }
             });
         }
+        setRecycleViewContent();
     }
 
     private void setRecycleViewContent(){
-        fragment_profile_gadgets_adapter adapter = new fragment_profile_gadgets_adapter(this.getContext(), gadgetsList, isCollected, userGadgetsDocRef);
-        rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        rv.setAdapter(adapter);
+        if(gadgetsList.size() == userGadgetsDocRef.size()) {
+            for(int i=0; i<gadgetsList.size(); i++)
+            {
+                System.out.println(i + " " + gadgetsList.get(i).getName() + ", " + isCollected.get(i) + ", " + gadgetId.get(i));
+            }
+
+            fragment_profile_gadgets_adapter adapter = new fragment_profile_gadgets_adapter(this.getContext(), gadgetsList, isCollected, gadgetId);
+            rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
+            rv.setAdapter(adapter);
+        }
     }
 }

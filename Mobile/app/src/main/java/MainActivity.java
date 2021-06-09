@@ -3,11 +3,13 @@ package com.example.bottomnavigationview;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.view.MenuItem;
 
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(appUser._isUserBanned()) {
+        if(appUser == null || appUser._isUserBanned()) {
             Intent intent = new Intent(getApplicationContext(), UserBannedErrorActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -70,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
     public static void logout(){
         appUser = null;
         userDocRef = null;
-        FirebaseAuth mAuth;
         FirebaseAuth.getInstance().signOut();
     }
 

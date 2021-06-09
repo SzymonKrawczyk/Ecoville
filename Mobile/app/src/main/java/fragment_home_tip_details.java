@@ -76,40 +76,47 @@ public class fragment_home_tip_details extends Fragment {
                     TVSource.setText(tip.getSource());
                     BTTipsDtailsLike.setVisibility(View.VISIBLE);
 
-
-                    // Working example: "https://pl.wikipedia.org/wiki/Ziemniak AAAAAAAAAA https://pl.wikipedia.org/wiki/Pietruszka_zwyczajna www.google.com"
+                    // Working example: "https://pl.wikipedia.org/wiki/Ziemniak AAAAAAAAAA
+                    // https://pl.wikipedia.org/wiki/Pietruszka_zwyczajna\nwww.google.com\nhttps://pl.wikipedia.org/wiki/Ziemniak";
                     // www.google.com is not recognized as valid address and so, it's not treated as such
 
                     if(tip.getSource() != null) {
 
-                        String s = tip.getSource().replace(' ','\n');
+                        String s = tip.getSource();
 
                         SpannableString sss = new SpannableString(s);
                         int start = 0;
-                        int end;
+                        int end = 0;
 
-                        String[] arr = s.split("\n");
+                        for ( int i = 0; i < s.length(); ++i) {
 
-                        for ( String ss : arr) {
+                            start = s.indexOf("http", start);
 
-                            end = start + ss.length();
+                            if (start == -1) break;
+                            end = s.indexOf(" ", start);
+                            int end2 = s.indexOf("\n", start);
 
-                            if(ss.contains("http")){
-                                ClickableSpan clickableSpan = new ClickableSpan() {
-                                    @Override
-                                    public void onClick(@NonNull View widget) {
-                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ss));
-                                        startActivity(intent);
-                                    }
+                            if (end == -1) end = end2;
+                            if (end == -1 && end2 == -1) end = s.length();
 
-                                    @Override
-                                    public void updateDrawState(@NonNull TextPaint ds) {
-                                        super.updateDrawState(ds);
-                                        ds.setColor(Color.BLUE);
-                                    }
-                                };
-                                sss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                            }
+
+                            String ss = s.substring(start, end);
+
+                            ClickableSpan clickableSpan = new ClickableSpan() {
+                                @Override
+                                public void onClick(@NonNull View widget) {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ss));
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void updateDrawState(@NonNull TextPaint ds) {
+                                    super.updateDrawState(ds);
+                                    ds.setColor(Color.BLUE);
+                                }
+                            };
+                            sss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
                             start = end + 1;
                         }
                         TVSource.setText(sss);

@@ -29,8 +29,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class fragment_profile_new_trophie extends Fragment {
 
@@ -105,7 +108,6 @@ public class fragment_profile_new_trophie extends Fragment {
             // Create a reference with an initial file path and name
             StorageReference pathReference = storageRef.child("users/" + MainActivity.appUser.getProfilePic());
 
-
             Glide.with(fragment_profile_new_trophie.this /* context */)
                     .load(pathReference)
                     .into(IVProfile);
@@ -143,8 +145,10 @@ public class fragment_profile_new_trophie extends Fragment {
         trophiesTimestamp = new ArrayList<>();
         trophiesList = new ArrayList<>();
 
-        if(hashMaps != null)
+        if(hashMaps != null && !hashMaps.isEmpty())
         {
+            Collections.sort (hashMaps, new MapComparator("unlockDate"));
+
             for(int i=0; i<hashMaps.size(); i++){
                 userTrophiesDocRef.add( (DocumentReference) hashMaps.get(i).get("trophy_id") );
                 trophiesTimestamp.add( (Timestamp) hashMaps.get(i).get("unlockDate") );
@@ -198,5 +202,25 @@ public class fragment_profile_new_trophie extends Fragment {
             rv.setAdapter(adapter);
         }
     }
+
+    class MapComparator implements Comparator<Map<String, Object>>
+    {
+        private final String key;
+
+        public MapComparator(String key)
+        {
+            this.key = key;
+        }
+
+        public int compare(Map<String, Object> first,
+                           Map<String, Object> second)
+        {
+            Timestamp firstValue = (Timestamp) first.get(key);
+            Timestamp secondValue = (Timestamp) second.get(key);
+            return secondValue.compareTo(firstValue);
+        }
+    }
+
+
 }
 

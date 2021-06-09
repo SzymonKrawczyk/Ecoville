@@ -170,7 +170,7 @@ public class fragment_shop_gadgets_adapter extends RecyclerView.Adapter<fragment
                 @Override
                 public void onClick(View v) {
 
-                    if(MainActivity.appUser._isUserBanned()){
+                    if(MainActivity.appUser == null || MainActivity.appUser._isUserBanned()){
                         dialog.dismiss();
                         Intent intent = new Intent(context.getApplicationContext(), UserBannedErrorActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

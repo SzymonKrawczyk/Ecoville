@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.bottomnavigationview.model.Post;
 import com.example.bottomnavigationview.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -32,7 +33,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class fragment_home_talk extends Fragment {
 
@@ -115,6 +118,8 @@ public class fragment_home_talk extends Fragment {
 
             Glide.with(fragment_home_talk.this /* context */)
                     .load(pathReference)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .into(IVPost);
         }
 
@@ -122,74 +127,28 @@ public class fragment_home_talk extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(MainActivity.appUser._isUserBanned()){
-                    onStop();
-                    Intent intent = new Intent(getActivity(), UserBannedErrorActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }else{
-                    String content = ETMLPostContent.getText().toString().trim();
-
-                    //Timestamp time = new Timestamp(new Date());
-                    Timestamp time = null;
-
-                    Date date = MainActivity.getDateFromServer();
-                    if(date != null)
-                    {
-                        time = new Timestamp(date);
-                    }else{
+                MainActivity.userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        MainActivity.appUser = documentSnapshot.toObject(User.class);
+                        post();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
                     }
-
-                    if (content.length() <= 512 && time != null) {
-
-                        Post post = new Post(MainActivity.userDocRef, content, time);
-
-                        db.collection("post").add(post)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_talk()).addToBackStack(null).commit();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
-                                    }
-                                });
-
-                    } else {
-                        Toast toast = Toast.makeText(getContext(), "Message is too long", Toast.LENGTH_LONG);
-                        toast.show();
-                    }
-                }
+                });
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         rv = (RecyclerView) view.findViewById(R.id.RVTalk);
 
         Query query = db.collection("post").orderBy("timestamp", Query.Direction.DESCENDING);
 
-
-
         FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
                 .setQuery(query, Post.class).build();
-
-
 
         adapter = new FirestoreRecyclerAdapter<Post, PostViewHolder>(options) {
 
@@ -249,9 +208,6 @@ public class fragment_home_talk extends Fragment {
 
                 holder.IVPostAvatar.setImageResource(R.drawable.ic_person_green);
 
-
-
-
             }
         };
 
@@ -282,6 +238,51 @@ public class fragment_home_talk extends Fragment {
 
     }
 
+    public void post(){
+        if(MainActivity.appUser == null || MainActivity.appUser._isUserBanned()){
+            onStop();
+            Intent intent = new Intent(getActivity(), UserBannedErrorActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }else{
+            String content = ETMLPostContent.getText().toString().trim();
+
+            //Timestamp time = new Timestamp(new Date());
+            Timestamp time = null;
+
+            Date date = MainActivity.getDateFromServer();
+            if(date != null)
+            {
+                time = new Timestamp(date);
+            }else{
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
+            }
+
+            if (content.length() <= 512 && time != null) {
+
+                Post post = new Post(MainActivity.userDocRef, content, time);
+
+                db.collection("post").add(post)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_home_talk()).addToBackStack(null).commit();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
+                            }
+                        });
+
+            } else {
+                Toast toast = Toast.makeText(getContext(), "Message is too long", Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -293,4 +294,6 @@ public class fragment_home_talk extends Fragment {
         super.onStop();
         adapter.stopListening();
     }
+
+
 }

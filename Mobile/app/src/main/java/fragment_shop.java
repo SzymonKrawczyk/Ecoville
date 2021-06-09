@@ -1,5 +1,6 @@
 package com.example.bottomnavigationview;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,8 @@ public class fragment_shop extends Fragment {
 
     public static TextView TotalPoints;
 
+    TextView TVNoContentInfo;
+
     Button BTShopAwards;
     Button BTShopGadgets;
     Button BTShopGames;
@@ -63,6 +66,8 @@ public class fragment_shop extends Fragment {
         View view = inflater.inflate(R.layout.fragment_shop, container, false);
 
         db = FirebaseFirestore.getInstance();
+
+        TVNoContentInfo = (TextView) view.findViewById(R.id.TVNoContentInfo);
 
         BTShopAwards = (Button) view.findViewById(R.id.BTShopAwards);
         BTShopGadgets = (Button) view.findViewById(R.id.BTShopGadgets);
@@ -87,23 +92,30 @@ public class fragment_shop extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 MainActivity.appUser = documentSnapshot.toObject(User.class);
-                TotalPoints = (TextView) view.findViewById(R.id.TVShopTotalPointsValue);
-                TotalPoints.setText(String.valueOf(MainActivity.appUser.getCurrentPoints()));
 
-                ArrayList<HashMap<String, Object>> hashMaps = new ArrayList<>();
-                hashMaps = MainActivity.appUser.getTrophies();
+                if(MainActivity.appUser == null || MainActivity.appUser._isUserBanned()){
+                    Intent intent = new Intent(getActivity(), UserBannedErrorActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }else{
+                    TotalPoints = (TextView) view.findViewById(R.id.TVShopTotalPointsValue);
+                    TotalPoints.setText(String.valueOf(MainActivity.appUser.getCurrentPoints()));
 
-                userTrophiesDocRef = new ArrayList<>();
-                allTrophiesDocRef = new ArrayList<>();
+                    ArrayList<HashMap<String, Object>> hashMaps = new ArrayList<>();
+                    hashMaps = MainActivity.appUser.getTrophies();
 
-                if(hashMaps != null)
-                {
-                    for(int i=0; i<hashMaps.size(); i++){
-                        userTrophiesDocRef.add( (DocumentReference) hashMaps.get(i).get("trophy_id") );
+                    userTrophiesDocRef = new ArrayList<>();
+                    allTrophiesDocRef = new ArrayList<>();
+
+                    if(hashMaps != null)
+                    {
+                        for(int i=0; i<hashMaps.size(); i++){
+                            userTrophiesDocRef.add( (DocumentReference) hashMaps.get(i).get("trophy_id") );
+                        }
                     }
-                }
 
-                loadAllTrophies( allTrophiesDocRef );
+                    loadAllTrophies( allTrophiesDocRef );
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -145,10 +157,16 @@ public class fragment_shop extends Fragment {
             }
         }
 
-        fragment_shop_adapter adapter = new fragment_shop_adapter(this.getContext(), getActivity(), allTrophiesDocRef, MainActivity.appUser.getCurrentPoints());
+        if(allTrophiesDocRef.size() == 0 || allTrophiesDocRef == null)
+        {
+            TVNoContentInfo.setText("You have purchased all available trophies.");
+            TVNoContentInfo.setVisibility(View.VISIBLE);
+        }else {
+            fragment_shop_adapter adapter = new fragment_shop_adapter(this.getContext(), getActivity(), allTrophiesDocRef, MainActivity.appUser.getCurrentPoints());
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(), 3, GridLayoutManager.VERTICAL, false);   //getActivity();
-        rv.setLayoutManager(gridLayoutManager);
-        rv.setAdapter(adapter);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(), 3, GridLayoutManager.VERTICAL, false);   //getActivity();
+            rv.setLayoutManager(gridLayoutManager);
+            rv.setAdapter(adapter);
+        }
     }
 }

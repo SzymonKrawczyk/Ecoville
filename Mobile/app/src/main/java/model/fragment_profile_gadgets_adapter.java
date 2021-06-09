@@ -1,6 +1,7 @@
 package com.example.bottomnavigationview.model;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigationview.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -23,14 +26,14 @@ public class fragment_profile_gadgets_adapter extends RecyclerView.Adapter<fragm
 
     ArrayList<Gadget> gadgetsList;
     ArrayList<Boolean> isGadgetCollected;
-    ArrayList<DocumentReference> decRef;
+    ArrayList<String> gadgetId;
     Context context;
 
-    public fragment_profile_gadgets_adapter(Context context,  ArrayList<Gadget> gadgetsList, ArrayList<Boolean> isGadgetCollected, ArrayList<DocumentReference> docRef){
+    public fragment_profile_gadgets_adapter(Context context,  ArrayList<Gadget> gadgetsList, ArrayList<Boolean> isGadgetCollected, ArrayList<String> gadgetId){
         this.context = context;
         this.gadgetsList = gadgetsList;
         this.isGadgetCollected = isGadgetCollected;
-        this.decRef = docRef;
+        this.gadgetId = gadgetId;
     }
 
 
@@ -46,25 +49,38 @@ public class fragment_profile_gadgets_adapter extends RecyclerView.Adapter<fragm
     @Override
     public void onBindViewHolder(@NonNull fragment_profile_gadgets_adapter.ViewHolder holder, int position) {
 
-        if( gadgetsList.get(position) != null){
+        if( gadgetsList.get(position) != null && gadgetId.get(position) != null){
 
+            int gadget_position = position;
+            String Id = gadgetId.get(position);
             Gadget g = new Gadget(gadgetsList.get(position));
+
+            System.out.println("pozycja: " + gadget_position + ", " + g.getName() + ": " + Id);
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
             // Create a storage reference from our app
             StorageReference storageRef = storage.getReference();
 
             // Create a reference with an initial file path and name
-            StorageReference pathReference = storageRef.child("gadgets/" + decRef.get(position).getId());
+            StorageReference pathReference = storageRef.child("gadgets/" + Id);
 
-            Glide.with(context /* context */)
-                    .load(pathReference)
-                    .into(holder.IVGadgetRich);
+            pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(context /* context */)
+                            .load(pathReference)
+                            .into(holder.IVGadgetRich);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    holder.IVGadgetRich.setImageResource(context.getResources().getIdentifier("trophy_4", "drawable", context.getPackageName()));
+                }
+            });
 
+            holder.TVGadgetName.setText(gadgetsList.get(gadget_position).getName());
 
-            holder.TVGadgetName.setText(gadgetsList.get(position).getName());
-
-            if(!isGadgetCollected.get(position)){
+            if(!isGadgetCollected.get(gadget_position)){
                 holder.TVGadgetInfo.setText("To pick up the gadget, go to the collection point");
                 holder.CLGadgetItem.setBackgroundResource(R.drawable.round_corners_left_green_bg);
                 holder.CLGadgetItem.setVisibility(View.VISIBLE);

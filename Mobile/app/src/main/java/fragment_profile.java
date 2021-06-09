@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.bottomnavigationview.model.User;
 import com.example.bottomnavigationview.model.fragment_profile_adapter;
 import com.github.mikephil.charting.charts.PieChart;
@@ -79,6 +80,7 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
     TextView TVScoreValue;
     TextView TVNewTrophyUnlocked;
     TextView TVCheckYourCollection;
+    TextView TVNoPieChartInfo;
 
     ImageView IVProfile;
     ImageView IVTrophyInProfile;
@@ -146,21 +148,37 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
             StorageReference pathReference = storageRef.child("users/" + MainActivity.appUser.getProfilePic());
 
 
+
             Glide.with(fragment_profile.this /* context */)
                     .load(pathReference)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .into(IVProfile);
         }
 
         IVProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MainActivity.appUser._isUserBanned()){
-                    Intent intent = new Intent(getActivity(), UserBannedErrorActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }else{
-                    uploadProfilePicture();
-                }
+
+                MainActivity.userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        MainActivity.appUser = documentSnapshot.toObject(User.class);
+
+                        if(MainActivity.appUser == null || MainActivity.appUser._isUserBanned()){
+                            Intent intent = new Intent(getActivity(), UserBannedErrorActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }else{
+                            uploadProfilePicture();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new fragment_connection_error()).addToBackStack(null).commit();
+                    }
+                });
             }
         });
 
@@ -215,6 +233,7 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
                 TVScoreValue.setText(String.valueOf(MainActivity.appUser.getCurrentPoints() + " / " + String.valueOf(MainActivity.appUser.getTotalPointsSum())));
                 TVNewTrophyUnlocked = (TextView) view.findViewById(R.id.TVNewTrophyUnlocked);
                 TVCheckYourCollection = (TextView) view.findViewById(R.id.TVCheckYourCollection);
+                TVNoPieChartInfo = (TextView) view.findViewById(R.id.TVNoPieChartInfo);
 
                 IVTrophyInProfile = (ImageView) view.findViewById(R.id.IVTrophyInProfile);
 
@@ -222,6 +241,7 @@ public class fragment_profile extends Fragment implements OnChartValueSelectedLi
                 if(MainActivity.appUser.getTotalPointsSum()==0)
                 {
                     PieChartProfile.setVisibility(View.INVISIBLE);
+                    TVNoPieChartInfo.setVisibility(View.VISIBLE);
                 }
                 //setUpPieChart();
                 //populatePieChart();

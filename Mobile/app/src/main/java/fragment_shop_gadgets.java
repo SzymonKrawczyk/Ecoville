@@ -38,6 +38,8 @@ public class fragment_shop_gadgets extends Fragment {
 
     public static TextView TotalPoints;
 
+    TextView TVNoContentInfo;
+
     Button BTShopAwards;
     Button BTShopGadgets;
     Button BTShopGames;
@@ -56,6 +58,8 @@ public class fragment_shop_gadgets extends Fragment {
         View view = inflater.inflate(R.layout.fragment_shop, container, false);
 
         db = FirebaseFirestore.getInstance();
+
+        TVNoContentInfo = (TextView) view.findViewById(R.id.TVNoContentInfo);
 
         BTShopAwards = (Button) view.findViewById(R.id.BTShopAwards);
         BTShopGadgets = (Button) view.findViewById(R.id.BTShopGadgets);
@@ -135,10 +139,16 @@ public class fragment_shop_gadgets extends Fragment {
             }
         }
 
-        fragment_shop_gadgets_adapter adapter = new fragment_shop_gadgets_adapter(this.getContext(), getActivity(), allGadgetsDocRef, MainActivity.appUser.getCurrentPoints());
+        if(allGadgetsDocRef.size() == 0 || allGadgetsDocRef == null)
+        {
+            TVNoContentInfo.setText("You have purchased all available gadgets.");
+            TVNoContentInfo.setVisibility(View.VISIBLE);
+        }else{
+            fragment_shop_gadgets_adapter adapter = new fragment_shop_gadgets_adapter(this.getContext(), getActivity(), allGadgetsDocRef, MainActivity.appUser.getCurrentPoints());
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(), 3, GridLayoutManager.VERTICAL, false);   //getActivity();
-        rv.setLayoutManager(gridLayoutManager);
-        rv.setAdapter(adapter);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(), 3, GridLayoutManager.VERTICAL, false);   //getActivity();
+            rv.setLayoutManager(gridLayoutManager);
+            rv.setAdapter(adapter);
+        }
     }
 }
