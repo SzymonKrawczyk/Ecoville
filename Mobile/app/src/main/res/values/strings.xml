@@ -5,4 +5,16 @@
     <string name="sing_up_link"><u>Sing up</u></string>
     <string name="log_in_link"><u>Log in</u></string>
     <string name="password_link"><u>Forget your password?</u></string>
+    <string name="credist">
+        <b>Credits</b>
+        \nApp created by Ecowaii Team:
+        \n\tMichał Kopałka
+        \n\tSzymon Krawczyk
+        \n\nDesigned by Argonauts Team:
+        \n\tKarolina Wiaderek
+        \n\tMariia Kuryshchuk
+        \n\tBibek Bam
+        \n\tSara Celan
+        \n\tCamille Glaçon
+    </string>
 </resources>

@@ -104,6 +104,20 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/TVNoPieChartInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="To see your statistics \n complete a mission"
+                android:textAlignment="center"
+                android:textSize="24dp"
+                android:textColor="@color/orange"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/CVProfileNewTrophy" />
+
+            <TextView
                 android:id="@+id/TVFullName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -341,15 +355,9 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/CVProfileNewTrophy" />
+                app:layout_constraintTop_toBottomOf="@+id/CVProfileNewTrophy" >
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/VP2Profile"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/PieChartProfile" />
+            </com.github.mikephil.charting.charts.PieChart>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
