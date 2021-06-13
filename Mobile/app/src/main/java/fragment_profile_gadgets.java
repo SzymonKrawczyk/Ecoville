@@ -123,11 +123,14 @@ public class fragment_profile_gadgets extends Fragment {
 
         hashMaps = MainActivity.appUser.getGadgets();
 
-
+         if(hashMaps==null){
+            hashMaps = new ArrayList<>();
+        }
+        
         ArrayList<HashMap<String, Object>> hashMaps2 = new ArrayList<>();
 
         ArrayList<String> allGadgets = new ArrayList<>();
-
+        
         db.collection("gadget")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
